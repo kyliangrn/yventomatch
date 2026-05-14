@@ -1,0 +1,4441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0E1E">
+  <meta name="description" content="Yvento Match — Décrivez votre événement en 2 minutes. On vous envoie des prestataires disponibles et vérifiés sous 24h. Gratuit pour l'organisateur.">
+  <title>Yvento Match — Trouvez le bon prestataire événementiel</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =================================================================
+       0. RESET & TOKENS
+    ================================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+    :root {
+      /* Palette */
+      --ink:        #0A0E1E;
+      --ink-2:      #11172E;
+      --navy:       #0F1F3D;
+      --orange:     #F4611A;
+      --orange-2:   #FF8347;
+      --ember:      #FFA661;
+      --cream:      #F8F5F0;
+      --cream-2:    #EFE9DF;
+      --bone:       #E8DFD0;
+      --paper:      #FFFFFF;
+      --ink-text:   #0F1F3D;
+      --sub-text:   #4A5568;
+      --mute-text:  #94A3B8;
+      --bad:        #E03131;
+      --neutral:    #94A3B8;
+      --good:       #2FB67C;
+      --hairline:   rgba(15, 31, 61, 0.08);
+      --hairline-d: rgba(255, 255, 255, 0.08);
+
+      /* Type */
+      --mono: 'Roboto Mono', ui-monospace, SFMono-Regular, monospace;
+
+      /* Easings */
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-quart:cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      background: var(--paper);
+      color: var(--ink-text);
+      line-height: 1.55;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-weight: 400;
+    }
+
+    img, svg, canvas { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul, ol { list-style: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; color: inherit; }
+
+    ::selection { background: var(--orange); color: #fff; }
+
+    /* =================================================================
+       1. LAYOUT
+    ================================================================= */
+    .wrap {
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    @media (min-width: 768px) { .wrap { padding: 0 40px; } }
+    @media (min-width: 1280px) { .wrap { padding: 0 56px; } }
+
+    /* =================================================================
+       2. TYPE UTILS
+    ================================================================= */
+    .display {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 0.96;
+    }
+    .display-md {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      line-height: 1;
+    }
+
+    .label, .eyebrow, .mono {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mute-text);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 22px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.55;
+    }
+
+    /* =================================================================
+       3. REVEAL
+    ================================================================= */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s var(--ease-out-expo) var(--d, 0ms),
+                  transform 0.9s var(--ease-out-expo) var(--d, 0ms);
+      will-change: opacity, transform;
+    }
+    .fade-up.is-revealed { opacity: 1; transform: translateY(0); }
+
+    .reveal-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding: 0.05em 0; }
+    .reveal-mask > span {
+      display: inline-block;
+      transform: translateY(110%);
+      transition: transform 1s var(--ease-out-expo);
+      transition-delay: var(--d, 0ms);
+      will-change: transform;
+    }
+    .is-revealed .reveal-mask > span,
+    .reveal-mask.is-revealed > span { transform: translateY(0); }
+
+    /* =================================================================
+       SOLUTION THREAD — Scroll-driven connector pain → compare
+    ================================================================= */
+    .thread {
+      position: fixed;
+      right: 28px;
+      top: 0;
+      bottom: 0;
+      width: 80px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease-out-quart);
+      z-index: 50;
+    }
+    .thread.is-visible { opacity: 1; }
+    @media (max-width: 768px) {
+      .thread { right: 10px; width: 56px; }
+    }
+
+    .thread svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+    /* Background dashed path — always visible, subtle */
+    .thread__path-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.55);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 3 7;
+      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.4))
+              drop-shadow(0 0 10px rgba(244, 97, 26, 0.3));
+    }
+    /* Active drawn path — orange with white halo for contrast */
+    .thread__path {
+      fill: none;
+      stroke: var(--orange);
+      stroke-width: 3;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.85))
+              drop-shadow(0 0 12px rgba(244, 97, 26, 0.7))
+              drop-shadow(0 0 24px rgba(244, 97, 26, 0.45));
+    }
+    .thread__dot {
+      fill: var(--orange);
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9))
+              drop-shadow(0 0 14px rgba(244, 97, 26, 1))
+              drop-shadow(0 0 24px rgba(244, 97, 26, 0.6));
+    }
+    .thread__dot-pulse {
+      fill: rgba(244, 97, 26, 0.45);
+      transform-origin: center;
+      animation: dotRipple 1.6s ease-out infinite;
+    }
+    @keyframes dotRipple {
+      0%   { transform: scale(1);   opacity: 0.65; }
+      80%  { transform: scale(3.5); opacity: 0;    }
+      100% { transform: scale(3.5); opacity: 0;    }
+    }
+    .thread__label {
+      fill: #fff;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.5s var(--ease-out-quart);
+      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6))
+              drop-shadow(0 0 10px rgba(244, 97, 26, 0.7));
+    }
+    .thread.is-visible .thread__label { opacity: 1; }
+    .thread__label--end {
+      fill: var(--orange);
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9))
+              drop-shadow(0 0 12px rgba(244, 97, 26, 0.7));
+    }
+
+    /* =================================================================
+       ORANGE GLOW — Subtle pulse on orange title words
+    ================================================================= */
+    @keyframes orangePulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 0 rgba(244,97,26,0));
+        text-shadow: 0 0 0 transparent;
+      }
+      50% {
+        filter: drop-shadow(0 0 14px rgba(244,97,26,0.42));
+        text-shadow: 0 0 22px rgba(244,97,26,0.18);
+      }
+    }
+    .sec-head h2 .orange,
+    .showcase__head h2 .orange,
+    .compare__head h2 .orange,
+    .team-intro h2 .orange,
+    .cta-final h2 .orange,
+    .hero__title .accent,
+    .compare__head h2 .orange {
+      animation: orangePulse 4.5s ease-in-out infinite;
+    }
+
+    /* =================================================================
+       NEW UTILITY ANIMATIONS
+    ================================================================= */
+    @keyframes punchIn {
+      0%   { opacity: 0; transform: scale(0.7); }
+      55%  { opacity: 1; transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    @keyframes drawCheck {
+      from { stroke-dashoffset: 26; }
+      to   { stroke-dashoffset: 0;  }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+    @keyframes shimmer {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* =================================================================
+       4. NAV
+    ================================================================= */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 0;
+      transition: background 0.5s var(--ease-out-quart),
+                  backdrop-filter 0.5s var(--ease-out-quart),
+                  border-color 0.5s var(--ease-out-quart);
+      border-bottom: 1px solid transparent;
+    }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+
+    .nav__brand {
+      display: inline-flex;
+      align-items: center;
+      transition: filter 0.4s var(--ease-out-quart);
+      height: 36px;
+    }
+    .nav__brand img {
+      height: 32px;
+      width: auto;
+      display: block;
+      transition: filter 0.4s var(--ease-out-quart);
+    }
+    /* Inverse for dark nav (initial state) if logo is dark.
+       Detect by .nav--solid (light bg) for the dark version. */
+    .nav__brand img { filter: brightness(0) invert(1); }
+    .nav--solid .nav__brand img { filter: brightness(0) invert(0); }
+    @keyframes dotPulse {
+      0%   { box-shadow: 0 0 0 0   rgba(244,97,26,0.5); }
+      70%  { box-shadow: 0 0 0 8px rgba(244,97,26,0);   }
+      100% { box-shadow: 0 0 0 0   rgba(244,97,26,0);   }
+    }
+
+    .nav__links { display: none; gap: 32px; }
+    .nav__links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      position: relative;
+      padding: 4px 0;
+      transition: color 0.3s var(--ease-out-quart);
+    }
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0; height: 1px;
+      background: var(--orange);
+      transition: width 0.4s var(--ease-out-quart);
+    }
+    .nav__links a:hover { color: #fff; }
+    .nav__links a:hover::after { width: 100%; }
+    .nav__right { display: flex; align-items: center; gap: 20px; }
+    .nav__provider {
+      display: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+      transition: color 0.3s var(--ease-out-quart);
+    }
+    .nav__provider:hover { color: #fff; }
+
+    .nav--solid {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: saturate(160%) blur(26px);
+      -webkit-backdrop-filter: saturate(160%) blur(26px);
+      border-bottom-color: var(--hairline);
+    }
+    .nav--solid .nav__brand { color: var(--ink-text); }
+    .nav--solid .nav__links a { color: var(--sub-text); }
+    .nav--solid .nav__links a:hover { color: var(--ink-text); }
+    .nav--solid .nav__provider { color: var(--sub-text); }
+    .nav--solid .nav__provider:hover { color: var(--ink-text); }
+
+    @media (min-width: 1024px) {
+      .nav__links { display: flex; }
+      .nav__provider { display: inline; }
+    }
+
+    /* =================================================================
+       5. BUTTONS — magnetic-ready
+    ================================================================= */
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 26px;
+      border-radius: 10px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.005em;
+      transition: transform 0.5s var(--ease-out-expo),
+                  background 0.4s var(--ease-out-quart),
+                  color 0.4s var(--ease-out-quart),
+                  box-shadow 0.4s var(--ease-out-quart);
+      will-change: transform;
+      white-space: nowrap;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .btn__inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.5s var(--ease-out-expo);
+      will-change: transform;
+    }
+    .btn--primary {
+      background: var(--orange);
+      color: #fff;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 14px 32px rgba(244, 97, 26, 0.35);
+    }
+    .btn--primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--ember), var(--orange));
+      opacity: 0;
+      transition: opacity 0.4s var(--ease-out-quart);
+    }
+    .btn--primary:hover::before { opacity: 1; }
+    .btn--primary:hover {
+      box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 18px 44px rgba(244, 97, 26, 0.48);
+    }
+    .btn--outline-dark {
+      background: transparent;
+      color: var(--ink-text);
+      border: 1.5px solid var(--ink-text);
+    }
+    .btn--outline-dark:hover {
+      background: var(--ink-text);
+      color: #fff;
+    }
+    .btn--ivory {
+      background: var(--cream);
+      color: var(--orange);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.22);
+    }
+    .btn--ivory:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 52px rgba(0,0,0,0.3);
+    }
+    .btn--sm { padding: 11px 20px; font-size: 12.5px; }
+    .btn__arrow {
+      width: 14px; height: 14px;
+      transition: transform 0.4s var(--ease-out-quart);
+    }
+    .btn:hover .btn__arrow { transform: translateX(4px); }
+
+    /* =================================================================
+       6. HERO — Editorial text + animated match deck
+    ================================================================= */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 100dvh;
+      background: var(--ink);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 75% 50%, rgba(244, 97, 26, 0.22), transparent 65%),
+        radial-gradient(ellipse 70% 60% at 15% 90%, rgba(26, 50, 96, 0.45), transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.85  0 0 0 0 0.6  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+      opacity: 0.14;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero__grid {
+      position: relative;
+      z-index: 3;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 120px 24px 0;
+      min-height: 100dvh;
+      display: grid;
+      grid-template-rows: 1fr auto auto;
+    }
+    @media (min-width: 768px)  { .hero__grid { padding: 140px 40px 0; } }
+    @media (min-width: 1280px) { .hero__grid { padding: 140px 56px 0; } }
+
+    .hero__columns {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    @media (min-width: 1024px) {
+      .hero__columns { grid-template-columns: 1.15fr 1fr; gap: 64px; }
+    }
+    @media (min-width: 1280px) {
+      .hero__columns { gap: 96px; }
+    }
+
+    /* HERO LEFT — text */
+    .hero__left { display: flex; flex-direction: column; gap: 28px; }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 14px 7px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.85);
+      width: fit-content;
+    }
+    .hero__badge-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 3px rgba(244,97,26,0.2), 0 0 16px rgba(244,97,26,0.7);
+      position: relative;
+    }
+    .hero__badge-dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--orange);
+      animation: pulseRing 2.4s var(--ease-out-quart) infinite;
+    }
+    @keyframes pulseRing {
+      0%   { transform: scale(1);   opacity: 0.6; }
+      80%  { transform: scale(2.2); opacity: 0;   }
+      100% { transform: scale(2.2); opacity: 0;   }
+    }
+
+    .hero__title {
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      font-size: clamp(48px, 7.8vw, 108px);
+      font-weight: 900;
+      line-height: 0.96;
+      letter-spacing: -0.045em;
+    }
+    .hero__title .line { display: block; }
+    .hero__title .accent { color: var(--orange); }
+    .hero__title .strike {
+      position: relative;
+      display: inline-block;
+      color: rgba(255,255,255,0.35);
+    }
+    .hero__title .strike::after {
+      content: '';
+      position: absolute;
+      left: -4%; right: -4%;
+      top: 52%;
+      height: 6px;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.9s var(--ease-out-expo) 1100ms;
+    }
+    .hero__title.is-revealed .strike::after,
+    body.hero-ready .hero__title .strike::after { transform: scaleX(1); }
+
+    .hero__sub {
+      color: rgba(255, 255, 255, 0.66);
+      font-size: clamp(15px, 1.3vw, 18px);
+      line-height: 1.6;
+      max-width: 480px;
+      font-weight: 400;
+    }
+    .hero__sub b { color: #fff; font-weight: 500; }
+
+    .hero__cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px 28px;
+    }
+    .hero__micro {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+    }
+
+    /* HERO RIGHT — match deck */
+    .hero__right {
+      position: relative;
+      width: 100%;
+      height: clamp(420px, 50vw, 560px);
+      perspective: 1400px;
+      perspective-origin: 50% 60%;
+    }
+    .hero__deck {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s var(--ease-out-quart);
+    }
+
+    .match-card {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: clamp(240px, 28vw, 320px);
+      aspect-ratio: 3 / 4;
+      margin-left: clamp(-160px, -14vw, -120px);
+      margin-top: clamp(-213px, -18.6vw, -160px);
+      border-radius: 20px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a3260, #0F1F3D);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: transform 0.9s var(--ease-out-expo),
+                  opacity 0.9s var(--ease-out-expo),
+                  filter 0.9s var(--ease-out-expo),
+                  box-shadow 0.9s var(--ease-out-expo);
+      will-change: transform;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+    }
+    .match-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .match-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(10,14,30,0.92) 100%);
+      pointer-events: none;
+    }
+
+    .match-card__info {
+      position: absolute;
+      left: 20px; right: 20px; bottom: 20px;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: #fff;
+    }
+    .match-card__role {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+    }
+    .match-card__name {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .match-card__meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+    }
+    .match-card__meta .dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+    .match-card__meta .avail {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #6CE0B0;
+    }
+    .match-card__meta .avail::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: #6CE0B0;
+      box-shadow: 0 0 0 2px rgba(108,224,176,0.25);
+    }
+
+    .match-card__badge {
+      position: absolute;
+      top: 16px; right: 16px;
+      z-index: 2;
+      padding: 5px 12px 5px 8px;
+      border-radius: 999px;
+      background: var(--orange);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 8px 22px rgba(244,97,26,0.5), 0 0 0 1px rgba(255,255,255,0.2) inset;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.92);
+      transition: opacity 0.5s var(--ease-out-expo) 0.2s,
+                  transform 0.5s var(--ease-out-expo) 0.2s;
+    }
+    .match-card__badge svg { width: 12px; height: 12px; }
+
+    /* Card position states (data-pos="0" is active/front) */
+    .match-card[data-pos="0"] {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+      opacity: 1;
+      z-index: 5;
+      box-shadow: 0 40px 80px -20px rgba(0,0,0,0.7),
+                  0 0 0 1.5px var(--orange),
+                  0 0 60px -4px rgba(244,97,26,0.6);
+    }
+    .match-card[data-pos="0"] .match-card__badge {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .match-card[data-pos="1"] {
+      transform: translate3d(-30px, -22px, -50px) rotate(-3.5deg);
+      opacity: 0.7;
+      z-index: 4;
+      filter: blur(0.3px);
+    }
+    .match-card[data-pos="2"] {
+      transform: translate3d(28px, -42px, -100px) rotate(3deg);
+      opacity: 0.5;
+      z-index: 3;
+      filter: blur(0.6px);
+    }
+    .match-card[data-pos="3"] {
+      transform: translate3d(-44px, -62px, -150px) rotate(-5deg);
+      opacity: 0.35;
+      z-index: 2;
+      filter: blur(1px);
+    }
+    .match-card[data-pos="4"] {
+      transform: translate3d(34px, -78px, -200px) rotate(6deg);
+      opacity: 0.18;
+      z-index: 1;
+      filter: blur(1.6px);
+    }
+    .match-card[data-pos="5"],
+    .match-card[data-pos="6"],
+    .match-card[data-pos="7"] {
+      transform: translate3d(0, -120px, -300px) rotate(0deg);
+      opacity: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Floating annotation near the deck */
+    .deck-annot {
+      position: absolute;
+      top: 16px;
+      left: 8px;
+      z-index: 6;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.7);
+    }
+    .deck-annot .live {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      animation: dotPulse 2.6s var(--ease-out-quart) infinite;
+    }
+
+    /* HERO stats — redesigned with animated counters */
+    .hero__foot {
+      padding: 48px 0 32px;
+      margin-top: 56px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero__stats {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 640px) { .hero__stats { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
+
+    .stat-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 26px 28px;
+      border-radius: 28px;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      transition: transform 0.55s var(--ease-out-expo),
+                  background 0.55s var(--ease-out-quart),
+                  box-shadow 0.55s var(--ease-out-expo),
+                  backdrop-filter 0.55s var(--ease-out-quart);
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.0), transparent);
+      pointer-events: none;
+      transition: background 0.55s var(--ease-out-quart);
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      background:
+        radial-gradient(ellipse 100% 100% at 30% 0%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 60%, rgba(0,0,0,0.05) 100%),
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow:
+        0 1.5px 0 rgba(255,255,255,0.22) inset,
+        0 -1px 0 rgba(0,0,0,0.22) inset,
+        0 26px 56px -16px rgba(0,0,0,0.55),
+        0 2px 6px rgba(0,0,0,0.18);
+    }
+    .stat-card:hover::before {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(244,97,26,0.08), transparent);
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+    .stat-card:hover::after {
+      animation: shimmer 1.2s var(--ease-out-quart);
+    }
+
+    .stat-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    .stat-card__index {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-card__index::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 8px var(--orange);
+    }
+    .stat-card__icon {
+      width: 22px; height: 22px;
+      color: var(--ember);
+      opacity: 0.85;
+    }
+
+    .stat-card__num {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      color: #fff;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+    }
+    .stat-card__num .n {
+      font-size: clamp(44px, 5.2vw, 64px);
+      font-variant-numeric: tabular-nums;
+      display: inline-block;
+      min-width: 1.5ch;
+    }
+    .stat-card__num .lt {
+      font-size: clamp(28px, 3.5vw, 42px);
+      color: var(--ember);
+      font-weight: 700;
+      margin-right: 2px;
+    }
+    .stat-card__num .unit {
+      font-size: clamp(18px, 2vw, 24px);
+      color: var(--ember);
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .stat-card__label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-card__bar {
+      position: relative;
+      height: 2px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .stat-card__bar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      width: var(--w, 0%);
+      background: linear-gradient(90deg, var(--orange), var(--ember));
+      border-radius: 2px;
+      transition: width 1.6s var(--ease-out-expo);
+      box-shadow: 0 0 12px rgba(244,97,26,0.6);
+    }
+    .stat-card.is-counted .stat-card__bar::after { width: var(--w-final, 50%); }
+
+    .hero__marquee {
+      position: relative;
+      z-index: 4;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 0;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .marquee-track {
+      display: inline-flex;
+      align-items: center;
+      gap: 36px;
+      white-space: nowrap;
+      animation: scrollX 32s linear infinite;
+      will-change: transform;
+    }
+    @keyframes scrollX { to { transform: translateX(-50%); } }
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 36px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(20px, 2.2vw, 32px);
+      color: rgba(255,255,255,0.78);
+      letter-spacing: -0.02em;
+    }
+    .marquee-item .star {
+      color: var(--orange);
+      font-size: 0.7em;
+      display: inline-block;
+      transform: translateY(-2px);
+    }
+
+    /* =================================================================
+       7. SECTION SHELL
+    ================================================================= */
+    .section {
+      position: relative;
+      padding: 120px 0;
+      overflow: hidden;
+    }
+    .section--cream { background: var(--cream); color: var(--ink-text); }
+    .section--paper { background: var(--paper); color: var(--ink-text); }
+    .section--bone  { background: var(--bone);  color: var(--ink-text); }
+    .section--ink   { background: var(--ink);   color: #fff; }
+    @media (min-width: 768px) { .section { padding: 160px 0; } }
+
+    .section--cream::before,
+    .section--paper::before,
+    .section--bone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.4  0 0 0 0 0.2  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      opacity: 0.08;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .section > * { position: relative; z-index: 1; }
+
+    .sec-head {
+      display: grid;
+      gap: 22px;
+      margin-bottom: 72px;
+      max-width: 920px;
+    }
+    .sec-head--center {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .sec-head h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(36px, 5.4vw, 80px);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+    .sec-head h2 .orange { color: var(--orange); }
+    .sec-head h2 .strike {
+      position: relative;
+      display: inline-block;
+      color: var(--mute-text);
+    }
+    .sec-head h2 .strike::after {
+      content: '';
+      position: absolute;
+      left: -2%; right: -2%;
+      top: 52%;
+      height: 4px;
+      background: var(--orange);
+    }
+    .sec-head .lead {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: clamp(15px, 1.2vw, 18px);
+      color: var(--sub-text);
+      line-height: 1.65;
+      max-width: 620px;
+    }
+    .sec-head--center .lead { margin-left: auto; margin-right: auto; }
+    .section--ink .sec-head .lead { color: rgba(255,255,255,0.65); }
+
+    /* =================================================================
+       8. SHOWCASE STRIP — 8 prestataires only
+    ================================================================= */
+    .showcase {
+      padding: 96px 0;
+      background: var(--ink);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .showcase::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 80% at 0% 50%, rgba(244, 97, 26, 0.15), transparent 60%),
+        radial-gradient(ellipse 50% 80% at 100% 50%, rgba(26, 50, 96, 0.4), transparent 60%);
+      pointer-events: none;
+    }
+    .showcase > * { position: relative; z-index: 1; }
+    @media (min-width: 768px) { .showcase { padding: 120px 0; } }
+
+    .showcase__head {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 64px;
+      padding: 0 24px;
+      max-width: 1320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (min-width: 768px) {
+      .showcase__head { grid-template-columns: 1fr 1fr; align-items: end; padding: 0 40px; }
+    }
+    @media (min-width: 1280px) { .showcase__head { padding: 0 56px; } }
+    .showcase__head h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      color: #fff;
+    }
+    .showcase__head h2 .orange { color: var(--orange); }
+    .showcase__head p {
+      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 460px;
+    }
+
+    .showcase__strip {
+      position: relative;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+    }
+    .showcase__track {
+      display: inline-flex;
+      gap: 14px;
+      animation: scrollX 50s linear infinite;
+      width: max-content;
+      will-change: transform;
+    }
+    .showcase__track:hover { animation-play-state: paused; }
+
+    .show-card {
+      width: 260px;
+      aspect-ratio: 3 / 4;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #1a3260, #0F1F3D);
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: transform 0.6s var(--ease-out-expo);
+    }
+    @media (min-width: 768px) { .show-card { width: 300px; } }
+    .show-card:hover { transform: scale(0.97); }
+    .show-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(1.08) contrast(1.05);
+      transition: transform 1.2s var(--ease-out-expo);
+    }
+    .show-card:hover img { transform: scale(1.06); }
+    .show-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(10,14,30,0.88) 100%);
+      pointer-events: none;
+    }
+    .show-card__meta {
+      position: absolute;
+      left: 18px; right: 18px; bottom: 18px;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .show-card__line {
+      width: 18px; height: 1px;
+      background: var(--orange);
+      transition: width 0.6s var(--ease-out-expo);
+    }
+    .show-card:hover .show-card__line { width: 42px; }
+    .show-card__label {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(22px, 2vw, 26px);
+      color: #fff;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+    }
+
+    /* =================================================================
+       9. PAIN
+    ================================================================= */
+    .pain-board {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    @media (min-width: 1024px) {
+      .pain-board { grid-template-columns: 1fr 1fr 1fr; gap: 28px; align-items: start; }
+    }
+    .pain-row {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 28px;
+      border-top: 1px solid var(--hairline);
+    }
+    .pain-row__num {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(36px, 4vw, 52px);
+      line-height: 0.85;
+      color: var(--orange);
+      letter-spacing: -0.04em;
+    }
+    .pain-row__body { display: flex; flex-direction: column; gap: 10px; }
+    .pain-row__title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(20px, 2vw, 26px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .pain-row__text {
+      font-size: 14.5px;
+      color: var(--sub-text);
+      line-height: 1.65;
+      max-width: 38ch;
+    }
+    .pain-row__vis {
+      width: 100%;
+      margin: 0 0 8px;
+      aspect-ratio: 4 / 3;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      overflow: visible;
+      order: -1;
+    }
+    .pain-row__vis > svg {
+      width: 70%;
+      height: auto;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 18px 28px rgba(244,97,26,0.28))
+              drop-shadow(0 4px 8px rgba(15,31,61,0.12));
+      transition: transform 0.8s var(--ease-out-expo),
+                  filter 0.5s var(--ease-out-quart);
+    }
+    .pain-row:nth-child(2) .pain-row__vis > svg { width: 80%; }
+    .pain-row:hover .pain-row__vis > svg {
+      transform: scale(1.05) translateY(-4px);
+      filter: drop-shadow(0 26px 40px rgba(244,97,26,0.38))
+              drop-shadow(0 4px 8px rgba(15,31,61,0.14));
+    }
+    /* Soft floor shadow under each illustration for grounding */
+    .pain-row__vis::after {
+      content: '';
+      position: absolute;
+      bottom: 8%; left: 22%; right: 22%;
+      height: 14px;
+      background: radial-gradient(ellipse, rgba(244,97,26,0.32), transparent 70%);
+      filter: blur(10px);
+      pointer-events: none;
+      transition: opacity 0.6s var(--ease-out-quart);
+      opacity: 0.7;
+    }
+    .pain-row:hover .pain-row__vis::after { opacity: 1; }
+    .pain-row__tag {
+      display: inline-flex;
+      width: fit-content;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(244,97,26,0.1);
+      border: 1px solid rgba(244,97,26,0.3);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--orange);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      align-self: flex-start;
+    }
+    .pain-row__vis .float-a { animation: floatY 4s var(--ease-out-quart) infinite; transform-origin: center; }
+    .pain-row__vis .float-b { animation: floatY 5s var(--ease-out-quart) infinite 0.6s; transform-origin: center; }
+    .pain-row__vis .float-c { animation: floatY 4.5s var(--ease-out-quart) infinite 1.2s; transform-origin: center; }
+
+    /* =================================================================
+       TRUST — Logos partenaires
+    ================================================================= */
+    .trust {
+      padding: 80px 0 64px;
+      background: var(--paper);
+      position: relative;
+      overflow: hidden;
+    }
+    .trust::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.4  0 0 0 0 0.2  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      opacity: 0.06;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+    .trust > * { position: relative; z-index: 1; }
+    .trust__head {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .trust__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sub-text);
+    }
+    .trust__eyebrow::before,
+    .trust__eyebrow::after {
+      content: '';
+      width: 36px;
+      height: 1px;
+      background: var(--sub-text);
+      opacity: 0.4;
+    }
+    .trust__strip {
+      position: relative;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+      margin-bottom: 32px;
+    }
+    .trust__track {
+      display: inline-flex;
+      align-items: center;
+      gap: 56px;
+      white-space: nowrap;
+      animation: scrollX 50s linear infinite;
+      will-change: transform;
+    }
+    .trust-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 8px;
+      color: var(--ink-text);
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(18px, 1.6vw, 24px);
+      letter-spacing: -0.025em;
+      line-height: 1;
+      opacity: 0.55;
+      transition: opacity 0.4s var(--ease-out-quart),
+                  transform 0.4s var(--ease-out-quart);
+      flex-shrink: 0;
+    }
+    .trust-logo:hover { opacity: 1; transform: translateY(-2px); }
+    .trust-logo__dot {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      opacity: 0.7;
+    }
+    .trust__disclaimer {
+      max-width: 720px;
+      margin: 4px auto 0;
+      padding: 0 24px;
+      text-align: center;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--mute-text);
+      line-height: 1.55;
+      letter-spacing: 0.01em;
+    }
+    .trust__disclaimer b {
+      color: var(--sub-text);
+      font-weight: 500;
+    }
+
+    /* =================================================================
+       10. MANIFESTO
+    ================================================================= */
+    .manifesto {
+      padding: 120px 0;
+      background: var(--orange);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .manifesto::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+      opacity: 0.14;
+      mix-blend-mode: overlay;
+    }
+    .manifesto::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 10% 0%, rgba(255,255,255,0.18), transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 100%, rgba(0,0,0,0.2), transparent 60%);
+      pointer-events: none;
+    }
+    .manifesto > * { position: relative; z-index: 1; }
+    @media (min-width: 768px) { .manifesto { padding: 160px 0; } }
+
+    .manifesto__inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    @media (min-width: 768px)  { .manifesto__inner { padding: 0 40px; } }
+    @media (min-width: 1280px) { .manifesto__inner { padding: 0 56px; } }
+
+    .manifesto__text {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(32px, 5.4vw, 84px);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      color: #fff;
+      max-width: 18ch;
+    }
+    .manifesto__text .quiet {
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+    }
+    .manifesto__text .underlined {
+      position: relative;
+      display: inline-block;
+      font-style: italic;
+      font-weight: 900;
+      padding: 0 0.05em 0.18em;
+    }
+    .manifesto__text .underlined::after {
+      content: '';
+      position: absolute;
+      left: -1%; right: -1%;
+      bottom: 0;
+      height: 18px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 18' fill='none' preserveAspectRatio='none'><line x1='4' y1='7' x2='196' y2='3' stroke='%23FFFFFF' stroke-width='5' stroke-linecap='round'/><line x1='4' y1='15' x2='196' y2='11' stroke='%23FFFFFF' stroke-width='4.5' stroke-linecap='round' opacity='0.92'/></svg>");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.1s var(--ease-out-expo) 0.8s;
+    }
+    .manifesto__text.is-revealed .underlined::after,
+    .is-revealed .manifesto__text .underlined::after { transform: scaleX(1); }
+    .manifesto__quote-open, .manifesto__quote-close {
+      display: inline-block;
+      font-style: italic;
+      font-weight: 900;
+      color: rgba(255,255,255,0.55);
+      transform: translateY(-0.08em);
+    }
+    .manifesto__sign {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+    }
+    .manifesto__sign::before {
+      content: '';
+      width: 36px; height: 1px;
+      background: rgba(255,255,255,0.5);
+    }
+
+    /* =================================================================
+       11. COMPARE — Editorial "Yvento wins" centerpiece
+    ================================================================= */
+    .compare {
+      padding: 120px 0 140px;
+      background: var(--ink);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) { .compare { padding: 160px 0 200px; } }
+    .compare::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 70% 30%, rgba(244, 97, 26, 0.14), transparent 65%),
+        radial-gradient(ellipse 50% 60% at 30% 80%, rgba(26, 50, 96, 0.4), transparent 65%);
+      pointer-events: none;
+    }
+    .compare > * { position: relative; z-index: 1; }
+
+    .compare__head {
+      max-width: 1320px;
+      margin: 0 auto 64px;
+      padding: 0 24px;
+      display: grid;
+      gap: 22px;
+    }
+    @media (min-width: 768px) { .compare__head { padding: 0 40px; } }
+    @media (min-width: 1280px) { .compare__head { padding: 0 56px; } }
+
+    .compare__head .eyebrow { color: rgba(255,255,255,0.5); }
+    .compare__head h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(38px, 6vw, 88px);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      color: #fff;
+      max-width: 18ch;
+    }
+    .compare__head h2 .orange { color: var(--orange); }
+    .compare__head p {
+      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 60ch;
+    }
+
+    /* Simple 3-column comparison */
+    .compare__cols {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (min-width: 900px)  { .compare__cols { grid-template-columns: 1fr 1fr 1.3fr; gap: 20px; padding: 0 40px; } }
+    @media (min-width: 1280px) { .compare__cols { padding: 0 56px; } }
+
+    .cmp-card {
+      position: relative;
+      padding: 36px 32px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.025);
+      border: none;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: transform 0.5s var(--ease-out-expo),
+                  background 0.4s var(--ease-out-quart);
+    }
+    .cmp-card:hover { background: rgba(255,255,255,0.045); }
+
+    /* Animated rotating border for win card */
+    @property --bd-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @keyframes spinBorder {
+      to { --bd-angle: 360deg; }
+    }
+
+    .cmp-card--win {
+      position: relative;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(255,255,255,0.14), transparent 55%),
+        linear-gradient(155deg, #C44A0E 0%, #A03808 55%, #6E2706 100%);
+      border: none;
+      box-shadow: 0 30px 80px -20px rgba(244,97,26,0.55),
+                  0 1px 0 rgba(255,255,255,0.18) inset;
+      transform: translateY(-8px);
+      z-index: 2;
+      padding-top: 56px;
+      isolation: isolate;
+    }
+    @media (max-width: 900px) { .cmp-card--win { transform: translateY(0); padding-top: 60px; } }
+
+    /* Rotating glowing border via mask-composite (true ring) */
+    .cmp-card--win::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      padding: 2px;
+      background: conic-gradient(
+        from var(--bd-angle),
+        rgba(255,217,179,0) 0deg,
+        rgba(255,217,179,0) 80deg,
+        #FFE0B8 140deg,
+        #FFFFFF 170deg,
+        #FFE0B8 200deg,
+        rgba(255,217,179,0) 260deg,
+        rgba(255,217,179,0) 360deg
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+              mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      pointer-events: none;
+      animation: spinBorder 5s linear infinite;
+      filter: drop-shadow(0 0 6px rgba(255,217,179,0.55));
+    }
+    .cmp-card--win > * { position: relative; z-index: 1; }
+
+    /* Faint grain texture overlay */
+    .cmp-card--win .cmp-grain {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+      opacity: 0.12;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Recommended badge — inside the card top */
+    .cmp-badge {
+      position: absolute;
+      top: 20px; right: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px 6px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.95);
+      color: var(--orange);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      z-index: 2;
+    }
+    .cmp-badge::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 3px rgba(244,97,26,0.25);
+      animation: dotPulse 2.6s var(--ease-out-quart) infinite;
+    }
+
+    .cmp-card__head {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .cmp-card--win .cmp-card__head { border-bottom-color: rgba(255,255,255,0.22); }
+    .cmp-card__tag {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    .cmp-card--win .cmp-card__tag { color: rgba(255,255,255,0.8); }
+    .cmp-card__name {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(22px, 2.4vw, 28px);
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      color: #fff;
+    }
+    .cmp-card--win .cmp-card__name { font-weight: 900; }
+
+    .cmp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cmp-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: rgba(255,255,255,0.7);
+    }
+    .cmp-card--win .cmp-list li { color: #fff; font-weight: 500; }
+    .cmp-list li .ic {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .cmp-list li .ic.bad  { background: rgba(224,49,49,0.15); color: #ff8a8a; }
+    .cmp-list li .ic.neu  { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); }
+    .cmp-list li .ic.good { background: rgba(47,182,124,0.18); color: #6CE0B0; }
+    .cmp-card--win .cmp-list li .ic {
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+    }
+    .cmp-list li .ic svg path {
+      stroke-dasharray: 22;
+      stroke-dashoffset: 22;
+    }
+    .cmp-card.is-revealed .cmp-list li .ic.good svg path,
+    .cmp-card.is-revealed .cmp-list li .ic.win svg path {
+      animation: drawCheck 0.55s var(--ease-out-expo) forwards;
+    }
+    .cmp-card.is-revealed .cmp-list li:nth-child(1) .ic svg path { animation-delay: 0.15s; }
+    .cmp-card.is-revealed .cmp-list li:nth-child(2) .ic svg path { animation-delay: 0.25s; }
+    .cmp-card.is-revealed .cmp-list li:nth-child(3) .ic svg path { animation-delay: 0.35s; }
+    .cmp-card.is-revealed .cmp-list li:nth-child(4) .ic svg path { animation-delay: 0.45s; }
+    .cmp-card.is-revealed .cmp-list li:nth-child(5) .ic svg path { animation-delay: 0.55s; }
+
+    /* Old battle styles — disable */
+    .compare__rows { display: none; }
+    .battle-row, .battle-final { display: none; }
+    .battle-row-OLD { display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    @media (min-width: 768px)  { .compare__rows { padding: 0 40px; } }
+    @media (min-width: 1280px) { .compare__rows { padding: 0 56px; } }
+
+    .battle-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 28px 28px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+      align-items: center;
+    }
+    @media (min-width: 900px) {
+      .battle-row {
+        grid-template-columns: 1.1fr 0.8fr 0.8fr 1.3fr;
+        gap: 28px;
+        padding: 28px 32px;
+      }
+    }
+
+    .battle-row__crit {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .battle-row__num {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    .battle-row__title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(20px, 2vw, 26px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .battle-row__sub {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+    }
+
+    /* Other options (Agence, Marketplace) — small, muted */
+    .battle-opt {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      opacity: 0.7;
+      transition: opacity 0.5s var(--ease-out-quart);
+    }
+    .battle-row:hover .battle-opt { opacity: 0.9; }
+    .battle-opt__tag {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .battle-opt__val {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.3;
+    }
+    .battle-opt__val .x {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(224,49,49,0.14);
+      color: #ff8a8a;
+      flex-shrink: 0;
+    }
+    .battle-opt__val .neu {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.55);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .battle-opt__val .ok {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(47,182,124,0.16);
+      color: #6CE0B0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* YVENTO winning answer — visually dominant */
+    .battle-row__yvento {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 22px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--orange) 0%, #d54a12 100%);
+      color: #fff;
+      overflow: hidden;
+      box-shadow: 0 16px 40px -10px rgba(244,97,26,0.5),
+                  0 0 0 1px rgba(255,255,255,0.18) inset;
+      opacity: 0;
+      transform: scale(0.92) translateY(8px);
+      transition: opacity 0.7s var(--ease-out-expo) 0.15s,
+                  transform 0.7s var(--ease-out-expo) 0.15s,
+                  box-shadow 0.4s var(--ease-out-quart);
+    }
+    .battle-row.is-revealed .battle-row__yvento {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    .battle-row:hover .battle-row__yvento {
+      box-shadow: 0 22px 56px -12px rgba(244,97,26,0.62),
+                  0 0 0 1px rgba(255,255,255,0.25) inset;
+    }
+    .battle-row__yvento::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 0%, rgba(255,255,255,0.25), transparent 50%);
+      pointer-events: none;
+    }
+    .battle-row__yvento::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/></svg>");
+      opacity: 0.16;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .battle-check {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .battle-check svg {
+      width: 22px; height: 22px;
+      color: #fff;
+    }
+    .battle-check svg path {
+      stroke-dasharray: 26;
+      stroke-dashoffset: 26;
+    }
+    .battle-row.is-revealed .battle-check svg path {
+      animation: drawCheck 0.6s var(--ease-out-expo) 0.4s forwards;
+    }
+
+    .battle-row__yvento-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      position: relative;
+      z-index: 1;
+    }
+    .battle-row__yvento-tag {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+    }
+    .battle-row__yvento-val {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(18px, 1.6vw, 22px);
+      letter-spacing: -0.015em;
+      line-height: 1.1;
+    }
+
+    /* Final score bar */
+    .battle-final {
+      margin: 64px auto 0;
+      max-width: 1320px;
+      padding: 0 24px;
+    }
+    @media (min-width: 768px)  { .battle-final { padding: 0 40px; } }
+    @media (min-width: 1280px) { .battle-final { padding: 0 56px; } }
+
+    .battle-score {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 36px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(244,97,26,0.18), rgba(244,97,26,0.04));
+      border: 1px solid rgba(244,97,26,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) {
+      .battle-score {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        padding: 40px 48px;
+        gap: 40px;
+      }
+    }
+    .battle-score::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(244,97,26,0.25), transparent 70%);
+      pointer-events: none;
+    }
+
+    .battle-score__left { position: relative; z-index: 1; }
+    .battle-score__eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ember);
+      margin-bottom: 10px;
+    }
+    .battle-score__title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1;
+      letter-spacing: -0.035em;
+      color: #fff;
+    }
+    .battle-score__title em {
+      font-style: normal;
+      color: var(--ember);
+    }
+
+    .battle-score__num {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      line-height: 0.85;
+      letter-spacing: -0.05em;
+    }
+    .battle-score__num .big {
+      font-size: clamp(80px, 11vw, 168px);
+      color: #fff;
+    }
+    .battle-score__num .slash { color: rgba(255,255,255,0.3); font-size: clamp(40px, 5vw, 64px); }
+    .battle-score__num .small { font-size: clamp(40px, 5vw, 64px); color: rgba(255,255,255,0.55); }
+
+    .battle-foot {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* =================================================================
+       12. METHOD
+    ================================================================= */
+    /* Method grid + floating + curved animated connector */
+    .method-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    @media (min-width: 1024px) {
+      .method-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: center; }
+    }
+
+    /* Curved animated line — desktop only */
+    .method-line {
+      display: none;
+      pointer-events: none;
+    }
+    @media (min-width: 1024px) {
+      .method-line {
+        display: block;
+        position: absolute;
+        top: 22%;
+        left: -18%;
+        width: 136%;
+        height: 60%;
+        z-index: 0;
+        overflow: visible;
+      }
+    }
+    .method-line__path {
+      fill: none;
+      stroke: rgba(244, 97, 26, 0.32);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 6 10;
+      animation: dashFlow 1.6s linear infinite;
+    }
+    .method-line__glow {
+      fill: none;
+      stroke: var(--orange);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 0 1000;
+      animation: pulseGlow 5s linear infinite;
+      filter: drop-shadow(0 0 8px rgba(244,97,26,0.55));
+    }
+    @keyframes dashFlow {
+      to { stroke-dashoffset: -32; }
+    }
+    @keyframes pulseGlow {
+      0%   { stroke-dasharray: 0   1700; stroke-dashoffset: 0;     opacity: 0.0; }
+      6%   { opacity: 0.9; }
+      40%  { stroke-dasharray: 90  1700; stroke-dashoffset: -560; opacity: 0.9; }
+      80%  { stroke-dasharray: 90  1700; stroke-dashoffset: -1500; opacity: 0.5; }
+      100% { stroke-dasharray: 0   1700; stroke-dashoffset: -1700; opacity: 0.0; }
+    }
+
+    @keyframes methodFloat {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    /* Outer card → float animation + 3D perspective */
+    .method-card {
+      position: relative;
+      z-index: 1;
+      perspective: 1500px;
+      animation: methodFloat 6s ease-in-out infinite;
+      will-change: transform;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .method-card:nth-child(2) { animation-delay: -2s; }
+    .method-card:nth-child(3) { animation-delay: -4s; }
+    .method-card:hover { animation-play-state: paused; }
+
+    /* Inner → handles the flip on hover */
+    .method-card__inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+      will-change: transform;
+    }
+    .method-card:hover .method-card__inner {
+      transform: rotateY(180deg);
+    }
+    /* Use padding-bottom hack to give inner a fixed aspect since faces are absolute */
+    .method-card__inner {
+      min-height: 380px;
+    }
+    @media (min-width: 768px) { .method-card__inner { min-height: 420px; } }
+
+    .method-card__face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .method-card__face--front {
+      background: var(--paper);
+      border: 1px solid var(--hairline);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset,
+                  0 30px 60px -30px rgba(15,31,61,0.18);
+    }
+    .method-card__face--back {
+      transform: rotateY(180deg);
+      background: linear-gradient(155deg, #F4611A 0%, #C44A0E 100%);
+      color: #fff;
+      padding: 110px 32px 32px;
+      justify-content: flex-end;
+      box-shadow: 0 30px 60px -25px rgba(244,97,26,0.42),
+                  0 1px 0 rgba(255,255,255,0.25) inset;
+    }
+    .method-card__face--back::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 75% 0%, rgba(255,255,255,0.2), transparent 55%),
+        radial-gradient(circle at 25% 100%, rgba(0,0,0,0.18), transparent 55%);
+      pointer-events: none;
+    }
+    .method-card__face--back::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+      opacity: 0.14;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+    .method-card__face--back > * { position: relative; z-index: 1; }
+
+    .method-card__back-num {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-style: italic;
+      font-size: clamp(96px, 12vw, 140px);
+      line-height: 0.85;
+      letter-spacing: -0.05em;
+      color: #fff;
+      text-shadow: 0 12px 28px rgba(0,0,0,0.22);
+    }
+    .method-card__back-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .method-card__back-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+    }
+    .method-card__back-title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(20px, 2vw, 26px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .method-card__back-cta {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.95);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .method-card__back-cta svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .method-card__img {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--cream-2), var(--bone));
+      position: relative;
+    }
+    .method-card__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 1.4s var(--ease-out-expo);
+    }
+    .method-card:hover .method-card__img img { transform: scale(1.05); }
+    /* Badge + step number — persistent overlay, above the flip */
+    .method-card__num {
+      position: absolute;
+      top: 18px; left: 22px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(56px, 7vw, 80px);
+      line-height: 0.85;
+      color: #fff;
+      letter-spacing: -0.05em;
+      text-shadow: 0 6px 24px rgba(0,0,0,0.55),
+                   0 2px 6px rgba(0,0,0,0.3);
+      z-index: 4;
+      pointer-events: none;
+    }
+    .method-card__tag {
+      position: absolute;
+      top: 22px; right: 22px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.94);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--orange);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      z-index: 4;
+      pointer-events: none;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    }
+    .method-card__body { padding: 26px 28px 30px; }
+    .method-card__title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .method-card__text {
+      font-size: 14.5px;
+      color: var(--sub-text);
+      line-height: 1.65;
+      max-width: 38ch;
+    }
+
+    .method-foot {
+      margin-top: 64px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    @media (min-width: 1024px) { .method-foot { margin-top: 112px; } }
+
+    /* =================================================================
+       13. GUARANTEES
+    ================================================================= */
+    .guar-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 768px) { .guar-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+
+    .guar-card {
+      position: relative;
+      padding: 36px 28px 30px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid var(--hairline);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 0.5s var(--ease-out-expo),
+                  background 0.4s var(--ease-out-quart),
+                  border-color 0.4s var(--ease-out-quart);
+    }
+    .guar-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.7);
+      border-color: rgba(244,97,26,0.22);
+    }
+    .guar-card__num {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 11px;
+      color: var(--orange);
+      letter-spacing: 0.16em;
+      margin-bottom: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .guar-card__num::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 8px rgba(244,97,26,0.55);
+    }
+
+    /* Title with constant-speed moving highlight (linear) */
+    .guar-card__title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(20px, 1.8vw, 24px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: var(--ink-text);
+      position: relative;
+      display: inline-block;
+      background-image: linear-gradient(
+        100deg,
+        var(--ink-text) 0%,
+        var(--ink-text) 42%,
+        var(--orange) 50%,
+        var(--ink-text) 58%,
+        var(--ink-text) 100%
+      );
+      background-size: 300% 100%;
+      background-position: 150% 50%;
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 6s linear infinite;
+    }
+    @keyframes shine {
+      0%   { background-position: 150% 50%; }
+      100% { background-position: -50% 50%; }
+    }
+    .guar-card:nth-child(1) .guar-card__title { animation-delay: 0s; }
+    .guar-card:nth-child(2) .guar-card__title { animation-delay: 2s; }
+    .guar-card:nth-child(3) .guar-card__title { animation-delay: 4s; }
+
+    .guar-card__text {
+      font-size: 14.5px;
+      color: var(--sub-text);
+      line-height: 1.65;
+    }
+
+    /* =================================================================
+       14. TEAM
+    ================================================================= */
+    .team-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 56px;
+    }
+    @media (min-width: 1024px) {
+      .team-layout {
+        grid-template-columns: 320px 1fr;
+        gap: 56px;
+        align-items: start;
+      }
+    }
+    @media (min-width: 1280px) {
+      .team-layout { grid-template-columns: 360px 1fr; gap: 80px; }
+    }
+
+    .team-intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      position: relative;
+    }
+    @media (min-width: 1024px) {
+      .team-intro { position: sticky; top: 120px; }
+    }
+    .team-intro h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(36px, 4.6vw, 64px);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+    .team-intro h2 .orange { color: var(--orange); }
+    .team-intro p {
+      font-size: 15.5px;
+      color: var(--sub-text);
+      line-height: 1.7;
+      max-width: 38ch;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 640px)  { .team-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+    @media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+
+    @keyframes founderFloat {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-7px); }
+    }
+    .founder {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--paper);
+      border: 1px solid var(--hairline);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset,
+                  0 30px 60px -30px rgba(15,31,61,0.16);
+      transition: transform 0.6s var(--ease-out-expo),
+                  box-shadow 0.5s var(--ease-out-expo);
+      height: 100%;
+      animation: founderFloat 6s ease-in-out infinite;
+      will-change: transform;
+    }
+    .founder:nth-child(2) { animation-delay: -2s; }
+    .founder:nth-child(3) { animation-delay: -4s; }
+    .founder:hover {
+      animation-play-state: paused;
+      transform: translateY(-8px);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset,
+                  0 40px 80px -20px rgba(15,31,61,0.22),
+                  0 0 0 1px rgba(244,97,26,0.18) inset;
+    }
+    .founder__photo-wrap {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--orange), #b94110);
+    }
+    .founder__photo {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 1.4s var(--ease-out-expo);
+    }
+    .founder:hover .founder__photo { transform: scale(1.04); }
+    .founder__body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 4px 6px 6px;
+      flex: 1;
+    }
+    .founder__line {
+      width: 24px;
+      height: 1px;
+      background: var(--orange);
+    }
+    .founder__exp {
+      font-size: 13px;
+      color: var(--mute-text);
+      line-height: 1.55;
+      flex: 1;
+      font-weight: 400;
+    }
+    .founder__exp b {
+      color: var(--sub-text);
+      font-weight: 500;
+    }
+    .founder__tag {
+      position: absolute;
+      bottom: 12px; right: 12px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      background: rgba(10, 14, 30, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--ember);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid rgba(244, 97, 26, 0.45);
+      box-shadow:
+        0 0 0 1px rgba(244, 97, 26, 0.12) inset,
+        0 0 10px rgba(244, 97, 26, 0.25),
+        0 0 22px rgba(244, 97, 26, 0.18);
+      z-index: 2;
+    }
+    .founder__name {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      color: var(--ink-text);
+      line-height: 1.05;
+    }
+    .founder__role {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--orange);
+      letter-spacing: 0.04em;
+    }
+
+    /* =================================================================
+       15. FAQ
+    ================================================================= */
+    .faq-list { max-width: 860px; margin: 0 auto; }
+    .faq-item {
+      border-bottom: 1px solid var(--hairline);
+      transition: padding 0.4s var(--ease-out-quart);
+    }
+    .faq-item:first-child { border-top: 1px solid var(--hairline); }
+    .faq-q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      width: 100%;
+      padding: 26px 0;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: clamp(17px, 1.7vw, 21px);
+      line-height: 1.35;
+      letter-spacing: -0.015em;
+      color: var(--ink-text);
+      text-align: left;
+      transition: color 0.3s var(--ease-out-quart);
+    }
+    .faq-q:hover { color: var(--orange); }
+    .faq-item--open .faq-q { color: var(--orange); padding-bottom: 12px; }
+
+    .faq-icon {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream);
+      border: 1px solid var(--hairline);
+      color: var(--orange);
+      transition: transform 0.4s var(--ease-out-expo), background 0.4s var(--ease-out-quart);
+    }
+    .faq-icon svg { width: 14px; height: 14px; transition: transform 0.4s var(--ease-out-expo); }
+    .faq-item--open .faq-icon { background: var(--orange); color: #fff; }
+    .faq-item--open .faq-icon svg { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.5s var(--ease-out-expo); }
+    .faq-a__inner {
+      padding-bottom: 26px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--sub-text);
+      max-width: 60ch;
+    }
+
+    /* =================================================================
+       16. CTA FINAL
+    ================================================================= */
+    .cta-final {
+      position: relative;
+      padding: 140px 0;
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .cta-final__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .cta-final__bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.4) saturate(0.85);
+    }
+    .cta-final__bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(10,14,30,0.55), rgba(10,14,30,0.85)),
+        radial-gradient(ellipse 60% 60% at 50% 50%, rgba(244,97,26,0.4), transparent 60%);
+    }
+    .cta-final > .wrap { position: relative; z-index: 1; }
+    .cta-final h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(44px, 7.4vw, 108px);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      margin-bottom: 22px;
+    }
+    .cta-final h2 .orange { color: var(--ember); }
+    .cta-final p {
+      font-size: clamp(15px, 1.3vw, 19px);
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 40px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    .cta-final__micro {
+      margin-top: 22px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* =================================================================
+       17. FOOTER
+    ================================================================= */
+    .footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.6);
+      padding: 64px 0 28px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    @media (min-width: 768px) { .footer__grid { grid-template-columns: 1.4fr 1fr 1fr; gap: 56px; } }
+    .footer__brand {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 14px;
+      height: 36px;
+    }
+    .footer__brand img {
+      height: 32px;
+      width: auto;
+      display: block;
+      filter: brightness(0) invert(1);
+    }
+    .footer__tag {
+      font-family: 'Roboto', sans-serif;
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.5);
+      max-width: 26ch;
+      line-height: 1.6;
+    }
+    .footer__head {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 18px;
+    }
+    .footer__links { display: flex; flex-direction: column; gap: 12px; }
+    .footer__links a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      transition: color 0.3s var(--ease-out-quart);
+    }
+    .footer__links a:hover { color: #fff; }
+    .footer__bottom {
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer__bottom p, .footer__bottom a {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.06em;
+    }
+    .footer__bottom a:hover { color: rgba(255,255,255,0.7); }
+    .footer__legal { display: flex; gap: 20px; }
+
+    /* =================================================================
+       18. REDUCED MOTION
+    ================================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-up { opacity: 1; transform: none; }
+      .reveal-mask > span { transform: none; }
+      .marquee-track, .showcase__track { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====================================================== NAV -->
+  <nav class="nav" id="nav" aria-label="Navigation principale">
+    <div class="wrap nav__inner">
+      <a href="#top" class="nav__brand" aria-label="Yvento — Accueil">
+        <img src="./assets/logo.png" alt="Yvento" />
+      </a>
+      <div class="nav__links">
+        <a href="#events">Événements</a>
+        <a href="#compare">Comparatif</a>
+        <a href="#method">Méthode</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav__right">
+        <a href="https://yvento.fr/pro/" class="nav__provider" target="_blank" rel="noopener noreferrer">Je suis prestataire</a>
+        <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--sm" data-magnetic>
+          <span class="btn__inner">Décrire mon événement</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ====================================================== SOLUTION THREAD -->
+  <div class="thread" id="thread" aria-hidden="true">
+    <svg viewBox="0 0 80 1000" preserveAspectRatio="xMidYMin meet" id="thread-svg">
+      <text class="thread__label" x="40" y="22" text-anchor="middle">PROBLÈME</text>
+      <!-- Background dashed path (always visible when thread is visible) -->
+      <path id="thread-bg" class="thread__path-bg"
+        d="M 40 44 C 6 150, 74 250, 40 350 C 6 450, 74 550, 40 650 C 6 750, 74 850, 40 950"/>
+      <!-- Foreground orange path (drawn with scroll progress) -->
+      <path id="thread-line" class="thread__path"
+        d="M 40 44 C 6 150, 74 250, 40 350 C 6 450, 74 550, 40 650 C 6 750, 74 850, 40 950"/>
+      <!-- Leading dot with ripple -->
+      <circle class="thread__dot-pulse" id="thread-pulse" cx="40" cy="44" r="6"/>
+      <circle class="thread__dot" id="thread-dot" cx="40" cy="44" r="5"/>
+      <text class="thread__label thread__label--end" x="40" y="978" text-anchor="middle" id="thread-label-end">SOLUTION</text>
+    </svg>
+  </div>
+
+
+  <!-- ====================================================== HERO -->
+  <section class="hero" id="top" aria-label="Accroche principale">
+
+    <div class="hero__grid">
+
+      <div class="hero__columns">
+
+        <!-- LEFT — text -->
+        <div class="hero__left">
+
+          <span class="hero__badge fade-up">
+            <span class="hero__badge-dot" aria-hidden="true"></span>
+            <span>GRATUIT&nbsp;·&nbsp;RÉPONSE &lt; 24H&nbsp;·&nbsp;VÉRIFIÉS</span>
+          </span>
+
+          <h1 class="hero__title">
+            <span class="line">
+              <span class="reveal-mask"><span style="--d:120ms">Le bon</span></span>
+            </span>
+            <span class="line">
+              <span class="reveal-mask"><span class="accent" style="--d:260ms">prestataire,</span></span>
+            </span>
+            <span class="line">
+              <span class="reveal-mask"><span style="--d:380ms">sous 24h.</span></span>
+            </span>
+          </h1>
+
+          <p class="hero__sub fade-up" style="--d:660ms">
+            Décrivez votre événement en 2 minutes. Vous êtes recontacté par
+            <b>un ou plusieurs profils, disponibles et adaptés</b>.
+          </p>
+
+          <div class="hero__cta-row fade-up" style="--d:860ms">
+            <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--primary" data-magnetic>
+              <span class="btn__inner">
+                Décrire mon événement
+                <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+            </a>
+            <span class="hero__micro">0 € · SANS ENGAGEMENT</span>
+          </div>
+        </div>
+
+        <!-- RIGHT — match deck -->
+        <div class="hero__right fade-up" style="--d:480ms">
+          <div class="deck-annot" aria-hidden="true">
+            <span class="live"></span>
+            <span>MATCH&nbsp;EN&nbsp;COURS</span>
+          </div>
+          <div class="hero__deck" id="hero-deck">
+            <!-- Cards: each has data-i (DOM order), data-pos is set by JS -->
+            <article class="match-card" data-i="0" data-pos="0">
+              <img src="./assets/dj.jpg" alt="" loading="eager">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">DJ</span>
+                <span class="match-card__name">Manon V.</span>
+                <span class="match-card__meta">Paris<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+            <article class="match-card" data-i="1" data-pos="1">
+              <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=520&h=700&fit=crop&q=80&auto=format" alt="" loading="lazy">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">Photographe</span>
+                <span class="match-card__name">Antoine R.</span>
+                <span class="match-card__meta">Lyon<span class="dot"></span>5.0★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+            <article class="match-card" data-i="2" data-pos="2">
+              <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=520&h=700&fit=crop&q=80&auto=format" alt="" loading="lazy">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">Barman</span>
+                <span class="match-card__name">Marc D.</span>
+                <span class="match-card__meta">Marseille<span class="dot"></span>4.8★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+            <article class="match-card" data-i="3" data-pos="3">
+              <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=520&h=700&fit=crop&q=80&auto=format" alt="" loading="lazy">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">Musicien</span>
+                <span class="match-card__name">Léa V.</span>
+                <span class="match-card__meta">Bordeaux<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+            <article class="match-card" data-i="4" data-pos="4">
+              <img src="./assets/chanteuse.jpg" alt="" loading="lazy">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">Chanteuse</span>
+                <span class="match-card__name">Léna R.</span>
+                <span class="match-card__meta">Toulouse<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+            <article class="match-card" data-i="5" data-pos="5">
+              <img src="./assets/videaste.jpg" alt="" loading="lazy">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">Vidéaste</span>
+                <span class="match-card__name">Théo B.</span>
+                <span class="match-card__meta">Nantes<span class="dot"></span>4.8★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+            <article class="match-card" data-i="6" data-pos="6">
+              <img src="./assets/animateur.jpg" alt="" loading="lazy">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">Animateur</span>
+                <span class="match-card__name">Hugo P.</span>
+                <span class="match-card__meta">Lille<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+            <article class="match-card" data-i="7" data-pos="7">
+              <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=520&h=700&fit=crop&q=80&auto=format" alt="" loading="lazy">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">Décoratrice</span>
+                <span class="match-card__name">Émilie T.</span>
+                <span class="match-card__meta">Strasbourg<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hero__foot fade-up" style="--d:1000ms">
+        <div class="hero__stats">
+
+          <div class="stat-card" data-count="2" data-w="22">
+            <div class="stat-card__top">
+              <span class="stat-card__index">01 / RAPIDITÉ</span>
+              <svg class="stat-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="stat-card__num">
+              <span class="n">0</span><span class="unit">min</span>
+            </div>
+            <div class="stat-card__label">POUR DÉCRIRE VOTRE ÉVÉNEMENT</div>
+            <div class="stat-card__bar"></div>
+          </div>
+
+          <div class="stat-card" data-count="24" data-w="58">
+            <div class="stat-card__top">
+              <span class="stat-card__index">02 / RÉPONSE</span>
+              <svg class="stat-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12A10 10 0 1 1 12 2"/><polyline points="22 4 12 14 9 11"/></svg>
+            </div>
+            <div class="stat-card__num">
+              <span class="lt">&lt;</span><span class="n">0</span><span class="unit">h</span>
+            </div>
+            <div class="stat-card__label">POUR RECEVOIR VOS PROFILS</div>
+            <div class="stat-card__bar"></div>
+          </div>
+
+          <div class="stat-card" data-count="0" data-w="100" data-keep="0">
+            <div class="stat-card__top">
+              <span class="stat-card__index">03 / TARIF</span>
+              <svg class="stat-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+            </div>
+            <div class="stat-card__num">
+              <span class="n">0</span><span class="unit">€</span>
+            </div>
+            <div class="stat-card__label">DE FRAIS POUR L'ORGANISATEUR</div>
+            <div class="stat-card__bar"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="hero__marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-item">
+          DJs <span class="star">✦</span>
+          MUSICIENS <span class="star">✦</span>
+          PHOTOGRAPHES <span class="star">✦</span>
+          VIDÉASTES <span class="star">✦</span>
+          BARMANS <span class="star">✦</span>
+          CHANTEURS <span class="star">✦</span>
+          ANIMATEURS <span class="star">✦</span>
+          DÉCORATEURS <span class="star">✦</span>
+        </span>
+        <span class="marquee-item" aria-hidden="true">
+          DJs <span class="star">✦</span>
+          MUSICIENS <span class="star">✦</span>
+          PHOTOGRAPHES <span class="star">✦</span>
+          VIDÉASTES <span class="star">✦</span>
+          BARMANS <span class="star">✦</span>
+          CHANTEURS <span class="star">✦</span>
+          ANIMATEURS <span class="star">✦</span>
+          DÉCORATEURS <span class="star">✦</span>
+        </span>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ====================================================== SHOWCASE — EVENT TYPES -->
+  <section class="showcase" id="events" aria-label="Types d'événements">
+
+    <div class="showcase__head">
+      <h2 class="fade-up">
+        Pour tous<br><span class="orange">vos événements.</span>
+      </h2>
+      <p class="fade-up" style="--d:120ms">
+        Peu importe le type d'événement, nous vous trouvons le(s) prestataire(s) adapté(s) à vos besoins.
+        Tous les profils sont vérifiés pour vous garantir des prestations de qualité.
+      </p>
+    </div>
+
+    <div class="showcase__strip">
+      <div class="showcase__track">
+        <article class="show-card"><img src="./assets/mariage.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Mariage</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Anniversaire</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Afterwork</span></div></article>
+        <article class="show-card"><img src="./assets/poolparty.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Pool party</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Cocktail</span></div></article>
+        <article class="show-card"><img src="./assets/apero.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Apéro</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Concert</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Festival</span></div></article>
+        <article class="show-card"><img src="./assets/soiree-a-theme.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Soirée à thème</span></div></article>
+        <!-- duplicate for seamless loop -->
+        <article class="show-card" aria-hidden="true"><img src="./assets/mariage.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Mariage</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Anniversaire</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Afterwork</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="./assets/poolparty.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Pool party</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Cocktail</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="./assets/apero.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Apéro</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Concert</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Festival</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="./assets/soiree-a-theme.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Soirée à thème</span></div></article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== PAIN -->
+  <section class="section section--cream" aria-labelledby="pain-title">
+    <div class="wrap">
+
+      <div class="sec-head">
+        <span class="eyebrow fade-up">LE PROBLÈME</span>
+        <h2 id="pain-title" class="fade-up" style="--d:120ms">
+          Le problème<br>de <span class="orange">chercher seul</span>.
+        </h2>
+        <p class="lead fade-up" style="--d:240ms">
+          Avant Yvento, trouver un prestataire pour son événement,
+          c'est trois soirées à relancer pour finir par choisir dans le doute.
+        </p>
+      </div>
+
+      <div class="pain-board">
+
+        <article class="pain-row fade-up">
+          <span class="pain-row__num">01</span>
+          <div class="pain-row__body">
+            <span class="pain-row__tag">Trop lent</span>
+            <h3 class="pain-row__title">Des heures à relancer</h3>
+            <p class="pain-row__text">Messages sans réponse, disponibilités impossibles à confirmer. Le temps que vous passez à chercher, c'est du temps que vous ne passez pas à préparer.</p>
+          </div>
+          <div class="pain-row__vis">
+            <!-- 3D Clock + floating message bubbles -->
+            <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <radialGradient id="p1-clock" cx="38%" cy="32%" r="78%">
+                  <stop offset="0%"  stop-color="#FFFFFF"/>
+                  <stop offset="60%" stop-color="#F8E0CD"/>
+                  <stop offset="100%" stop-color="#C44A0E"/>
+                </radialGradient>
+                <radialGradient id="p1-hl" cx="35%" cy="25%" r="35%">
+                  <stop offset="0%" stop-color="#FFF" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="p1-bub" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FFFFFF"/>
+                  <stop offset="100%" stop-color="#F8E0CD"/>
+                </linearGradient>
+              </defs>
+              <!-- Clock orb -->
+              <g class="float-a">
+                <circle cx="160" cy="120" r="68" fill="url(#p1-clock)"/>
+                <ellipse cx="142" cy="92" rx="34" ry="20" fill="url(#p1-hl)"/>
+                <!-- ticks -->
+                <g stroke="#C44A0E" stroke-width="2" stroke-linecap="round">
+                  <line x1="160" y1="60" x2="160" y2="68"/>
+                  <line x1="160" y1="172" x2="160" y2="180"/>
+                  <line x1="100" y1="120" x2="108" y2="120"/>
+                  <line x1="212" y1="120" x2="220" y2="120"/>
+                </g>
+                <!-- hands -->
+                <line x1="160" y1="120" x2="160" y2="80" stroke="#0F1F3D" stroke-width="4" stroke-linecap="round"/>
+                <line x1="160" y1="120" x2="200" y2="138" stroke="#0F1F3D" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="160" cy="120" r="5" fill="#0F1F3D"/>
+              </g>
+              <!-- Floating bubbles with unread numbers -->
+              <g class="float-b">
+                <rect x="40" y="44" width="74" height="40" rx="14" fill="url(#p1-bub)"/>
+                <circle cx="100" cy="44" r="14" fill="#0F1F3D"/>
+                <text x="100" y="49" text-anchor="middle" font-family="Roboto, sans-serif" font-weight="900" font-size="14" fill="#FFFFFF">3</text>
+                <rect x="56" y="62" width="34" height="3" rx="1.5" fill="#C44A0E" opacity="0.4"/>
+                <rect x="56" y="70" width="22" height="3" rx="1.5" fill="#C44A0E" opacity="0.3"/>
+              </g>
+              <g class="float-c">
+                <rect x="220" y="180" width="74" height="40" rx="14" fill="url(#p1-bub)"/>
+                <circle cx="280" cy="180" r="14" fill="#0F1F3D"/>
+                <text x="280" y="185" text-anchor="middle" font-family="Roboto, sans-serif" font-weight="900" font-size="14" fill="#FFFFFF">7</text>
+                <rect x="236" y="198" width="42" height="3" rx="1.5" fill="#C44A0E" opacity="0.4"/>
+                <rect x="236" y="206" width="28" height="3" rx="1.5" fill="#C44A0E" opacity="0.3"/>
+              </g>
+            </svg>
+          </div>
+        </article>
+
+        <article class="pain-row fade-up" style="--d:140ms">
+          <span class="pain-row__num">02</span>
+          <div class="pain-row__body">
+            <span class="pain-row__tag">Trop opaque</span>
+            <h3 class="pain-row__title">Des choix à l'aveugle</h3>
+            <p class="pain-row__text">Devis incomparables, profils non vérifiés. Impossible de savoir qui correspond vraiment à votre besoin et qui sera réellement là le jour J.</p>
+          </div>
+          <div class="pain-row__vis">
+            <!-- 3D Profile cards stacked with question marks -->
+            <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <radialGradient id="p2-card" cx="38%" cy="32%" r="78%">
+                  <stop offset="0%"  stop-color="#FFFFFF"/>
+                  <stop offset="60%" stop-color="#F8E0CD"/>
+                  <stop offset="100%" stop-color="#C44A0E"/>
+                </radialGradient>
+                <radialGradient id="p2-hl" cx="35%" cy="25%" r="40%">
+                  <stop offset="0%" stop-color="#FFF" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <!-- back cards -->
+              <g class="float-b">
+                <rect x="60" y="68" width="80" height="108" rx="14" fill="url(#p2-card)" transform="rotate(-9 100 122)"/>
+                <ellipse cx="92" cy="86" rx="22" ry="13" fill="url(#p2-hl)" transform="rotate(-9 92 86)"/>
+                <circle cx="100" cy="106" r="14" fill="#0F1F3D" opacity="0.8" transform="rotate(-9 100 106)"/>
+                <rect x="72" y="138" width="56" height="4" rx="2" fill="#0F1F3D" opacity="0.55" transform="rotate(-9 100 140)"/>
+                <rect x="72" y="148" width="40" height="4" rx="2" fill="#0F1F3D" opacity="0.35" transform="rotate(-9 92 150)"/>
+              </g>
+              <g class="float-c">
+                <rect x="190" y="64" width="80" height="108" rx="14" fill="url(#p2-card)" transform="rotate(7 230 118)"/>
+                <ellipse cx="222" cy="82" rx="22" ry="13" fill="url(#p2-hl)" transform="rotate(7 222 82)"/>
+                <circle cx="230" cy="102" r="14" fill="#0F1F3D" opacity="0.8" transform="rotate(7 230 102)"/>
+                <rect x="202" y="134" width="56" height="4" rx="2" fill="#0F1F3D" opacity="0.55" transform="rotate(7 230 136)"/>
+                <rect x="202" y="144" width="40" height="4" rx="2" fill="#0F1F3D" opacity="0.35" transform="rotate(7 222 146)"/>
+              </g>
+              <!-- Front card with big question mark -->
+              <g class="float-a">
+                <rect x="120" y="60" width="90" height="124" rx="16" fill="url(#p2-card)"/>
+                <ellipse cx="156" cy="84" rx="28" ry="16" fill="url(#p2-hl)"/>
+                <text x="165" y="148" text-anchor="middle" font-family="Roboto, sans-serif" font-weight="900" font-size="78" fill="#F4611A">?</text>
+              </g>
+            </svg>
+          </div>
+        </article>
+
+        <article class="pain-row fade-up" style="--d:280ms">
+          <span class="pain-row__num">03</span>
+          <div class="pain-row__body">
+            <span class="pain-row__tag">Trop risqué</span>
+            <h3 class="pain-row__title">Un cadre flou</h3>
+            <p class="pain-row__text">Options mal définies, conditions d'annulation opaques, paiements qui partent dans la nature. Le risque, c'est vous qui le portez.</p>
+          </div>
+          <div class="pain-row__vis">
+            <!-- 3D Contract with broken lines -->
+            <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <radialGradient id="p3-doc" cx="38%" cy="32%" r="80%">
+                  <stop offset="0%"  stop-color="#FFFFFF"/>
+                  <stop offset="60%" stop-color="#F8E0CD"/>
+                  <stop offset="100%" stop-color="#C44A0E"/>
+                </radialGradient>
+                <radialGradient id="p3-hl" cx="35%" cy="25%" r="40%">
+                  <stop offset="0%" stop-color="#FFF" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <!-- Document -->
+              <g class="float-a">
+                <path d="M 100 40 L 196 40 L 224 68 L 224 200 Q 224 210 214 210 L 100 210 Q 90 210 90 200 L 90 50 Q 90 40 100 40 Z" fill="url(#p3-doc)"/>
+                <ellipse cx="130" cy="68" rx="32" ry="16" fill="url(#p3-hl)"/>
+                <!-- Folded corner -->
+                <path d="M 196 40 L 196 68 L 224 68 Z" fill="#C44A0E" opacity="0.3"/>
+                <!-- Dashed/missing lines -->
+                <g stroke="#0F1F3D" stroke-width="3" stroke-linecap="round" opacity="0.6">
+                  <line x1="106" y1="88" x2="180" y2="88"/>
+                  <line x1="106" y1="104" x2="160" y2="104" stroke-dasharray="3 4"/>
+                  <line x1="106" y1="120" x2="200" y2="120"/>
+                  <line x1="106" y1="136" x2="140" y2="136" stroke-dasharray="3 4"/>
+                  <line x1="106" y1="152" x2="190" y2="152" stroke-dasharray="3 4"/>
+                  <line x1="106" y1="168" x2="170" y2="168"/>
+                </g>
+                <!-- Signature placeholder broken -->
+                <line x1="106" y1="190" x2="180" y2="190" stroke="#C44A0E" stroke-width="2" stroke-dasharray="6 5"/>
+              </g>
+              <!-- Floating "?" badge -->
+              <g class="float-b">
+                <circle cx="240" cy="100" r="22" fill="#0F1F3D"/>
+                <text x="240" y="108" text-anchor="middle" font-family="Roboto, sans-serif" font-weight="900" font-size="22" fill="#F4611A">!</text>
+              </g>
+            </svg>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== TRUST -->
+  <section class="trust" aria-label="Ils nous ont fait confiance">
+    <div class="wrap">
+      <div class="trust__head">
+        <span class="trust__eyebrow">Ils nous ont fait confiance</span>
+      </div>
+    </div>
+    <div class="trust__strip">
+      <div class="trust__track" id="trust-track">
+        <span class="trust-logo">Sciences Po Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">L'Appart Fitness</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Corpo Médecine Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">BUT Montauban</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Richardson</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Université Toulouse 1 Capitole</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">1862 Arty Bar Club</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Studio 3S</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">IAE Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Le Bar Basque</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Sapeurs-Pompiers</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">istef</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <!-- Duplicate for seamless loop -->
+        <span class="trust-logo" aria-hidden="true">Sciences Po Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">L'Appart Fitness</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Corpo Médecine Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">BUT Montauban</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Richardson</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Université Toulouse 1 Capitole</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">1862 Arty Bar Club</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Studio 3S</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">IAE Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Le Bar Basque</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Sapeurs-Pompiers</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">istef</span>
+      </div>
+    </div>
+    <p class="trust__disclaimer">
+      Références réalisées sous <b>Stereo Lights Events</b> et <b>Kygaa Music</b>, aujourd'hui réunies sous <b>Yvento</b>.
+    </p>
+  </section>
+
+
+  <!-- ====================================================== MANIFESTO -->
+  <section class="manifesto" aria-label="Manifesto">
+    <div class="manifesto__inner">
+      <p class="manifesto__text fade-up">
+        <span class="manifesto__quote-open">"</span>Trouver le prestataire qui correspond <span class="underlined">vraiment</span> à vos envies.<span class="manifesto__quote-close">"</span>
+      </p>
+      <div class="manifesto__sign fade-up" style="--d:240ms">
+        Kylian &amp; Florian — Co-fondateurs
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== COMPARE — CENTERPIECE -->
+  <section class="compare" id="compare" aria-labelledby="compare-title">
+
+    <div class="compare__head">
+      <span class="eyebrow fade-up">COMPARATIF</span>
+      <h2 id="compare-title" class="fade-up" style="--d:120ms">
+        Notre <span class="orange">approche.</span>
+      </h2>
+      <p class="fade-up" style="--d:240ms">
+        Trois manières de trouver vos prestataires. Une seule coche toutes les cases.
+      </p>
+    </div>
+
+    <div class="compare__cols">
+
+      <!-- Card 1: Agence -->
+      <article class="cmp-card fade-up">
+        <div class="cmp-card__head">
+          <span class="cmp-card__tag">OPTION A</span>
+          <span class="cmp-card__name">Agence traditionnelle</span>
+        </div>
+        <ul class="cmp-list">
+          <li>
+            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+            <span>Délais de 2 à 4 semaines</span>
+          </li>
+          <li>
+            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+            <span>Réseau fermé, limité au carnet</span>
+          </li>
+          <li>
+            <span class="ic good"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+            <span>Disponibilité vérifiée</span>
+          </li>
+          <li>
+            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+            <span>Frais élevés répercutés</span>
+          </li>
+          <li>
+            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+            <span>Contrat & minimum d'engagement</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Card 2: Marketplace -->
+      <article class="cmp-card fade-up" style="--d:120ms">
+        <div class="cmp-card__head">
+          <span class="cmp-card__tag">OPTION B</span>
+          <span class="cmp-card__name">Marketplace</span>
+        </div>
+        <ul class="cmp-list">
+          <li>
+            <span class="ic neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            <span>Délai variable, à vous de relancer</span>
+          </li>
+          <li>
+            <span class="ic good"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+            <span>Réseau large, peu trié</span>
+          </li>
+          <li>
+            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+            <span>Disponibilité non vérifiée</span>
+          </li>
+          <li>
+            <span class="ic neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            <span>Frais variables par plateforme</span>
+          </li>
+          <li>
+            <span class="ic good"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+            <span>Aucun engagement</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Card 3: YVENTO (WIN) -->
+      <article class="cmp-card cmp-card--win fade-up" style="--d:240ms">
+        <span class="cmp-grain" aria-hidden="true"></span>
+        <span class="cmp-badge">Recommandé</span>
+        <div class="cmp-card__head">
+          <span class="cmp-card__tag">NOTRE APPROCHE</span>
+          <span class="cmp-card__name">Yvento Match</span>
+        </div>
+        <ul class="cmp-list">
+          <li>
+            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+            <span><b>Réponse sous 24h</b>, sans relances</span>
+          </li>
+          <li>
+            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+            <span>Large réseau <b>vérifié et curé</b></span>
+          </li>
+          <li>
+            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+            <span>Disponibilités <b>confirmées</b> avant envoi</span>
+          </li>
+          <li>
+            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+            <span><b>0 € de frais</b>, toujours</span>
+          </li>
+          <li>
+            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+            <span><b>Aucun engagement</b> requis</span>
+          </li>
+        </ul>
+      </article>
+
+    </div>
+
+    <div class="compare__cta fade-up" style="--d:360ms; text-align:center; margin-top: 72px; padding: 0 24px;">
+      <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--primary" data-magnetic>
+        <span class="btn__inner">
+          Décrire mon événement
+          <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </span>
+      </a>
+    </div>
+
+    <div class="compare__rows" style="display:none">
+
+      <!-- Battle row 1: Délai -->
+      <div class="battle-row fade-up">
+        <div class="battle-row__crit">
+          <span class="battle-row__num">01 / 06</span>
+          <span class="battle-row__title">Délai de réponse</span>
+          <span class="battle-row__sub">Entre brief et propositions</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">AGENCE</span>
+          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>2 à 4 semaines</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">MARKETPLACE</span>
+          <span class="battle-opt__val"><span class="neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Variable, à vous</span>
+        </div>
+        <div class="battle-row__yvento">
+          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+          <div class="battle-row__yvento-text">
+            <span class="battle-row__yvento-tag">YVENTO</span>
+            <span class="battle-row__yvento-val">Sous 24 heures.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Battle row 2: Réseau -->
+      <div class="battle-row fade-up" style="--d:80ms">
+        <div class="battle-row__crit">
+          <span class="battle-row__num">02 / 06</span>
+          <span class="battle-row__title">Réseau de prestataires</span>
+          <span class="battle-row__sub">Diversité, qualité, disponibilité</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">AGENCE</span>
+          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Carnet d'adresses fermé</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">MARKETPLACE</span>
+          <span class="battle-opt__val"><span class="neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Très large, peu trié</span>
+        </div>
+        <div class="battle-row__yvento">
+          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+          <div class="battle-row__yvento-text">
+            <span class="battle-row__yvento-tag">YVENTO</span>
+            <span class="battle-row__yvento-val">Large, vérifié, curé.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Battle row 3: Disponibilité -->
+      <div class="battle-row fade-up" style="--d:160ms">
+        <div class="battle-row__crit">
+          <span class="battle-row__num">03 / 06</span>
+          <span class="battle-row__title">Disponibilité confirmée</span>
+          <span class="battle-row__sub">Vérifiée avant proposition</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">AGENCE</span>
+          <span class="battle-opt__val"><span class="ok"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Vérifiée</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">MARKETPLACE</span>
+          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Non vérifiée</span>
+        </div>
+        <div class="battle-row__yvento">
+          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+          <div class="battle-row__yvento-text">
+            <span class="battle-row__yvento-tag">YVENTO</span>
+            <span class="battle-row__yvento-val">Confirmée avant envoi.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Battle row 4: Frais -->
+      <div class="battle-row fade-up" style="--d:240ms">
+        <div class="battle-row__crit">
+          <span class="battle-row__num">04 / 06</span>
+          <span class="battle-row__title">Frais organisateur</span>
+          <span class="battle-row__sub">Coût du service de mise en relation</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">AGENCE</span>
+          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Élevés, répercutés</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">MARKETPLACE</span>
+          <span class="battle-opt__val"><span class="neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Variables, selon plateforme</span>
+        </div>
+        <div class="battle-row__yvento">
+          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+          <div class="battle-row__yvento-text">
+            <span class="battle-row__yvento-tag">YVENTO</span>
+            <span class="battle-row__yvento-val">0 € — toujours.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Battle row 5: Sélection -->
+      <div class="battle-row fade-up" style="--d:320ms">
+        <div class="battle-row__crit">
+          <span class="battle-row__num">05 / 06</span>
+          <span class="battle-row__title">Qualité de sélection</span>
+          <span class="battle-row__sub">Curation humaine ou DIY</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">AGENCE</span>
+          <span class="battle-opt__val"><span class="neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Humaine, fermée</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">MARKETPLACE</span>
+          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>À vous de tout filtrer</span>
+        </div>
+        <div class="battle-row__yvento">
+          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+          <div class="battle-row__yvento-text">
+            <span class="battle-row__yvento-tag">YVENTO</span>
+            <span class="battle-row__yvento-val">Humaine + matching digital.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Battle row 6: Engagement -->
+      <div class="battle-row fade-up" style="--d:400ms">
+        <div class="battle-row__crit">
+          <span class="battle-row__num">06 / 06</span>
+          <span class="battle-row__title">Engagement requis</span>
+          <span class="battle-row__sub">Contrat, exclusivité, minimum</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">AGENCE</span>
+          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Contrat + minimum</span>
+        </div>
+        <div class="battle-opt">
+          <span class="battle-opt__tag">MARKETPLACE</span>
+          <span class="battle-opt__val"><span class="ok"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Aucun</span>
+        </div>
+        <div class="battle-row__yvento">
+          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+          <div class="battle-row__yvento-text">
+            <span class="battle-row__yvento-tag">YVENTO</span>
+            <span class="battle-row__yvento-val">Aucun. Liberté totale.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Final score -->
+    <div class="battle-final fade-up" style="--d:240ms">
+      <div class="battle-score">
+        <div class="battle-score__left">
+          <div class="battle-score__eyebrow">VERDICT</div>
+          <h3 class="battle-score__title">Yvento Match <em>gagne</em> sur les six.</h3>
+        </div>
+        <div class="battle-score__num">
+          <span class="big">6</span><span class="slash">/</span><span class="small">6</span>
+        </div>
+      </div>
+      <div class="battle-foot">
+        <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--primary" data-magnetic>
+          <span class="btn__inner">
+            Commencer maintenant
+            <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="compare__table-OLD" style="display:none">
+      <div class="compare__wrap fade-up" style="--d:320ms">
+        <div class="compare__grid">
+
+          <!-- Column headers -->
+          <div class="compare__col-head compare__col-head--criterion">
+            <span class="compare__col-tag">CRITÈRE</span>
+            <span class="compare__col-name">Sur 6 dimensions</span>
+          </div>
+          <div class="compare__col-head">
+            <span class="compare__col-tag">OPTION A</span>
+            <span class="compare__col-name">Agence traditionnelle</span>
+          </div>
+          <div class="compare__col-head">
+            <span class="compare__col-tag">OPTION B</span>
+            <span class="compare__col-name">Marketplace ouverte</span>
+          </div>
+          <div class="compare__col-head compare__col-head--yvento">
+            <span class="compare__col-tag">NOTRE APPROCHE</span>
+            <span class="compare__col-name">Yvento Match <span class="badge">RECOMMANDÉ</span></span>
+          </div>
+
+          <!-- Row 1: Délai -->
+          <div class="compare__cell compare__cell--criterion">
+            <span class="lbl">Délai de réponse</span>
+            <span class="sub">Entre brief et propositions</span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-bad">
+              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              2 à 4 semaines
+            </span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-neutral">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              Variable, à vous de relancer
+            </span>
+          </div>
+          <div class="compare__cell compare__cell--yvento">
+            <span class="compare__verdict is-best">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Sous 24 heures
+            </span>
+          </div>
+
+          <!-- Row 2: Réseau -->
+          <div class="compare__cell compare__cell--criterion">
+            <span class="lbl">Réseau de prestataires</span>
+            <span class="sub">Diversité des profils disponibles</span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-bad">
+              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Limité au carnet d'adresses
+            </span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-good">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Très large, peu trié
+            </span>
+          </div>
+          <div class="compare__cell compare__cell--yvento">
+            <span class="compare__verdict is-best">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Large, vérifié, curé
+            </span>
+          </div>
+
+          <!-- Row 3: Dispo -->
+          <div class="compare__cell compare__cell--criterion">
+            <span class="lbl">Disponibilité à votre date</span>
+            <span class="sub">Vérifiée avant proposition</span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-good">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Confirmée par l'agence
+            </span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-bad">
+              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Non vérifiée
+            </span>
+          </div>
+          <div class="compare__cell compare__cell--yvento">
+            <span class="compare__verdict is-best">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Confirmée avant envoi
+            </span>
+          </div>
+
+          <!-- Row 4: Tarif -->
+          <div class="compare__cell compare__cell--criterion">
+            <span class="lbl">Frais pour l'organisateur</span>
+            <span class="sub">Côut du service de mise en relation</span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-bad">
+              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Élevés, répercutés
+            </span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-neutral">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              Variable selon plateforme
+            </span>
+          </div>
+          <div class="compare__cell compare__cell--yvento">
+            <span class="compare__verdict is-best">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              0 € — toujours
+            </span>
+          </div>
+
+          <!-- Row 5: Sélection -->
+          <div class="compare__cell compare__cell--criterion">
+            <span class="lbl">Qualité de la sélection</span>
+            <span class="sub">Curation humaine ou DIY</span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-good">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Humaine, mais fermée
+            </span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-bad">
+              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              À vous de tout filtrer
+            </span>
+          </div>
+          <div class="compare__cell compare__cell--yvento">
+            <span class="compare__verdict is-best">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Humaine + matching digital
+            </span>
+          </div>
+
+          <!-- Row 6: Engagement -->
+          <div class="compare__cell compare__cell--criterion">
+            <span class="lbl">Engagement requis</span>
+            <span class="sub">Contrat, exclusivité, minimum</span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-bad">
+              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Contrat & minimum
+            </span>
+          </div>
+          <div class="compare__cell">
+            <span class="compare__verdict is-good">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Aucun
+            </span>
+          </div>
+          <div class="compare__cell compare__cell--yvento">
+            <span class="compare__verdict is-best">
+              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Aucun
+            </span>
+          </div>
+
+          <!-- TOTAL -->
+          <div class="compare__total">
+            <div class="cell">SCORE</div>
+            <div class="cell"><span class="num">2/6</span></div>
+            <div class="cell"><span class="num">2/6</span></div>
+            <div class="cell yvento"><span class="num">6/6</span></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MOBILE cards -->
+      <div class="compare__cards">
+
+        <article class="ccard fade-up">
+          <div class="ccard__head">
+            <span class="ccard__name">Agence traditionnelle</span>
+            <span class="ccard__tag">2 / 6</span>
+          </div>
+          <div class="ccard__rows">
+            <div class="ccard__row"><span class="ccard__row-lbl">Délai</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>2-4 sem.</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Réseau</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Fermé</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Dispo</span><span class="compare__verdict is-good"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Confirmée</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Frais</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Élevés</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Sélection</span><span class="compare__verdict is-good"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Humaine</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Engagement</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Contrat</span></div>
+          </div>
+        </article>
+
+        <article class="ccard fade-up" style="--d:140ms">
+          <div class="ccard__head">
+            <span class="ccard__name">Marketplace ouverte</span>
+            <span class="ccard__tag">2 / 6</span>
+          </div>
+          <div class="ccard__rows">
+            <div class="ccard__row"><span class="ccard__row-lbl">Délai</span><span class="compare__verdict is-neutral"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Variable</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Réseau</span><span class="compare__verdict is-good"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Large</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Dispo</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Non vérifiée</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Frais</span><span class="compare__verdict is-neutral"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Variables</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Sélection</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>À vous</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Engagement</span><span class="compare__verdict is-good"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Aucun</span></div>
+          </div>
+        </article>
+
+        <article class="ccard ccard--yvento fade-up" style="--d:280ms">
+          <div class="ccard__head">
+            <span class="ccard__name">Yvento Match</span>
+            <span class="ccard__tag">6 / 6 — Recommandé</span>
+          </div>
+          <div class="ccard__rows">
+            <div class="ccard__row"><span class="ccard__row-lbl">Délai</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>&lt; 24h</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Réseau</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Large + curé</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Dispo</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Confirmée</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Frais</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>0 €</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Sélection</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Humaine + digitale</span></div>
+            <div class="ccard__row"><span class="ccard__row-lbl">Engagement</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Aucun</span></div>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ====================================================== METHOD -->
+  <section class="section section--cream" id="method" aria-labelledby="method-title">
+    <div class="wrap">
+
+      <div class="sec-head">
+        <span class="eyebrow fade-up">MÉTHODE</span>
+        <h2 id="method-title" class="fade-up" style="--d:120ms">
+          Votre recherche<br>en <span class="orange">3 étapes.</span>
+        </h2>
+        <p class="lead fade-up" style="--d:240ms">
+          Vous décrivez, on cherche, vous validez. Aucun appel, aucun rendez-vous, aucune relance.
+        </p>
+      </div>
+
+      <div class="method-grid">
+
+        <svg class="method-line" viewBox="-260 0 1920 160" preserveAspectRatio="none" aria-hidden="true">
+          <!-- Curved connector that extends well before the first card and well after the last -->
+          <path class="method-line__path" d="M -260 130 C -120 80, -20 70, 60 80 C 240 10, 360 150, 600 80 C 840 10, 960 150, 1140 80 C 1240 50, 1380 110, 1520 80 C 1600 60, 1660 90, 1660 90"/>
+          <path class="method-line__glow" d="M -260 130 C -120 80, -20 70, 60 80 C 240 10, 360 150, 600 80 C 840 10, 960 150, 1140 80 C 1240 50, 1380 110, 1520 80 C 1600 60, 1660 90, 1660 90"/>
+        </svg>
+
+        <article class="method-card fade-up">
+          <span class="method-card__num">01</span>
+          <span class="method-card__tag">2 MIN</span>
+          <div class="method-card__inner">
+            <div class="method-card__face method-card__face--front">
+              <div class="method-card__img">
+                <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=720&h=540&fit=crop&q=80&auto=format" alt="" loading="lazy">
+              </div>
+              <div class="method-card__body">
+                <h3 class="method-card__title">Décrivez votre événement</h3>
+                <p class="method-card__text">Date, lieu, budget, ambiance. Tout se remplit en deux minutes depuis votre téléphone, sans appel ni rendez-vous.</p>
+              </div>
+            </div>
+            <div class="method-card__face method-card__face--back">
+              <div class="method-card__back-info">
+                <span class="method-card__back-tag">ÉTAPE 01</span>
+                <span class="method-card__back-title">Brief en 2 minutes, depuis votre téléphone.</span>
+                <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="method-card__back-cta">
+                  Commencer
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="method-card fade-up" style="--d:160ms">
+          <span class="method-card__num">02</span>
+          <span class="method-card__tag">&lt; 24H</span>
+          <div class="method-card__inner">
+            <div class="method-card__face method-card__face--front">
+              <div class="method-card__img">
+                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=720&h=540&fit=crop&q=80&auto=format" alt="" loading="lazy">
+              </div>
+              <div class="method-card__body">
+                <h3 class="method-card__title">On sélectionne pour vous</h3>
+                <p class="method-card__text">On vérifie les disponibilités, on filtre les profils adaptés. Analyse humaine + matching digital — pas du listing aveugle.</p>
+              </div>
+            </div>
+            <div class="method-card__face method-card__face--back">
+              <div class="method-card__back-info">
+                <span class="method-card__back-tag">ÉTAPE 02</span>
+                <span class="method-card__back-title">Sélection humaine + matching digital.</span>
+                <span class="method-card__back-cta">
+                  Disponibilités vérifiées
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="method-card fade-up" style="--d:320ms">
+          <span class="method-card__num">03</span>
+          <span class="method-card__tag">VALIDÉ</span>
+          <div class="method-card__inner">
+            <div class="method-card__face method-card__face--front">
+              <div class="method-card__img">
+                <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=720&h=540&fit=crop&q=80&auto=format" alt="" loading="lazy">
+              </div>
+              <div class="method-card__body">
+                <h3 class="method-card__title">Vous choisissez, on cadre</h3>
+                <p class="method-card__text">Vous recevez 3 profils clairs. Vous validez votre préférence. On gère la confirmation et le cadre de réservation.</p>
+              </div>
+            </div>
+            <div class="method-card__face method-card__face--back">
+              <div class="method-card__back-info">
+                <span class="method-card__back-tag">ÉTAPE 03</span>
+                <span class="method-card__back-title">Réservation cadrée, paiement sécurisé.</span>
+                <span class="method-card__back-cta">
+                  Aucune relance
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="method-foot fade-up" style="--d:480ms">
+        <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--outline-dark" data-magnetic>
+          <span class="btn__inner">
+            Décrire mon événement
+            <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== GUARANTEES -->
+  <section class="section section--bone" aria-labelledby="guar-title">
+    <div class="wrap">
+
+      <div class="sec-head sec-head--center">
+        <span class="eyebrow fade-up">ENGAGEMENTS</span>
+        <h2 id="guar-title" class="fade-up" style="--d:120ms">
+          Ce qu'on vous <span class="orange">garantit</span>.
+        </h2>
+        <p class="lead fade-up" style="--d:240ms">
+          Trois engagements concrets et opposables. Pas de promesse en l'air.
+        </p>
+      </div>
+
+      <div class="guar-grid">
+
+        <article class="guar-card fade-up">
+          <span class="guar-card__num">01 / SÉLECTION</span>
+          <h3 class="guar-card__title">Sélection sur mesure</h3>
+          <p class="guar-card__text">Aucun prestataire ne paie pour être mis en avant. Chaque profil proposé correspond réellement à votre brief.</p>
+        </article>
+
+        <article class="guar-card fade-up" style="--d:140ms">
+          <span class="guar-card__num">02 / DISPONIBILITÉ</span>
+          <h3 class="guar-card__title">Disponibilité confirmée</h3>
+          <p class="guar-card__text">On ne vous propose que des prestataires disponibles à votre date. Vérifié, validé, avant l'envoi.</p>
+        </article>
+
+        <article class="guar-card fade-up" style="--d:280ms">
+          <span class="guar-card__num">03 / RÉSERVATION</span>
+          <h3 class="guar-card__title">Réservation cadrée</h3>
+          <p class="guar-card__text">Conditions claires, paiement sécurisé. Vous savez exactement où vous mettez les pieds.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== TEAM -->
+  <section class="section section--paper" aria-labelledby="team-title">
+    <div class="wrap">
+
+      <div class="team-layout">
+      <div class="team-intro">
+        <span class="eyebrow fade-up">L'ÉQUIPE</span>
+        <h2 id="team-title" class="fade-up" style="--d:120ms">
+          Notre <span class="orange">équipe.</span>
+        </h2>
+        <p class="fade-up" style="--d:160ms">
+          Yvento est né d'une expérience terrain de plus de 10 ans dans l'événementiel.
+          On connaît les contraintes des prestataires. On connaît les galères des organisateurs.
+          C'est pour ça qu'on a construit quelque chose de différent.
+        </p>
+      </div>
+
+      <div class="team-grid">
+
+        <article class="founder fade-up">
+          <div class="founder__photo-wrap">
+            <span class="founder__tag">CO-FONDATEUR</span>
+            <img class="founder__photo" src="./assets/kylian.png" alt="Portrait de Kylian, co-fondateur" loading="lazy"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=720&h=720&fit=crop&q=80&auto=format';">
+          </div>
+          <div class="founder__body">
+            <div class="founder__name">Kylian</div>
+            <div class="founder__role">Produit &amp; Vision</div>
+            <span class="founder__line"></span>
+            <p class="founder__exp">
+              <b>10 ans de terrain en tant que DJ</b>, des mariages aux soirées privées. Pilote la vision produit pour que Yvento reste simple, fiable et concret.
+            </p>
+          </div>
+        </article>
+
+        <article class="founder fade-up" style="--d:160ms">
+          <div class="founder__photo-wrap">
+            <span class="founder__tag">CO-FONDATEUR</span>
+            <img class="founder__photo" src="./assets/florian.png" alt="Portrait de Florian, co-fondateur" loading="lazy"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=720&h=720&fit=crop&q=80&auto=format';">
+          </div>
+          <div class="founder__body">
+            <div class="founder__name">Florian</div>
+            <div class="founder__role">Opérations &amp; Réseau</div>
+            <span class="founder__line"></span>
+            <p class="founder__exp">
+              <b>DJ depuis 10 ans et ex-fondateur d'une agence événementielle</b>. Construit le réseau prestataires et garantit la qualité de chaque mise en relation.
+            </p>
+          </div>
+        </article>
+
+        <article class="founder fade-up" style="--d:320ms">
+          <div class="founder__photo-wrap">
+            <img class="founder__photo" src="./assets/clement.png" alt="Portrait de Clément" loading="lazy"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=720&h=720&fit=crop&q=80&auto=format';">
+          </div>
+          <div class="founder__body">
+            <div class="founder__name">Clément</div>
+            <div class="founder__role">Architecture technique</div>
+            <span class="founder__line"></span>
+            <p class="founder__exp">
+              <b>Ingénieur produit et infrastructure</b>. Construit la plateforme pour que chaque étape — du brief au matching — disparaisse devant l'usage.
+            </p>
+          </div>
+        </article>
+
+      </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== FAQ -->
+  <section class="section section--cream" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+
+      <div class="sec-head sec-head--center">
+        <span class="eyebrow fade-up">FAQ</span>
+        <h2 id="faq-title" class="fade-up" style="--d:120ms">
+          Les questions<br>qu'on nous <span class="orange">pose</span>.
+        </h2>
+      </div>
+
+      <div class="faq-list" role="list">
+
+        <div class="faq-item fade-up" role="listitem">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1">
+            <span>Est-ce vraiment gratuit pour l'organisateur&nbsp;?</span>
+            <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-a" id="faq-a-1" role="region">
+            <p class="faq-a__inner">Oui, totalement. Yvento est rémunéré par une commission sur la prestation, uniquement si la mise en relation aboutit. Zéro frais de votre côté, jamais.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up" role="listitem" style="--d:60ms">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2">
+            <span>Quels prestataires proposez-vous&nbsp;?</span>
+            <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-a" id="faq-a-2" role="region">
+            <p class="faq-a__inner">Huit métiers : DJ, musicien, photographe, vidéaste, barman, chanteur, animateur, décorateur. On préfère couvrir un périmètre étroit avec exigence plutôt que tout faire à moitié.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up" role="listitem" style="--d:120ms">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3">
+            <span>Dans quels délais je reçois des propositions&nbsp;?</span>
+            <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-a" id="faq-a-3" role="region">
+            <p class="faq-a__inner">Sous 24h après validation de votre brief. Dans la majorité des cas, c'est plus rapide — souvent quelques heures.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up" role="listitem" style="--d:180ms">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4">
+            <span>Les prestataires sont-ils vraiment disponibles à ma date&nbsp;?</span>
+            <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-a" id="faq-a-4" role="region">
+            <p class="faq-a__inner">Oui. On vérifie les disponibilités avant de vous proposer un profil. Vous ne recevez que des prestataires qui peuvent réellement intervenir.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up" role="listitem" style="--d:240ms">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5">
+            <span>Que se passe-t-il si aucun profil ne correspond&nbsp;?</span>
+            <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-a" id="faq-a-5" role="region">
+            <p class="faq-a__inner">On vous le dit clairement, et on cherche des alternatives. Aucune proposition ne vaut mieux qu'une mauvaise proposition.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up" role="listitem" style="--d:300ms">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6">
+            <span>Quelle différence avec une agence&nbsp;?</span>
+            <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          </button>
+          <div class="faq-a" id="faq-a-6" role="region">
+            <p class="faq-a__inner">Une agence travaille avec son réseau fermé. Yvento vous donne accès à un réseau large de prestataires indépendants vérifiés, avec la rigueur d'une sélection humaine et la rapidité du digital. Et c'est gratuit pour vous.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== CTA FINAL -->
+  <section class="cta-final" aria-label="Appel final">
+
+    <div class="cta-final__bg" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1600&h=900&fit=crop&q=80&auto=format" alt="" loading="lazy">
+    </div>
+
+    <div class="wrap">
+      <h2 class="fade-up">
+        Votre événement<br><span class="orange">mérite mieux.</span>
+      </h2>
+      <p class="fade-up" style="--d:140ms">
+        Décrivez-le en deux minutes. On s'occupe du reste — vraiment.
+      </p>
+      <div class="fade-up" style="--d:280ms">
+        <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--ivory" data-magnetic>
+          <span class="btn__inner">
+            Décrire mon événement
+            <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+      <p class="cta-final__micro fade-up" style="--d:400ms">
+        GRATUIT&nbsp;·&nbsp;SANS ENGAGEMENT&nbsp;·&nbsp;RÉPONSE &lt; 24H
+      </p>
+    </div>
+  </section>
+
+
+  <!-- Brief form placeholder -->
+  <div id="brief-form"></div>
+
+
+  <!-- ====================================================== FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="wrap">
+
+      <div class="footer__grid">
+        <div>
+          <a href="#top" class="footer__brand" aria-label="Yvento — Accueil">
+            <img src="./assets/logo.png" alt="Yvento" />
+          </a>
+          <p class="footer__tag">L'événementiel. Simplifié.</p>
+        </div>
+        <div>
+          <p class="footer__head">NAVIGATION</p>
+          <nav class="footer__links" aria-label="Liens du pied de page">
+            <a href="#events">Événements</a>
+            <a href="#compare">Comparatif</a>
+            <a href="#method">Méthode</a>
+            <a href="#faq">FAQ</a>
+            <a href="https://yvento.fr/pro/" target="_blank" rel="noopener noreferrer">Je suis prestataire</a>
+          </nav>
+        </div>
+        <div>
+          <p class="footer__head">CONTACT</p>
+          <div class="footer__links">
+            <a href="mailto:contact@yvento.fr">contact@yvento.fr</a>
+            <a href="https://instagram.com/yvento.fr" target="_blank" rel="noopener noreferrer">@yvento.fr · Instagram</a>
+            <span style="font-size:14px;color:rgba(255,255,255,0.65)">Partout en France</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>© 2026 YVENTO</p>
+        <div class="footer__legal">
+          <a href="#">CGU</a>
+          <a href="#">COOKIES</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+  (function () {
+    'use strict';
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    /* 1. Smooth scroll */
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        const top = target.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    /* 2. Nav scroll state */
+    const nav = document.getElementById('nav');
+    const hero = document.querySelector('.hero');
+    function onNavScroll() {
+      if (!hero) return;
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      nav.classList.toggle('nav--solid', heroBottom < 80);
+    }
+    window.addEventListener('scroll', onNavScroll, { passive: true });
+    onNavScroll();
+
+    /* 3. Reveal observer */
+    const revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        entry.target.querySelectorAll('.reveal-mask').forEach(function (m) {
+          m.classList.add('is-revealed');
+        });
+        revealObs.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up, .reveal-mask').forEach(function (el) {
+      revealObs.observe(el);
+    });
+
+    /* 3b. Comparison cards — sequential check animations */
+    const cmpObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        cmpObs.unobserve(entry.target);
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.cmp-card').forEach(function (el) { cmpObs.observe(el); });
+
+    /* 3c. Hero stat counters */
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+    function animateCounter(el, target, duration) {
+      const start = performance.now();
+      const numEl = el.querySelector('.stat-card__num .n');
+      const barEl = el;
+      const w = parseFloat(el.dataset.w || '50');
+      barEl.style.setProperty('--w-final', w + '%');
+      barEl.classList.add('is-counted');
+      if (!numEl) return;
+      function step(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const v = Math.floor(easeOutCubic(t) * target);
+        numEl.textContent = v;
+        if (t < 1) requestAnimationFrame(step);
+        else numEl.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+    const statObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.count, 10);
+        animateCounter(el, target, 1600);
+        statObs.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('.stat-card').forEach(function (el) { statObs.observe(el); });
+
+    requestAnimationFrame(function () {
+      document.body.classList.add('hero-ready');
+      document.querySelectorAll('.hero .reveal-mask, .hero .fade-up, .hero__title').forEach(function (el) {
+        el.classList.add('is-revealed');
+      });
+    });
+
+    /* 4. Magnetic buttons */
+    function bindMagnetic(el) {
+      if (prefersReducedMotion) return;
+      const inner = el.querySelector('.btn__inner') || el;
+      const S = 0.30, SI = 0.50;
+      let tx=0,ty=0,ix=0,iy=0,Tx=0,Ty=0,Ix=0,Iy=0;
+      let raf = null, active = false;
+      function loop() {
+        tx = lerp(tx, Tx, 0.18); ty = lerp(ty, Ty, 0.18);
+        ix = lerp(ix, Ix, 0.18); iy = lerp(iy, Iy, 0.18);
+        el.style.transform = `translate3d(${tx}px,${ty}px,0)`;
+        if (inner !== el) inner.style.transform = `translate3d(${ix}px,${iy}px,0)`;
+        if (active || Math.abs(tx - Tx) > 0.1) raf = requestAnimationFrame(loop);
+        else raf = null;
+      }
+      el.addEventListener('mouseenter', () => { active = true; if (!raf) raf = requestAnimationFrame(loop); });
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top - r.height/2;
+        Tx = x * S; Ty = y * S;
+        Ix = x * (SI - S); Iy = y * (SI - S);
+        if (!raf) raf = requestAnimationFrame(loop);
+      });
+      el.addEventListener('mouseleave', () => {
+        active = false; Tx=Ty=Ix=Iy=0;
+        if (!raf) raf = requestAnimationFrame(loop);
+      });
+    }
+    document.querySelectorAll('[data-magnetic]').forEach(bindMagnetic);
+
+    /* 4b. SOLUTION THREAD — scroll-driven connector */
+    (function () {
+      const thread = document.getElementById('thread');
+      const path = document.getElementById('thread-line');
+      const dot = document.getElementById('thread-dot');
+      const pulse = document.getElementById('thread-pulse');
+      const labelEnd = document.getElementById('thread-label-end');
+      const painSection = document.getElementById('why');
+      const compareSection = document.getElementById('compare');
+      if (!thread || !path || !painSection || !compareSection) return;
+
+      let totalLength = 0;
+      let initialized = false;
+
+      function initPath() {
+        const L = path.getTotalLength();
+        if (!L) { return false; }
+        totalLength = L;
+        path.style.strokeDasharray = L;
+        path.style.strokeDashoffset = L;
+        initialized = true;
+        return true;
+      }
+
+      function updateThread() {
+        if (!initialized && !initPath()) return;
+
+        const VH = window.innerHeight;
+        const painRect = painSection.getBoundingClientRect();
+        const compareRect = compareSection.getBoundingClientRect();
+
+        // Visibility: show the thread once the user has reached the pain section
+        // and keep it visible while compare section is still ahead.
+        // start: when pain top reaches 30% from viewport top
+        // hide: when compare section bottom is past viewport top (compare scrolled past)
+        const showStart = painRect.top - VH * 0.85;    // <0 once pain has entered
+        const showEnd   = compareRect.bottom - VH * 0.0; // <0 once compare scrolled past
+        const isVisible = showStart < 0 && showEnd > 0;
+        thread.classList.toggle('is-visible', isVisible);
+
+        // Animation zone:
+        //   start = when pain bottom reaches 75% of viewport (pain mostly read)
+        //   end   = when compare top reaches 35% of viewport (compare clearly in view)
+        const animStart = painRect.bottom - VH * 0.75;
+        const animEnd   = compareRect.top - VH * 0.35;
+
+        let progress = 0;
+        if (animStart >= 0) {
+          progress = 0;
+        } else if (animEnd > 0) {
+          const totalRange = (-animStart) + animEnd;
+          progress = (-animStart) / totalRange;
+        } else {
+          progress = 1;
+        }
+        progress = Math.max(0, Math.min(1, progress));
+
+        // Draw the orange path proportionally
+        path.style.strokeDashoffset = totalLength * (1 - progress);
+
+        // Move the leading dot along the path
+        const drawLen = totalLength * progress;
+        if (drawLen > 0) {
+          try {
+            const pt = path.getPointAtLength(drawLen);
+            dot.setAttribute('cx', pt.x);
+            dot.setAttribute('cy', pt.y);
+            if (pulse) {
+              pulse.setAttribute('cx', pt.x);
+              pulse.setAttribute('cy', pt.y);
+            }
+          } catch (e) {}
+        }
+        const showDot = progress > 0.005 && progress < 0.98;
+        dot.style.opacity = showDot ? '1' : '0';
+        if (pulse) pulse.style.opacity = showDot ? '1' : '0';
+
+        // End label appears as the trail completes
+        if (labelEnd) {
+          labelEnd.style.opacity = (progress > 0.75) ? '1' : '0';
+        }
+      }
+
+      let ticking = false;
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(function () {
+            updateThread();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', function () {
+        initialized = false;
+        updateThread();
+      });
+
+      // Defer initialisation to next frame so the SVG has been laid out
+      requestAnimationFrame(function () {
+        if (!initPath()) {
+          // Retry after a brief delay if not yet ready (e.g. fonts loading)
+          setTimeout(updateThread, 200);
+        }
+        updateThread();
+      });
+    })();
+
+    /* 5. FAQ accordion */
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(function (item) {
+      const btn = item.querySelector('.faq-q');
+      const ans = item.querySelector('.faq-a');
+      if (!btn || !ans) return;
+      btn.addEventListener('click', function () {
+        const open = item.classList.contains('faq-item--open');
+        faqItems.forEach(function (i) {
+          i.classList.remove('faq-item--open');
+          const a = i.querySelector('.faq-a');
+          const b = i.querySelector('.faq-q');
+          if (a) a.style.maxHeight = '0px';
+          if (b) b.setAttribute('aria-expanded', 'false');
+        });
+        if (!open) {
+          item.classList.add('faq-item--open');
+          ans.style.maxHeight = ans.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    /* 6. HERO match deck cycler */
+    const deck = document.getElementById('hero-deck');
+    if (deck) {
+      const cards = Array.from(deck.querySelectorAll('.match-card'));
+      const N = cards.length;
+      // order[i] = current card index at position i
+      let order = cards.map((_, i) => i);
+
+      function applyPositions() {
+        cards.forEach((card) => {
+          const i = parseInt(card.dataset.i, 10);
+          const pos = order.indexOf(i);
+          card.dataset.pos = pos;
+        });
+      }
+      applyPositions();
+
+      // Cycle every 3.2s — top card moves to back
+      const cycleMs = 3200;
+      let interval = null;
+
+      function cycle() {
+        // Move first element to end → next card becomes top
+        order.push(order.shift());
+        applyPositions();
+      }
+
+      function startCycle() { if (!interval) interval = setInterval(cycle, cycleMs); }
+      function stopCycle()  { if (interval) { clearInterval(interval); interval = null; } }
+
+      // Start only when hero is visible
+      const heroObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) startCycle();
+          else stopCycle();
+        });
+      }, { threshold: 0.2 });
+      heroObs.observe(hero);
+
+      // Pause on hover, resume on leave
+      deck.addEventListener('mouseenter', stopCycle);
+      deck.addEventListener('mouseleave', startCycle);
+
+      // Subtle parallax tilt on mouse move
+      if (!prefersReducedMotion) {
+        const heroRight = deck.parentElement; // .hero__right
+        let rx = 0, ry = 0, tx = 0, ty = 0, raf = null;
+        function tilt() {
+          rx = lerp(rx, tx, 0.08);
+          ry = lerp(ry, ty, 0.08);
+          deck.style.transform = `rotateX(${-rx}deg) rotateY(${ry}deg)`;
+          if (Math.abs(rx - tx) > 0.02 || Math.abs(ry - ty) > 0.02) raf = requestAnimationFrame(tilt);
+          else raf = null;
+        }
+        heroRight.addEventListener('mousemove', (e) => {
+          const r = heroRight.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - 0.5;
+          const y = (e.clientY - r.top) / r.height - 0.5;
+          tx = x * 8;
+          ty = -y * 5;
+          if (!raf) raf = requestAnimationFrame(tilt);
+        });
+        heroRight.addEventListener('mouseleave', () => {
+          tx = ty = 0;
+          if (!raf) raf = requestAnimationFrame(tilt);
+        });
+      }
+    }
+
+  })();
+  </script>
+
+</body>
+</html>
