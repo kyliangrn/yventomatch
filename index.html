@@ -1314,17 +1314,6 @@
     .is-revealed .pain-strike::after,
     .pain-strike.is-revealed::after { right: 0; }
 
-    /* Scroll-fade for pain cards — driven by JS via --p (0..1) */
-    .pain-row {
-      transform-origin: center top;
-      will-change: opacity, transform, filter;
-    }
-    .pain-row.has-fade.is-revealed {
-      opacity: calc(1 - var(--p, 0));
-      transform: translateY(calc(var(--p, 0) * -28px)) scale(calc(1 - var(--p, 0) * 0.06));
-      filter: blur(calc(var(--p, 0) * 4px));
-    }
-
     /* =================================================================
        TRUST — Logos partenaires
     ================================================================= */
@@ -4463,42 +4452,6 @@
       });
     }
     document.querySelectorAll('[data-magnetic]').forEach(bindMagnetic);
-
-    /* 4b. PAIN — scroll-driven fade-out of the 3 cards */
-    (function () {
-      const rows = Array.from(document.querySelectorAll('.pain-row'));
-      if (!rows.length) return;
-      rows.forEach(function (r) { r.classList.add('has-fade'); });
-
-      function update() {
-        const VH = window.innerHeight;
-        for (let i = 0; i < rows.length; i++) {
-          const r = rows[i];
-          const rect = r.getBoundingClientRect();
-          // Start fading when the card's top reaches 22% of viewport,
-          // fully gone by the time its bottom reaches the top of viewport.
-          const fadeStart = VH * 0.22;
-          const fadeEnd = -rect.height * 0.2;
-          let p = 0;
-          if (rect.top < fadeStart) {
-            const range = fadeStart - fadeEnd;
-            p = (fadeStart - rect.top) / range;
-          }
-          if (p < 0) p = 0; else if (p > 1) p = 1;
-          r.style.setProperty('--p', p.toFixed(3));
-        }
-      }
-
-      let ticking = false;
-      function onScroll() {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(function () { update(); ticking = false; });
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll);
-      update();
-    })();
 
     /* 5. FAQ accordion */
     const faqItems = document.querySelectorAll('.faq-item');
