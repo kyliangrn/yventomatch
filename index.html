@@ -93,7 +93,7 @@
         "name": "Comment vous assurez-vous que le prestataire est bien disponible ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Avant chaque envoi, notre outil contacte les prestataires pour confirmer leur disponibilité à votre date exacte. Vous ne recevez aucun profil sous réserve. Si un prestataire n'est pas disponible, il n'apparaît pas dans vos propositions."
+          "text": "Avant chaque envoi, nous contactons les prestataires pour confirmer leur disponibilité à votre date exacte. Vous ne recevez aucun profil sous réserve. Si un prestataire n'est pas disponible, il n'apparaît pas dans vos propositions."
         }
       },
       {
@@ -292,88 +292,100 @@
     }
 
     /* =================================================================
-       4. NAV
+       4. NAV — pilule flottante glassmorphism (sombre → clair)
     ================================================================= */
-    .nav {
+    nav.nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 18px 0;
-      transition: background 0.5s var(--ease-out-quart),
-                  backdrop-filter 0.5s var(--ease-out-quart),
-                  border-color 0.5s var(--ease-out-quart);
-      border-bottom: 1px solid transparent;
+      top: 16px; left: 0; right: 0;
+      z-index: 200;
+      padding: 0 5%;
+      pointer-events: none;
+      background: none;
+      border: none;
     }
-    .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .nav__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      pointer-events: auto;
+      padding: 9px 11px 9px 22px;
+      background: rgba(10, 14, 30, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border-radius: 999px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+      transition: max-width 0.7s var(--ease-out-expo),
+                  background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+    }
+    .nav--solid .nav__inner {
+      max-width: 920px;
+      background: rgba(248, 245, 240, 0.86);
+      border-color: var(--hairline);
+      box-shadow: 0 10px 34px rgba(10, 14, 30, 0.12);
+    }
 
     .nav__brand {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      transition: filter 0.4s var(--ease-out-quart);
-      height: 36px;
+      gap: 10px;
     }
     .nav__brand img {
-      height: 32px;
+      height: 26px;
       width: auto;
       display: block;
-      transition: filter 0.4s var(--ease-out-quart);
+      filter: brightness(0) invert(1);
+      transition: filter 0.45s var(--ease-out-quart);
     }
-    /* Inverse for dark nav (initial state) if logo is dark.
-       Detect by .nav--solid (light bg) for the dark version. */
-    .nav__brand img { filter: brightness(0) invert(1); }
-    .nav--solid .nav__brand img { filter: brightness(0) invert(0); }
+    .nav--solid .nav__brand img { filter: none; }
+    .nav__brand-text {
+      font-weight: 800;
+      font-size: 15px;
+      color: #fff;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      transition: color 0.45s ease;
+    }
+    .nav__brand-text b { color: var(--orange); font-weight: 800; }
+    .nav--solid .nav__brand-text { color: var(--ink-text); }
+
+    .nav__links { display: none; align-items: center; gap: 22px; }
+    .nav__links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.72);
+      white-space: nowrap;
+      transition: color 0.2s var(--ease-out-quart);
+    }
+    .nav__links a:hover { color: #fff; }
+    .nav--solid .nav__links a { color: var(--mute-text); }
+    .nav--solid .nav__links a:hover { color: var(--ink-text); }
+    @media (min-width: 1024px) { .nav__links { display: flex; } }
+
+    .nav__right { display: flex; align-items: center; gap: 10px; }
+    .nav .btn { border-radius: 999px; }
+    .nav__provider {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.82);
+      padding: 7px 15px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+      white-space: nowrap;
+    }
+    .nav__provider:hover { color: #fff; border-color: rgba(255, 255, 255, 0.5); background: rgba(255, 255, 255, 0.06); }
+    .nav--solid .nav__provider { color: var(--sub-text); border-color: var(--hairline); }
+    .nav--solid .nav__provider:hover { color: var(--ink-text); border-color: var(--ink-text); background: transparent; }
+    @media (max-width: 880px) { .nav__provider { display: none; } }
     @keyframes dotPulse {
       0%   { box-shadow: 0 0 0 0   rgba(244,97,26,0.5); }
       70%  { box-shadow: 0 0 0 8px rgba(244,97,26,0);   }
       100% { box-shadow: 0 0 0 0   rgba(244,97,26,0);   }
-    }
-
-    .nav__links { display: none; gap: 32px; }
-    .nav__links a {
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.7);
-      position: relative;
-      padding: 4px 0;
-      transition: color 0.3s var(--ease-out-quart);
-    }
-    .nav__links a::after {
-      content: '';
-      position: absolute;
-      left: 0; bottom: 0;
-      width: 0; height: 1px;
-      background: var(--orange);
-      transition: width 0.4s var(--ease-out-quart);
-    }
-    .nav__links a:hover { color: #fff; }
-    .nav__links a:hover::after { width: 100%; }
-    .nav__right { display: flex; align-items: center; gap: 12px; }
-    @media (min-width: 768px) { .nav__right { gap: 20px; } }
-    .nav__provider {
-      display: inline;
-      font-size: 12px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.7);
-      transition: color 0.3s var(--ease-out-quart);
-      white-space: nowrap;
-    }
-    @media (min-width: 768px) { .nav__provider { font-size: 13px; } }
-    .nav__provider:hover { color: #fff; }
-
-    .nav--solid {
-      background: rgba(255,255,255,0.55);
-      backdrop-filter: saturate(160%) blur(26px);
-      -webkit-backdrop-filter: saturate(160%) blur(26px);
-      border-bottom-color: var(--hairline);
-    }
-    .nav--solid .nav__brand { color: var(--ink-text); }
-    .nav--solid .nav__links a { color: var(--sub-text); }
-    .nav--solid .nav__links a:hover { color: var(--ink-text); }
-    .nav--solid .nav__provider { color: var(--sub-text); }
-    .nav--solid .nav__provider:hover { color: var(--ink-text); }
-
-    @media (min-width: 1024px) {
-      .nav__links { display: flex; }
     }
 
     /* =================================================================
@@ -449,20 +461,20 @@
     /* Mobile nav: shrink the primary CTA so the logo keeps full width */
     @media (max-width: 767px) {
       .nav .btn--sm {
-        padding: 8px 12px;
+        padding: 8px 13px;
         font-size: 11px;
-        border-radius: 8px;
+        border-radius: 999px;
         gap: 6px;
       }
       .nav .btn--sm .btn__arrow { width: 12px; height: 12px; }
       .nav__provider { font-size: 11.5px; }
-      .nav__inner { gap: 10px; }
+      .nav__inner { gap: 10px; padding: 8px 9px 8px 18px; }
     }
-    @media (max-width: 420px) {
-      .nav .btn--sm { padding: 7px 10px; font-size: 10.5px; }
-      .nav__provider { font-size: 10.5px; }
+    @media (max-width: 540px) {
+      .nav__brand-text { display: none; }
+      .nav .btn--sm { padding: 7px 11px; font-size: 10.5px; }
       .nav__right { gap: 8px; }
-      .nav__inner { gap: 8px; }
+      .nav__inner { gap: 8px; padding: 7px 8px 7px 14px; }
     }
     .btn__arrow {
       width: 14px; height: 14px;
@@ -555,19 +567,7 @@
       box-shadow: 0 0 0 3px rgba(244,97,26,0.2), 0 0 16px rgba(244,97,26,0.7);
       position: relative;
     }
-    .hero__badge-dot::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: var(--orange);
-      animation: pulseRing 2.4s var(--ease-out-quart) infinite;
-    }
-    @keyframes pulseRing {
-      0%   { transform: scale(1);   opacity: 0.6; }
-      80%  { transform: scale(2.2); opacity: 0;   }
-      100% { transform: scale(2.2); opacity: 0;   }
-    }
+    /* dot statique (anneau pulsant retiré pour une lecture plus sobre) */
 
     .hero__title {
       color: #fff;
@@ -807,7 +807,6 @@
       width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--orange);
-      animation: dotPulse 2.6s var(--ease-out-quart) infinite;
     }
 
     /* HERO stats — redesigned with animated counters */
@@ -1202,22 +1201,47 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding-top: 28px;
-      border-top: 1px solid var(--hairline);
+      padding: 30px 28px;
+      background: var(--paper);
+      border: 1px solid var(--hairline);
+      border-radius: 18px;
+      transition: border-color 0.3s var(--ease-out-quart),
+                  transform 0.3s var(--ease-out-quart),
+                  box-shadow 0.3s var(--ease-out-quart);
     }
+    .pain-row:hover {
+      border-color: rgba(244,97,26,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 24px 48px -32px rgba(15,31,61,0.28);
+    }
+    .pain-row__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pain-row__icon {
+      width: 48px; height: 48px;
+      border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(244,97,26,0.1);
+      border: 1px solid rgba(244,97,26,0.22);
+      color: var(--orange);
+      flex: 0 0 auto;
+    }
+    .pain-row__icon svg { width: 24px; height: 24px; }
     .pain-row__num {
       font-family: 'Roboto', sans-serif;
       font-weight: 900;
-      font-size: clamp(36px, 4vw, 52px);
-      line-height: 0.85;
-      color: var(--orange);
+      font-size: 32px;
+      line-height: 1;
+      color: rgba(15,31,61,0.12);
       letter-spacing: -0.04em;
     }
     .pain-row__body { display: flex; flex-direction: column; gap: 10px; }
     .pain-row__title {
       font-family: 'Roboto', sans-serif;
       font-weight: 800;
-      font-size: clamp(20px, 2vw, 26px);
+      font-size: clamp(19px, 2vw, 23px);
       line-height: 1.15;
       letter-spacing: -0.02em;
     }
@@ -1225,68 +1249,22 @@
       font-size: 14.5px;
       color: var(--sub-text);
       line-height: 1.65;
-      max-width: 38ch;
     }
-    .pain-row__vis {
-      width: 100%;
-      margin: 0 0 8px;
-      aspect-ratio: 4 / 3;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      overflow: visible;
-      order: -1;
-    }
-    .pain-row__vis > svg {
-      width: 70%;
-      height: auto;
-      position: relative;
-      z-index: 1;
-      filter: drop-shadow(0 18px 28px rgba(244,97,26,0.28))
-              drop-shadow(0 4px 8px rgba(15,31,61,0.12));
-      transition: transform 0.8s var(--ease-out-expo),
-                  filter 0.5s var(--ease-out-quart);
-    }
-    .pain-row:nth-child(2) .pain-row__vis > svg { width: 80%; }
-    .pain-row:hover .pain-row__vis > svg {
-      transform: scale(1.05) translateY(-4px);
-      filter: drop-shadow(0 26px 40px rgba(244,97,26,0.38))
-              drop-shadow(0 4px 8px rgba(15,31,61,0.14));
-    }
-    /* Soft floor shadow under each illustration for grounding */
-    .pain-row__vis::after {
-      content: '';
-      position: absolute;
-      bottom: 8%; left: 22%; right: 22%;
-      height: 14px;
-      background: radial-gradient(ellipse, rgba(244,97,26,0.32), transparent 70%);
-      filter: blur(10px);
-      pointer-events: none;
-      transition: opacity 0.6s var(--ease-out-quart);
-      opacity: 0.7;
-    }
-    .pain-row:hover .pain-row__vis::after { opacity: 1; }
     .pain-row__tag {
       display: inline-flex;
       width: fit-content;
       padding: 5px 11px;
       border-radius: 999px;
-      background: rgba(244,97,26,0.1);
-      border: 1px solid rgba(244,97,26,0.3);
+      background: rgba(244,97,26,0.08);
+      border: 1px solid rgba(244,97,26,0.22);
       font-family: var(--mono);
       font-size: 10px;
       font-weight: 500;
       color: var(--orange);
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 4px;
       align-self: flex-start;
     }
-    .pain-row__vis .float-a { animation: floatY 4s var(--ease-out-quart) infinite; transform-origin: center; }
-    .pain-row__vis .float-b { animation: floatY 5s var(--ease-out-quart) infinite 0.6s; transform-origin: center; }
-    .pain-row__vis .float-c { animation: floatY 4.5s var(--ease-out-quart) infinite 1.2s; transform-origin: center; }
 
     /* Strike-through "chercher seul" — subtle thin line, keeps word readable */
     .pain-strike {
@@ -1417,7 +1395,7 @@
        10. MANIFESTO
     ================================================================= */
     .manifesto {
-      padding: 120px 0;
+      padding: 60px 0;
       background: var(--orange);
       color: #fff;
       position: relative;
@@ -1441,7 +1419,7 @@
       pointer-events: none;
     }
     .manifesto > * { position: relative; z-index: 1; }
-    @media (min-width: 768px) { .manifesto { padding: 160px 0; } }
+    @media (min-width: 768px) { .manifesto { padding: 84px 0; } }
 
     .manifesto__inner {
       max-width: 1320px;
@@ -1454,11 +1432,11 @@
     .manifesto__text {
       font-family: 'Roboto', sans-serif;
       font-weight: 900;
-      font-size: clamp(28px, 5.4vw, 84px);
-      line-height: 1.08;
+      font-size: clamp(26px, 4vw, 56px);
+      line-height: 1.1;
       letter-spacing: -0.04em;
       color: #fff;
-      max-width: 18ch;
+      max-width: 22ch;
     }
     @media (min-width: 768px) {
       .manifesto__text { line-height: 0.98; letter-spacing: -0.045em; }
@@ -1523,7 +1501,7 @@
       position: relative;
       overflow: hidden;
     }
-    @media (min-width: 768px) { .compare { padding: 160px 0 200px; } }
+    @media (min-width: 768px) { .compare { padding: 130px 0 130px; } }
     .compare::before {
       content: '';
       position: absolute;
@@ -1549,9 +1527,9 @@
     .compare__head h2 {
       font-family: 'Roboto', sans-serif;
       font-weight: 900;
-      font-size: clamp(38px, 6vw, 88px);
-      line-height: 0.98;
-      letter-spacing: -0.045em;
+      font-size: clamp(34px, 4.6vw, 60px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
       color: #fff;
       max-width: 18ch;
     }
@@ -1606,8 +1584,8 @@
       position: relative;
       background: #C44A0E;
       border: none;
-      box-shadow: 0 30px 80px -20px rgba(244,97,26,0.55),
-                  0 1px 0 rgba(255,255,255,0.18) inset;
+      box-shadow: 0 24px 60px -32px rgba(244,97,26,0.5),
+                  0 1px 0 rgba(255,255,255,0.16) inset;
       transform: translateY(-8px);
       z-index: 2;
       padding-top: 56px;
@@ -1617,50 +1595,29 @@
     }
     @media (max-width: 900px) { .cmp-card--win { transform: translateY(0); padding-top: 60px; } }
 
-    /* Rotating glowing border via mask-composite (true ring) */
+    /* Static, sober light ring (rotating glow removed for sobriety) */
     .cmp-card--win::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: 24px;
-      padding: 2.5px;
-      background: conic-gradient(
-        from var(--bd-angle),
-        rgba(255,217,179,0.18) 0deg,
-        rgba(255,217,179,0.18) 70deg,
-        #FFE0B8 130deg,
-        #FFFFFF 170deg,
-        #FFF6E8 190deg,
-        #FFE0B8 220deg,
-        rgba(255,217,179,0.18) 290deg,
-        rgba(255,217,179,0.18) 360deg
-      );
+      padding: 1.5px;
+      background: linear-gradient(160deg, rgba(255,224,184,0.55), rgba(255,224,184,0.12));
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
               mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
               mask-composite: exclude;
       pointer-events: none;
-      animation: spinBorder 5s linear infinite;
-      filter: drop-shadow(0 0 4px rgba(255,224,184,0.85))
-              drop-shadow(0 0 12px rgba(255,200,140,0.55));
-      transition: filter 0.4s var(--ease-out-quart);
     }
     .cmp-card--win > * { position: relative; z-index: 1; }
 
-    /* Hover/active highlight — uniform soft glow, no layout shift */
+    /* Hover : léger renforcement, sans glow */
     .cmp-card--win:hover,
     .cmp-card--win:focus-within,
     .cmp-card--win:active {
-      box-shadow: 0 30px 80px -20px rgba(244,97,26,0.55),
-                  0 0 0 1px rgba(255,224,184,0.45),
-                  0 0 30px rgba(255,180,120,0.35),
-                  0 1px 0 rgba(255,255,255,0.18) inset;
-    }
-    .cmp-card--win:hover::before,
-    .cmp-card--win:focus-within::before,
-    .cmp-card--win:active::before {
-      filter: drop-shadow(0 0 6px rgba(255,224,184,0.85))
-              drop-shadow(0 0 14px rgba(255,200,140,0.55));
+      box-shadow: 0 28px 70px -30px rgba(244,97,26,0.55),
+                  0 0 0 1px rgba(255,224,184,0.4),
+                  0 1px 0 rgba(255,255,255,0.16) inset;
     }
 
     /* Faint grain texture overlay */
@@ -2084,18 +2041,7 @@
       display: none;
       pointer-events: none;
     }
-    @media (min-width: 1024px) {
-      .method-line {
-        display: block;
-        position: absolute;
-        top: 22%;
-        left: -18%;
-        width: 136%;
-        height: 60%;
-        z-index: 0;
-        overflow: visible;
-      }
-    }
+    /* Trait ondulé animé masqué pour une lecture plus sobre */
     .method-line__path {
       fill: none;
       stroke: rgba(244, 97, 26, 0.32);
@@ -2133,17 +2079,11 @@
     .method-card {
       position: relative;
       z-index: 1;
-      perspective: 1500px;
-      animation: methodFloat 6s ease-in-out infinite;
-      will-change: transform;
       background: transparent;
       border: none;
       box-shadow: none;
       overflow: visible;
     }
-    .method-card:nth-child(2) { animation-delay: -2s; }
-    .method-card:nth-child(3) { animation-delay: -4s; }
-    .method-card:hover { animation-play-state: paused; }
 
     /* Inner → handles the flip on hover */
     .method-card__inner {
@@ -2153,9 +2093,7 @@
       transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
       will-change: transform;
     }
-    .method-card:hover .method-card__inner {
-      transform: rotateY(180deg);
-    }
+    /* Flip 3D retiré : cartes statiques (face avant uniquement) */
     /* Use padding-bottom hack to give inner a fixed aspect since faces are absolute */
     .method-card__inner {
       min-height: 380px;
@@ -2891,20 +2829,286 @@
       .reveal-mask > span { transform: none; }
       .marquee-track, .showcase__track { animation: none !important; }
     }
+
+    /* =================================================================
+       RÉSEAU CERTIFIÉ (section sombre) + POUR QUI + PARTENAIRES
+    ================================================================= */
+    .netcert {
+      position: relative;
+      padding: 110px 0;
+      background: var(--ink);
+      color: #fff;
+      overflow: hidden;
+      border-top: 1px solid var(--hairline-d);
+      border-bottom: 1px solid var(--hairline-d);
+    }
+    @media (min-width: 768px) { .netcert { padding: 140px 0; } }
+    .netcert__map {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: url("assets/netmap.svg") center center / cover no-repeat;
+      opacity: 0.5;
+      pointer-events: none;
+      /* vide au centre (sous la carte), visible sur les bords */
+      -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, transparent 42%, #000 72%, transparent 100%);
+              mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, transparent 42%, #000 72%, transparent 100%);
+    }
+    .netcert .wrap { position: relative; z-index: 1; }
+    .netcert__card {
+      position: relative;
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 54px 46px;
+      border-radius: 26px;
+      background: rgba(12,16,32,0.7);
+      -webkit-backdrop-filter: blur(10px);
+              backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 40px 90px -50px rgba(0,0,0,0.7);
+      overflow: hidden;
+    }
+    .netcert__card::before {
+      content: '';
+      position: absolute;
+      top: -45%; left: 50%;
+      transform: translateX(-50%);
+      width: 640px; height: 440px;
+      background: radial-gradient(ellipse, rgba(244,97,26,0.18), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .netcert__card > * { position: relative; z-index: 1; }
+    .netcert__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(244,97,26,0.14);
+      border: 1px solid rgba(244,97,26,0.4);
+      color: var(--ember);
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 26px;
+    }
+    .netcert__badge svg { width: 18px; height: 18px; }
+    .netcert__badge b { color: #fff; font-weight: 800; }
+    .netcert__card h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      color: #fff;
+      font-size: clamp(30px, 3.6vw, 44px);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+    .netcert__card h2 .orange { color: var(--orange); }
+    .netcert__lead {
+      color: rgba(255,255,255,0.66);
+      margin: 18px auto 0;
+      max-width: 60ch;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .netcert__lead strong { color: #fff; }
+    .netcert__regions {
+      margin-top: 28px;
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .netcert__region {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 7px 15px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .netcert__region svg { color: var(--orange); }
+    @media (max-width: 640px) { .netcert__card { padding: 38px 22px; } }
+
+    /* ── POUR QUI ── */
+    .audience__head { text-align: center; margin-bottom: 52px; }
+    .aud-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 900px) { .aud-grid { grid-template-columns: repeat(3, 1fr); } }
+    .aud-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 34px 30px;
+      background: var(--paper);
+      border: 1px solid var(--hairline);
+      border-radius: 20px;
+      transition: border-color 0.3s var(--ease-out-quart),
+                  transform 0.3s var(--ease-out-quart),
+                  box-shadow 0.3s var(--ease-out-quart);
+    }
+    .aud-card:hover {
+      border-color: rgba(244,97,26,0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 28px 56px -34px rgba(15,31,61,0.3);
+    }
+    .aud-card__icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(244,97,26,0.1);
+      border: 1px solid rgba(244,97,26,0.22);
+      color: var(--orange);
+    }
+    .aud-card__icon svg { width: 26px; height: 26px; }
+    .aud-card__tag {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+    }
+    .aud-card__title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .aud-card__text {
+      font-size: 14.5px;
+      color: var(--sub-text);
+      line-height: 1.65;
+      flex: 1;
+    }
+    .aud-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--orange);
+      transition: gap 0.3s var(--ease-out-quart);
+    }
+    .aud-card__link svg { width: 16px; height: 16px; }
+    .aud-card__link:hover { gap: 11px; }
+
+    /* ── PARTENAIRES (band) ── */
+    .partners {
+      background: var(--ink-2);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .partners::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 80% 20%, rgba(244,97,26,0.16), transparent 65%),
+        radial-gradient(ellipse 50% 60% at 15% 90%, rgba(26,50,96,0.5), transparent 65%);
+      pointer-events: none;
+    }
+    .partners > * { position: relative; z-index: 1; }
+    .partners__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+    @media (min-width: 900px) { .partners__inner { grid-template-columns: 1.1fr 0.9fr; gap: 56px; } }
+    .partners__eyebrow { color: rgba(255,255,255,0.5); }
+    .partners h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(30px, 4vw, 50px);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-top: 14px;
+    }
+    .partners h2 .orange { color: var(--orange); }
+    .partners__text {
+      color: rgba(255,255,255,0.66);
+      font-size: 15.5px;
+      line-height: 1.7;
+      margin-top: 18px;
+      max-width: 52ch;
+    }
+    .partners__list {
+      margin-top: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .partners__list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      font-size: 14.5px;
+      color: rgba(255,255,255,0.82);
+    }
+    .partners__list .ic {
+      flex: 0 0 auto;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(244,97,26,0.18);
+      color: var(--ember);
+      margin-top: 1px;
+    }
+    .partners__list .ic svg { width: 13px; height: 13px; }
+    .partners__cta {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 40px 34px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .partners__cta h3 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .partners__cta p {
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 12px auto 24px;
+      max-width: 36ch;
+    }
+    .partners__cta .btn { width: 100%; justify-content: center; }
+    .partners__cta .fine {
+      margin-top: 14px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.45);
+    }
   </style>
 </head>
 <body>
 
   <!-- ====================================================== NAV -->
   <nav class="nav" id="nav" aria-label="Navigation principale">
-    <div class="wrap nav__inner">
-      <a href="#top" class="nav__brand" aria-label="Yvento — Accueil">
+    <div class="nav__inner">
+      <a href="#top" class="nav__brand" aria-label="Yvento Match — Accueil">
         <img src="./assets/logo.png" alt="Yvento" />
+        <span class="nav__brand-text">Yvento <b>Match</b></span>
       </a>
       <div class="nav__links">
+        <a href="#audience">Pour qui</a>
         <a href="#events">Événements</a>
-        <a href="#compare">Notre approche</a>
         <a href="#method">Comment ça marche</a>
+        <a href="#partenaires">Lieux partenaires</a>
         <a href="#faq">FAQ</a>
       </div>
       <div class="nav__right">
@@ -2945,7 +3149,8 @@
           </h1>
 
           <p class="hero__sub fade-up" style="--d:660ms">
-            Décrivez votre événement en 2 minutes. Recevez des
+            Pour votre événement privé ou pour animer votre établissement,
+            décrivez votre besoin en 2 minutes et recevez des
             <b>prestataires disponibles, vérifiés et adaptés à Lyon et Toulouse</b>,
             sans aucune démarche de votre côté.
           </p>
@@ -2968,7 +3173,7 @@
         <div class="hero__right fade-up" style="--d:480ms">
           <div class="deck-annot" aria-hidden="true">
             <span class="live"></span>
-            <span>MATCH&nbsp;EN&nbsp;COURS</span>
+            <span>VOS&nbsp;PRESTATAIRES</span>
           </div>
           <div class="hero__deck" id="hero-deck">
             <!-- Cards: each has data-i (DOM order), data-pos is set by JS -->
@@ -3121,222 +3326,6 @@
   </section>
 
 
-  <!-- ====================================================== SHOWCASE — EVENT TYPES -->
-  <section class="showcase" id="events" aria-label="Types d'événements">
-
-    <div class="showcase__head">
-      <h2 class="fade-up">
-        Le bon profil pour<br><span class="orange">chaque événement.</span>
-      </h2>
-      <p class="fade-up" style="--d:120ms">
-        Mariage à Lyon, soirée d'entreprise à Toulouse, anniversaire, concert : Yvento Match sélectionne
-        les prestataires disponibles, vérifiés et adaptés à votre événement.
-      </p>
-    </div>
-
-    <div class="showcase__strip">
-      <div class="showcase__track">
-        <article class="show-card"><img src="./assets/mariage.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Mariage</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Anniversaire</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Afterwork</span></div></article>
-        <article class="show-card"><img src="./assets/poolparty.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Pool party</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Cocktail</span></div></article>
-        <article class="show-card"><img src="./assets/apero.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Apéro</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Concert</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Festival</span></div></article>
-        <article class="show-card"><img src="./assets/soiree-a-theme.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Soirée à thème</span></div></article>
-        <!-- duplicate for seamless loop -->
-        <article class="show-card" aria-hidden="true"><img src="./assets/mariage.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Mariage</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Anniversaire</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Afterwork</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="./assets/poolparty.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Pool party</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Cocktail</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="./assets/apero.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Apéro</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Concert</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Festival</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="./assets/soiree-a-theme.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Soirée à thème</span></div></article>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ====================================================== PAIN -->
-  <section class="section section--cream" id="why" aria-labelledby="pain-title">
-    <div class="wrap">
-
-      <div class="sec-head">
-        <span class="eyebrow fade-up">LE PROBLÈME</span>
-        <h2 id="pain-title" class="fade-up" style="--d:120ms">
-          Le problème<br>de <span class="orange pain-strike"><span class="pain-strike__text">chercher seul</span></span>.
-        </h2>
-        <p class="lead fade-up" style="--d:240ms">
-          Trouver un prestataire seul, c'est des heures perdues, des devis incomparables
-          et des profils impossibles à qualifier. La plupart des organisateurs finissent
-          par choisir au hasard et le regrettent. Yvento existe pour que ce ne soit plus une option.
-        </p>
-      </div>
-
-      <div class="pain-board">
-
-        <article class="pain-row fade-up">
-          <span class="pain-row__num">01</span>
-          <div class="pain-row__body">
-            <span class="pain-row__tag">Trop lent</span>
-            <h3 class="pain-row__title">Des heures à relancer</h3>
-            <p class="pain-row__text">Messages sans réponse, disponibilités impossibles à confirmer. Chaque heure passée à chercher est une heure que vous ne consacrez pas à votre événement.</p>
-          </div>
-          <div class="pain-row__vis">
-            <!-- 3D Clock + floating message bubbles -->
-            <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <radialGradient id="p1-clock" cx="38%" cy="32%" r="78%">
-                  <stop offset="0%"  stop-color="#FFFFFF"/>
-                  <stop offset="60%" stop-color="#F8E0CD"/>
-                  <stop offset="100%" stop-color="#C44A0E"/>
-                </radialGradient>
-                <radialGradient id="p1-hl" cx="35%" cy="25%" r="35%">
-                  <stop offset="0%" stop-color="#FFF" stop-opacity="0.9"/>
-                  <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
-                </radialGradient>
-                <linearGradient id="p1-bub" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#FFFFFF"/>
-                  <stop offset="100%" stop-color="#F8E0CD"/>
-                </linearGradient>
-              </defs>
-              <!-- Clock orb -->
-              <g class="float-a">
-                <circle cx="160" cy="120" r="68" fill="url(#p1-clock)"/>
-                <ellipse cx="142" cy="92" rx="34" ry="20" fill="url(#p1-hl)"/>
-                <!-- ticks -->
-                <g stroke="#C44A0E" stroke-width="2" stroke-linecap="round">
-                  <line x1="160" y1="60" x2="160" y2="68"/>
-                  <line x1="160" y1="172" x2="160" y2="180"/>
-                  <line x1="100" y1="120" x2="108" y2="120"/>
-                  <line x1="212" y1="120" x2="220" y2="120"/>
-                </g>
-                <!-- hands -->
-                <line x1="160" y1="120" x2="160" y2="80" stroke="#0F1F3D" stroke-width="4" stroke-linecap="round"/>
-                <line x1="160" y1="120" x2="200" y2="138" stroke="#0F1F3D" stroke-width="3.5" stroke-linecap="round"/>
-                <circle cx="160" cy="120" r="5" fill="#0F1F3D"/>
-              </g>
-              <!-- Floating bubbles with unread numbers -->
-              <g class="float-b">
-                <rect x="40" y="44" width="74" height="40" rx="14" fill="url(#p1-bub)"/>
-                <circle cx="100" cy="44" r="14" fill="#0F1F3D"/>
-                <text x="100" y="49" text-anchor="middle" font-family="Roboto, sans-serif" font-weight="900" font-size="14" fill="#FFFFFF">3</text>
-                <rect x="56" y="62" width="34" height="3" rx="1.5" fill="#C44A0E" opacity="0.4"/>
-                <rect x="56" y="70" width="22" height="3" rx="1.5" fill="#C44A0E" opacity="0.3"/>
-              </g>
-              <g class="float-c">
-                <rect x="220" y="180" width="74" height="40" rx="14" fill="url(#p1-bub)"/>
-                <circle cx="280" cy="180" r="14" fill="#0F1F3D"/>
-                <text x="280" y="185" text-anchor="middle" font-family="Roboto, sans-serif" font-weight="900" font-size="14" fill="#FFFFFF">7</text>
-                <rect x="236" y="198" width="42" height="3" rx="1.5" fill="#C44A0E" opacity="0.4"/>
-                <rect x="236" y="206" width="28" height="3" rx="1.5" fill="#C44A0E" opacity="0.3"/>
-              </g>
-            </svg>
-          </div>
-        </article>
-
-        <article class="pain-row fade-up" style="--d:140ms">
-          <span class="pain-row__num">02</span>
-          <div class="pain-row__body">
-            <span class="pain-row__tag">Trop opaque</span>
-            <h3 class="pain-row__title">Des choix à l'aveugle</h3>
-            <p class="pain-row__text">Des devis que vous ne pouvez pas comparer, des profils que personne n'a vérifiés. Vous signez en espérant que ça se passe bien.</p>
-          </div>
-          <div class="pain-row__vis">
-            <!-- 3D Profile cards stacked with question marks -->
-            <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <radialGradient id="p2-card" cx="38%" cy="32%" r="78%">
-                  <stop offset="0%"  stop-color="#FFFFFF"/>
-                  <stop offset="60%" stop-color="#F8E0CD"/>
-                  <stop offset="100%" stop-color="#C44A0E"/>
-                </radialGradient>
-                <radialGradient id="p2-hl" cx="35%" cy="25%" r="40%">
-                  <stop offset="0%" stop-color="#FFF" stop-opacity="0.9"/>
-                  <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
-                </radialGradient>
-              </defs>
-              <!-- back cards -->
-              <g class="float-b">
-                <rect x="60" y="68" width="80" height="108" rx="14" fill="url(#p2-card)" transform="rotate(-9 100 122)"/>
-                <ellipse cx="92" cy="86" rx="22" ry="13" fill="url(#p2-hl)" transform="rotate(-9 92 86)"/>
-                <circle cx="100" cy="106" r="14" fill="#0F1F3D" opacity="0.8" transform="rotate(-9 100 106)"/>
-                <rect x="72" y="138" width="56" height="4" rx="2" fill="#0F1F3D" opacity="0.55" transform="rotate(-9 100 140)"/>
-                <rect x="72" y="148" width="40" height="4" rx="2" fill="#0F1F3D" opacity="0.35" transform="rotate(-9 92 150)"/>
-              </g>
-              <g class="float-c">
-                <rect x="190" y="64" width="80" height="108" rx="14" fill="url(#p2-card)" transform="rotate(7 230 118)"/>
-                <ellipse cx="222" cy="82" rx="22" ry="13" fill="url(#p2-hl)" transform="rotate(7 222 82)"/>
-                <circle cx="230" cy="102" r="14" fill="#0F1F3D" opacity="0.8" transform="rotate(7 230 102)"/>
-                <rect x="202" y="134" width="56" height="4" rx="2" fill="#0F1F3D" opacity="0.55" transform="rotate(7 230 136)"/>
-                <rect x="202" y="144" width="40" height="4" rx="2" fill="#0F1F3D" opacity="0.35" transform="rotate(7 222 146)"/>
-              </g>
-              <!-- Front card with big question mark -->
-              <g class="float-a">
-                <rect x="120" y="60" width="90" height="124" rx="16" fill="url(#p2-card)"/>
-                <ellipse cx="156" cy="84" rx="28" ry="16" fill="url(#p2-hl)"/>
-                <text x="165" y="148" text-anchor="middle" font-family="Roboto, sans-serif" font-weight="900" font-size="78" fill="#F4611A">?</text>
-              </g>
-            </svg>
-          </div>
-        </article>
-
-        <article class="pain-row fade-up" style="--d:280ms">
-          <span class="pain-row__num">03</span>
-          <div class="pain-row__body">
-            <span class="pain-row__tag">Trop risqué</span>
-            <h3 class="pain-row__title">Un cadre flou</h3>
-            <p class="pain-row__text">Pas de contrat clair, pas de paiement sécurisé, pas de recours. En cas de problème le jour J, vous êtes seul.</p>
-          </div>
-          <div class="pain-row__vis">
-            <!-- 3D Contract with broken lines -->
-            <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <radialGradient id="p3-doc" cx="38%" cy="32%" r="80%">
-                  <stop offset="0%"  stop-color="#FFFFFF"/>
-                  <stop offset="60%" stop-color="#F8E0CD"/>
-                  <stop offset="100%" stop-color="#C44A0E"/>
-                </radialGradient>
-                <radialGradient id="p3-hl" cx="35%" cy="25%" r="40%">
-                  <stop offset="0%" stop-color="#FFF" stop-opacity="0.9"/>
-                  <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
-                </radialGradient>
-              </defs>
-              <!-- Document -->
-              <g class="float-a">
-                <path d="M 100 40 L 196 40 L 224 68 L 224 200 Q 224 210 214 210 L 100 210 Q 90 210 90 200 L 90 50 Q 90 40 100 40 Z" fill="url(#p3-doc)"/>
-                <ellipse cx="130" cy="68" rx="32" ry="16" fill="url(#p3-hl)"/>
-                <!-- Folded corner -->
-                <path d="M 196 40 L 196 68 L 224 68 Z" fill="#C44A0E" opacity="0.3"/>
-                <!-- Dashed/missing lines -->
-                <g stroke="#0F1F3D" stroke-width="3" stroke-linecap="round" opacity="0.6">
-                  <line x1="106" y1="88" x2="180" y2="88"/>
-                  <line x1="106" y1="104" x2="160" y2="104" stroke-dasharray="3 4"/>
-                  <line x1="106" y1="120" x2="200" y2="120"/>
-                  <line x1="106" y1="136" x2="140" y2="136" stroke-dasharray="3 4"/>
-                  <line x1="106" y1="152" x2="190" y2="152" stroke-dasharray="3 4"/>
-                  <line x1="106" y1="168" x2="170" y2="168"/>
-                </g>
-                <!-- Signature placeholder broken -->
-                <line x1="106" y1="190" x2="180" y2="190" stroke="#C44A0E" stroke-width="2" stroke-dasharray="6 5"/>
-              </g>
-              <!-- Floating "?" badge -->
-              <g class="float-b">
-                <circle cx="240" cy="100" r="22" fill="#0F1F3D"/>
-                <text x="240" y="108" text-anchor="middle" font-family="Roboto, sans-serif" font-weight="900" font-size="22" fill="#F4611A">!</text>
-              </g>
-            </svg>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-
   <!-- ====================================================== TRUST -->
   <section class="trust" aria-label="Ils nous ont fait confiance">
     <div class="wrap">
@@ -3400,6 +3389,166 @@
       Références réalisées sous <b>Stereo Lights Events</b> et <b>Kygaa Music</b>, aujourd'hui réunies sous <b>Yvento</b>.
     </p>
   </section>
+
+
+  <!-- ====================================================== SHOWCASE — EVENT TYPES -->
+  <section class="showcase" id="events" aria-label="Types d'événements">
+
+    <div class="showcase__head">
+      <h2 class="fade-up">
+        Le bon profil pour<br><span class="orange">chaque événement.</span>
+      </h2>
+      <p class="fade-up" style="--d:120ms">
+        Mariage à Lyon, soirée d'entreprise à Toulouse, anniversaire, concert : Yvento Match sélectionne
+        les prestataires disponibles, vérifiés et adaptés à votre événement.
+      </p>
+    </div>
+
+    <div class="showcase__strip">
+      <div class="showcase__track">
+        <article class="show-card"><img src="./assets/mariage.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Mariage</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Anniversaire</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Afterwork</span></div></article>
+        <article class="show-card"><img src="./assets/poolparty.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Pool party</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Cocktail</span></div></article>
+        <article class="show-card"><img src="./assets/apero.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Apéro</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Concert</span></div></article>
+        <article class="show-card"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Festival</span></div></article>
+        <article class="show-card"><img src="./assets/soiree-a-theme.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Soirée à thème</span></div></article>
+        <!-- duplicate for seamless loop -->
+        <article class="show-card" aria-hidden="true"><img src="./assets/mariage.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Mariage</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Anniversaire</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Afterwork</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="./assets/poolparty.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Pool party</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Cocktail</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="./assets/apero.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Apéro</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Concert</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Festival</span></div></article>
+        <article class="show-card" aria-hidden="true"><img src="./assets/soiree-a-theme.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Soirée à thème</span></div></article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== POUR QUI -->
+  <section class="section section--paper" id="audience" aria-labelledby="audience-title">
+    <div class="wrap">
+
+      <div class="audience__head">
+        <span class="eyebrow fade-up">POUR QUI</span>
+        <h2 id="audience-title" class="fade-up" style="--d:120ms">
+          Une réponse pour<br><span class="orange">chaque organisateur.</span>
+        </h2>
+      </div>
+
+      <div class="aud-grid">
+
+        <article class="aud-card fade-up">
+          <span class="aud-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L12 14"/></svg>
+          </span>
+          <span class="aud-card__tag">Particuliers</span>
+          <h3 class="aud-card__title">Organisateurs particuliers</h3>
+          <p class="aud-card__text">Mariage, anniversaire, soirée privée : décrivez votre événement et recevez des prestataires vérifiés, disponibles à votre date. Sans démarche, sans frais.</p>
+          <a class="aud-card__link" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer">Décrire mon événement
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </article>
+
+        <article class="aud-card fade-up" style="--d:140ms">
+          <span class="aud-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18l-1.5-5.5A1 1 0 0 0 18.55 3H5.45a1 1 0 0 0-.95.5L3 9z"/><path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg>
+          </span>
+          <span class="aud-card__tag">Bars &amp; restaurants</span>
+          <h3 class="aud-card__title">Lieux &amp; établissements</h3>
+          <p class="aud-card__text">Bars, restaurants, clubs : trouvez le DJ, le musicien ou l'animateur qui fera vivre votre établissement, pour une soirée ponctuelle ou une programmation régulière.</p>
+          <a class="aud-card__link" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer">Trouver un prestataire
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </article>
+
+        <article class="aud-card fade-up" style="--d:280ms">
+          <span class="aud-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
+          </span>
+          <span class="aud-card__tag">Apport d'affaires</span>
+          <h3 class="aud-card__title">Lieux partenaires</h3>
+          <p class="aud-card__text">Domaines, salles de réception, traiteurs : proposez nos prestataires à vos clients et touchez une commission sur chaque mise en relation aboutie.</p>
+          <a class="aud-card__link" href="#partenaires">Devenir partenaire
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== PAIN -->
+  <section class="section section--cream" id="why" aria-labelledby="pain-title">
+    <div class="wrap">
+
+      <div class="sec-head">
+        <span class="eyebrow fade-up">LE PROBLÈME</span>
+        <h2 id="pain-title" class="fade-up" style="--d:120ms">
+          Le problème<br>de <span class="orange pain-strike"><span class="pain-strike__text">chercher seul</span></span>.
+        </h2>
+        <p class="lead fade-up" style="--d:240ms">
+          Trouver un prestataire seul, c'est des heures perdues, des devis incomparables
+          et des profils impossibles à qualifier. La plupart des organisateurs finissent
+          par choisir au hasard et le regrettent. Yvento existe pour que ce ne soit plus une option.
+        </p>
+      </div>
+
+      <div class="pain-board">
+
+        <article class="pain-row fade-up">
+          <div class="pain-row__head">
+            <span class="pain-row__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            </span>
+            <span class="pain-row__num">01</span>
+          </div>
+          <div class="pain-row__body">
+            <span class="pain-row__tag">Trop lent</span>
+            <h3 class="pain-row__title">Des heures à relancer</h3>
+            <p class="pain-row__text">Messages sans réponse, disponibilités impossibles à confirmer. Chaque heure passée à chercher est une heure que vous ne consacrez pas à votre événement.</p>
+          </div>
+        </article>
+
+        <article class="pain-row fade-up" style="--d:140ms">
+          <div class="pain-row__head">
+            <span class="pain-row__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
+            </span>
+            <span class="pain-row__num">02</span>
+          </div>
+          <div class="pain-row__body">
+            <span class="pain-row__tag">Trop opaque</span>
+            <h3 class="pain-row__title">Des choix à l'aveugle</h3>
+            <p class="pain-row__text">Des devis que vous ne pouvez pas comparer, des profils que personne n'a vérifiés. Vous signez en espérant que ça se passe bien.</p>
+          </div>
+        </article>
+
+        <article class="pain-row fade-up" style="--d:280ms">
+          <div class="pain-row__head">
+            <span class="pain-row__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12.01" y2="16.5"/></svg>
+            </span>
+            <span class="pain-row__num">03</span>
+          </div>
+          <div class="pain-row__body">
+            <span class="pain-row__tag">Trop risqué</span>
+            <h3 class="pain-row__title">Un cadre flou</h3>
+            <p class="pain-row__text">Pas de contrat clair, pas de paiement sécurisé, pas de recours. En cas de problème le jour J, vous êtes seul.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
 
 
   <!-- ====================================================== MANIFESTO -->
@@ -3967,7 +4116,7 @@
           <div class="method-card__inner">
             <div class="method-card__face method-card__face--front">
               <div class="method-card__img">
-                <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=720&h=540&fit=crop&q=80&auto=format" alt="" loading="lazy">
+                <img src="./assets/dj2.jpg" alt="" loading="lazy">
               </div>
               <div class="method-card__body">
                 <h3 class="method-card__title">Décrivez votre événement</h3>
@@ -3996,17 +4145,17 @@
           <div class="method-card__inner">
             <div class="method-card__face method-card__face--front">
               <div class="method-card__img">
-                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=720&h=540&fit=crop&q=80&auto=format" alt="" loading="lazy">
+                <img src="./assets/photographe-pro.png" alt="" loading="lazy">
               </div>
               <div class="method-card__body">
-                <h3 class="method-card__title">Notre outil filtre, on vérifie, on sélectionne</h3>
-                <p class="method-card__text">Analyse humaine et matching digital. Nous vérifions les disponibilités, qualifions les profils et écartons ce qui ne correspond pas. Vous ne recevez que des prestataires réellement disponibles à votre date.</p>
+                <h3 class="method-card__title">On vérifie et on sélectionne</h3>
+                <p class="method-card__text">Sélection humaine. Nous vérifions les disponibilités, qualifions chaque profil et écartons ce qui ne correspond pas. Vous ne recevez que des prestataires réellement disponibles à votre date.</p>
               </div>
             </div>
             <div class="method-card__face method-card__face--back">
               <div class="method-card__back-info">
                 <span class="method-card__back-tag">ÉTAPE 02</span>
-                <span class="method-card__back-title">Sélection humaine + matching digital.</span>
+                <span class="method-card__back-title">Sélection humaine, profils qualifiés.</span>
                 <span class="method-card__back-cta">
                   Disponibilités vérifiées
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -4024,7 +4173,7 @@
           <div class="method-card__inner">
             <div class="method-card__face method-card__face--front">
               <div class="method-card__img">
-                <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=720&h=540&fit=crop&q=80&auto=format" alt="" loading="lazy">
+                <img src="./assets/videaste2.jpg" alt="" loading="lazy">
               </div>
               <div class="method-card__body">
                 <h3 class="method-card__title">Vous choisissez, on sécurise</h3>
@@ -4049,7 +4198,7 @@
       </div>
 
       <div class="method-foot fade-up" style="--d:480ms">
-        <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--neon" data-magnetic>
+        <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--primary" data-magnetic>
           <span class="btn__inner">
             Trouver mon prestataire
             <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -4063,36 +4212,66 @@
   </section>
 
 
-  <!-- ====================================================== GUARANTEES -->
-  <section class="section section--bone" aria-labelledby="guar-title">
+  <!-- ====================================================== RÉSEAU CERTIFIÉ (sombre) -->
+  <section class="netcert" id="certifie" aria-labelledby="certifie-title">
+    <div class="netcert__map" aria-hidden="true"></div>
     <div class="wrap">
-
-      <div class="sec-head sec-head--center">
-        <span class="eyebrow fade-up">NOS GARANTIES</span>
-        <h2 id="guar-title" class="fade-up" style="--d:120ms">
-          Trois garanties concrètes,<br><span class="orange">sans astérisque.</span>
-        </h2>
+      <div class="netcert__card fade-up">
+        <span class="netcert__badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V5l-8-3z"/><path d="m9 12 2 2 4-4"/></svg>
+          <b>+50 prestataires</b>&nbsp;vérifiés
+        </span>
+        <h2 id="certifie-title">Un réseau <span class="orange">certifié</span></h2>
+        <p class="netcert__lead">
+          Chaque prestataire est vérifié un à un. Nous contrôlons les profils et garantissons leur
+          professionnalisme : vous réservez en confiance, entre pros sérieux. Aucun prestataire ne paie
+          pour figurer dans nos propositions, et chaque disponibilité est confirmée avant tout envoi.<br><br>
+          Le réseau est aujourd'hui concentré sur <strong>Lyon</strong> et <strong>Toulouse</strong>,
+          et s'étend progressivement dans toute la France.
+        </p>
+        <div class="netcert__regions">
+          <span class="netcert__region"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Lyon</span>
+          <span class="netcert__region"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Toulouse</span>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <div class="guar-grid">
 
-        <article class="guar-card fade-up">
-          <span class="guar-card__num">01 / SÉLECTION</span>
-          <h3 class="guar-card__title">Sélection sans conflit d'intérêt</h3>
-          <p class="guar-card__text">Aucun prestataire ne paie pour figurer dans nos propositions. Chaque profil est sélectionné uniquement pour son adéquation avec votre événement.</p>
-        </article>
+  <!-- ====================================================== PARTENAIRES -->
+  <section class="section partners" id="partenaires" aria-labelledby="partners-title">
+    <div class="wrap">
+      <div class="partners__inner">
 
-        <article class="guar-card fade-up" style="--d:140ms">
-          <span class="guar-card__num">02 / DISPONIBILITÉ</span>
-          <h3 class="guar-card__title">Disponibilité vérifiée avant envoi</h3>
-          <p class="guar-card__text">Chaque prestataire proposé a confirmé sa disponibilité à votre date.</p>
-        </article>
+        <div class="partners__copy fade-up">
+          <span class="eyebrow partners__eyebrow">Partenariat · Apport d'affaires</span>
+          <h2 id="partners-title">Devenez <span class="orange">lieu partenaire.</span></h2>
+          <p class="partners__text">
+            Vous gérez un domaine, une salle de réception ou un service traiteur ? Proposez nos
+            prestataires vérifiés à vos clients, sans rien gérer. À chaque mise en relation aboutie,
+            vous touchez une commission.
+          </p>
+          <ul class="partners__list">
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> Un service en plus pour vos clients, sans coût ni logistique</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> Une commission sur chaque réservation que vous apportez</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> Des prestataires vérifiés qui valorisent votre lieu</li>
+          </ul>
+        </div>
 
-        <article class="guar-card fade-up" style="--d:280ms">
-          <span class="guar-card__num">03 / RÉSERVATION</span>
-          <h3 class="guar-card__title">Réservation sécurisée de bout en bout</h3>
-          <p class="guar-card__text">Conditions claires, paiement sécurisé, aucune zone d'ombre. Vous savez exactement ce que vous réservez avant de confirmer.</p>
-        </article>
+        <div class="partners__cta fade-up" style="--d:160ms">
+          <h3>Proposez Yvento à vos clients</h3>
+          <p>Parlons de votre lieu et mettons en place un partenariat d'apport d'affaires.</p>
+          <a href="mailto:contact@yvento.fr?subject=Partenariat%20lieu%20-%20Yvento%20Match" class="btn btn--primary" data-magnetic>
+            <span class="btn__inner">
+              Devenir lieu partenaire
+              <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </span>
+          </a>
+          <p class="fine">Réponse sous 48h · Sans engagement</p>
+        </div>
 
       </div>
     </div>
@@ -4160,7 +4339,7 @@
             <div class="founder__role">Architecture technique</div>
             <span class="founder__line"></span>
             <p class="founder__exp">
-              <b>Ingénieur produit et infrastructure</b>. Construit la plateforme pour que chaque étape — du brief au matching — disparaisse devant l'usage.
+              <b>Ingénieur produit et infrastructure</b>. Construit la plateforme pour que chaque étape — du brief à la réservation — disparaisse devant l'usage.
             </p>
           </div>
         </article>
@@ -4220,7 +4399,7 @@
             <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
           </button>
           <div class="faq-a" id="faq-a-4" role="region">
-            <p class="faq-a__inner">Avant chaque envoi, notre outil contacte les prestataires pour confirmer leur disponibilité à votre date exacte. Vous ne recevez aucun profil sous réserve. Si un prestataire n'est pas disponible, il n'apparaît pas dans vos propositions.</p>
+            <p class="faq-a__inner">Avant chaque envoi, nous contactons les prestataires pour confirmer leur disponibilité à votre date exacte. Vous ne recevez aucun profil sous réserve. Si un prestataire n'est pas disponible, il n'apparaît pas dans vos propositions.</p>
           </div>
         </div>
 
