@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0A0E1E">
-  <meta name="description" content="Trouvez vos prestataires événementiels à Lyon et Toulouse en 2 minutes. DJ, photographe, animateur : profils vérifiés et disponibles sous 24h. Gratuit.">
-  <title>Prestataires événementiels Lyon Toulouse, vérifiés sous 24h</title>
+  <meta name="description" content="Trouvez vos prestataires événementiels à Lyon et Toulouse en 2 minutes. DJ, photographe, animateur : profils vérifiés et disponibles sous 48h. Gratuit.">
+  <title>Prestataires événementiels Lyon Toulouse, vérifiés sous 48h</title>
   <meta name="keywords" content="prestataires événementiels Lyon Toulouse, trouver un DJ pour mariage Lyon, prestataire mariage Toulouse, photographe événementiel Lyon, animateur soirée d'entreprise Toulouse, agence événementielle Lyon Toulouse">
   <link rel="canonical" href="https://yvento.fr/">
   <meta name="robots" content="index, follow">
@@ -16,8 +16,8 @@
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Yvento Match">
   <meta property="og:url" content="https://yvento.fr/">
-  <meta property="og:title" content="Prestataires événementiels Lyon Toulouse, vérifiés sous 24h">
-  <meta property="og:description" content="Trouvez vos prestataires événementiels à Lyon et Toulouse en 2 minutes. DJ, photographe, animateur : profils vérifiés et disponibles sous 24h. Gratuit.">
+  <meta property="og:title" content="Prestataires événementiels Lyon Toulouse, vérifiés sous 48h">
+  <meta property="og:description" content="Trouvez vos prestataires événementiels à Lyon et Toulouse en 2 minutes. DJ, photographe, animateur : profils vérifiés et disponibles sous 48h. Gratuit.">
   <meta property="og:image" content="https://yvento.fr/assets/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -25,8 +25,8 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Prestataires événementiels Lyon Toulouse, vérifiés sous 24h">
-  <meta name="twitter:description" content="Trouvez vos prestataires événementiels à Lyon et Toulouse en 2 minutes. DJ, photographe, animateur : profils vérifiés et disponibles sous 24h. Gratuit.">
+  <meta name="twitter:title" content="Prestataires événementiels Lyon Toulouse, vérifiés sous 48h">
+  <meta name="twitter:description" content="Trouvez vos prestataires événementiels à Lyon et Toulouse en 2 minutes. DJ, photographe, animateur : profils vérifiés et disponibles sous 48h. Gratuit.">
   <meta name="twitter:image" content="https://yvento.fr/assets/og-image.jpg">
 
   <!-- JSON-LD : LocalBusiness -->
@@ -85,7 +85,7 @@
         "name": "Combien de temps avant de recevoir des profils ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sous 24h après validation de votre brief, et souvent bien avant. La plupart de nos organisateurs reçoivent leurs propositions dans les quelques heures suivant l'envoi. Pas de délai d'attente, pas de relance nécessaire."
+          "text": "Sous 48h après validation de votre brief, et souvent bien avant. La plupart de nos organisateurs reçoivent leurs propositions dans les quelques heures suivant l'envoi. Pas de délai d'attente, pas de relance nécessaire."
         }
       },
       {
@@ -109,7 +109,7 @@
         "name": "En quoi Yvento Match est différent d'une agence événementielle ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Une agence traditionnelle travaille avec un réseau fermé, des délais de 2 à 4 semaines et des frais répercutés sur vous. Yvento Match vous donne accès à un réseau large de prestataires indépendants vérifiés, avec une réponse sous 24h, une sélection humaine et digitale, et zéro frais pour l'organisateur. Même niveau d'exigence, sans les contraintes."
+          "text": "Une agence traditionnelle travaille avec un réseau fermé, des délais de 2 à 4 semaines et des frais répercutés sur vous. Yvento Match vous donne accès à un réseau large de prestataires indépendants vérifiés, avec une réponse sous 48h, une sélection humaine, et zéro frais pour l'organisateur. Même niveau d'exigence, sans les contraintes."
         }
       }
     ]
@@ -471,7 +471,7 @@
       .nav__inner { gap: 10px; padding: 8px 9px 8px 18px; }
     }
     @media (max-width: 540px) {
-      .nav__brand-text { display: none; }
+      .nav__brand-text { font-size: 14px; }
       .nav .btn--sm { padding: 7px 11px; font-size: 10.5px; }
       .nav__right { gap: 8px; }
       .nav__inner { gap: 8px; padding: 7px 8px 7px 14px; }
@@ -611,9 +611,31 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 16px 28px;
+      gap: 14px 16px;
     }
+    .hero__regions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .hero__region {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.82);
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .hero__region svg { width: 14px; height: 14px; color: var(--orange); }
     .hero__micro {
+      display: inline-block;
+      margin-top: 16px;
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 400;
@@ -3116,6 +3138,283 @@
     .netcert .trust-logo:hover { opacity: 0.85; }
     .netcert .trust__disclaimer { color: rgba(255,255,255,0.4); margin-top: 18px; }
     .netcert .trust__disclaimer b { color: rgba(255,255,255,0.72); font-weight: 600; }
+
+    /* ── Illustration MATCHING (étape 2, panneau sombre animé) ── */
+    .method-card__viz {
+      aspect-ratio: 4 / 3;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 70% 62% at 50% 46%, rgba(244,97,26,0.18), transparent 70%),
+        linear-gradient(160deg, #161D33 0%, #0B0F1E 100%);
+    }
+    .method-card__viz::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 26px 26px;
+      -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 46%, #000 30%, transparent 80%);
+              mask-image: radial-gradient(ellipse 60% 60% at 50% 46%, #000 30%, transparent 80%);
+      pointer-events: none;
+    }
+    .viz__links { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+    .viz__link {
+      fill: none;
+      stroke: rgba(244,97,26,0.5);
+      stroke-width: 0.8;
+      stroke-linecap: round;
+      stroke-dasharray: 3 5;
+      animation: vizFlow 1.3s linear infinite;
+    }
+    .viz__link--match {
+      stroke: #FF9C5B;
+      stroke-width: 1.4;
+      stroke-dasharray: none;
+      opacity: 0;
+      filter: drop-shadow(0 0 3px rgba(255,140,70,0.8));
+      animation: vizMatchLine 4.2s ease-in-out infinite;
+    }
+    @keyframes vizFlow { to { stroke-dashoffset: -16; } }
+    @keyframes vizMatchLine {
+      0%, 42% { opacity: 0; }
+      58%, 100% { opacity: 0.95; }
+    }
+
+    .viz__core {
+      position: absolute; left: 50%; top: 46%;
+      transform: translate(-50%, -50%);
+      width: clamp(48px, 16%, 64px); aspect-ratio: 1;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #FF8347, #F4611A);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; z-index: 3;
+      box-shadow: 0 12px 30px -6px rgba(244,97,26,0.65), 0 0 0 6px rgba(244,97,26,0.12);
+    }
+    .viz__core svg { width: 46%; height: 46%; }
+    .viz__core::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 18px;
+      border: 1.5px solid rgba(244,97,26,0.55);
+      animation: vizPulse 2.8s ease-out infinite;
+    }
+    @keyframes vizPulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(1.9); opacity: 0; }
+    }
+
+    .viz__node {
+      position: absolute;
+      width: clamp(38px, 14%, 52px); aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+    .viz__node img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255,255,255,0.18);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+      animation: vizFloat 5s ease-in-out infinite;
+    }
+    .viz__node--1 { left: 20%; top: 21%; }
+    .viz__node--2 { left: 78%; top: 23%; }
+    .viz__node--3 { left: 18%; top: 75%; animation-delay: -1.5s; }
+    .viz__node--4 { left: 80%; top: 73%; animation-delay: -2.5s; }
+    .viz__node--1 img { animation-delay: -0.6s; }
+    .viz__node--4 img { animation-delay: -2.5s; }
+    .viz__node:not(.is-match) img { opacity: 0.5; filter: grayscale(0.4); }
+    .viz__node.is-match img {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(244,97,26,0.4), 0 8px 22px rgba(244,97,26,0.5);
+    }
+    .viz__node.is-match { animation: vizMatchPop 4.2s ease-in-out infinite; }
+    @keyframes vizMatchPop {
+      0%, 42% { transform: translate(-50%, -50%) scale(0.92); }
+      58% { transform: translate(-50%, -50%) scale(1.16); }
+      72%, 100% { transform: translate(-50%, -50%) scale(1.06); }
+    }
+    @keyframes vizFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .viz__check {
+      position: absolute; right: -3px; bottom: -3px;
+      width: 42%; aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--orange);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid #0B0F1E;
+      opacity: 0;
+      animation: vizCheck 4.2s ease-in-out infinite;
+    }
+    .viz__check svg { width: 58%; height: 58%; }
+    @keyframes vizCheck {
+      0%, 46% { opacity: 0; transform: scale(0.3); }
+      60%, 100% { opacity: 1; transform: scale(1); }
+    }
+
+    .viz__tag {
+      position: absolute; left: 50%; bottom: 12px;
+      transform: translateX(-50%);
+      display: inline-flex; align-items: center; gap: 6px;
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.92);
+      font-size: 11px; font-weight: 600;
+      z-index: 4;
+      -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    }
+    .viz__tag svg { width: 12px; height: 12px; color: var(--orange); }
+    @media (prefers-reduced-motion: reduce) {
+      .viz__link, .viz__link--match, .viz__core::after, .viz__node img,
+      .viz__node.is-match, .viz__check { animation: none; }
+      .viz__link--match, .viz__check { opacity: 1; }
+    }
+
+    /* ── POUR QUI : 2 blocs opposés (sombre) ── */
+    .audience {
+      background: var(--ink);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .audience::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 46% 55% at 18% 12%, rgba(244,97,26,0.14), transparent 62%),
+        radial-gradient(ellipse 46% 55% at 84% 96%, rgba(26,50,96,0.42), transparent 62%);
+      pointer-events: none;
+    }
+    .audience > * { position: relative; z-index: 1; }
+    .audience .audience__head { text-align: center; margin-bottom: 48px; }
+    .audience .eyebrow { color: rgba(255,255,255,0.5); }
+    .audience h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      color: #fff;
+      font-size: clamp(30px, 4vw, 52px);
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+    }
+    .audience h2 .orange { color: var(--orange); }
+
+    .aud-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+    @media (min-width: 900px) { .aud-split { grid-template-columns: 1fr 1fr; gap: 24px; } }
+
+    .aud-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 40px 36px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      overflow: hidden;
+      transition: transform 0.4s var(--ease-out-quart), box-shadow 0.4s var(--ease-out-quart);
+    }
+    .aud-panel:hover { transform: translateY(-4px); }
+    .aud-panel--seek {
+      background: linear-gradient(165deg, rgba(244,97,26,0.18), rgba(244,97,26,0.04));
+      border-color: rgba(244,97,26,0.4);
+      box-shadow: 0 30px 70px -50px rgba(244,97,26,0.6);
+    }
+    .aud-panel--offer { background: rgba(255,255,255,0.03); }
+    .aud-panel__icon {
+      width: 54px; height: 54px;
+      border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px;
+    }
+    .aud-panel__icon svg { width: 26px; height: 26px; }
+    .aud-panel--seek .aud-panel__icon { background: var(--orange); color: #fff; box-shadow: 0 10px 26px -8px rgba(244,97,26,0.7); }
+    .aud-panel--offer .aud-panel__icon { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); color: #fff; }
+    .aud-panel__kicker {
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .aud-panel--seek .aud-panel__kicker { color: var(--orange); }
+    .aud-panel--offer .aud-panel__kicker { color: rgba(255,255,255,0.5); }
+    .aud-panel__title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 800;
+      font-size: clamp(21px, 2.4vw, 27px);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: #fff;
+    }
+    .aud-panel__text { color: rgba(255,255,255,0.66); font-size: 15px; line-height: 1.65; }
+    .aud-panel__list { display: flex; flex-direction: column; gap: 12px; margin: 4px 0 8px; }
+    .aud-panel__list li { display: flex; align-items: flex-start; gap: 12px; font-size: 14.5px; color: rgba(255,255,255,0.82); line-height: 1.5; }
+    .aud-panel__list b { color: #fff; font-weight: 700; }
+    .aud-panel__list .chk {
+      flex: 0 0 auto;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .aud-panel__list .chk svg { width: 12px; height: 12px; }
+    .aud-panel--seek .chk { background: rgba(244,97,26,0.2); color: var(--ember); }
+    .aud-panel--offer .chk { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
+    .aud-panel .btn { margin-top: auto; align-self: flex-start; }
+
+    .btn--ghost-light {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .btn--ghost-light:hover { background: rgba(255,255,255,0.08); border-color: #fff; transform: translateY(-1px); }
+
+    /* ── BANDEAU « Ils nous font confiance » (sombre) ── */
+    .trustband {
+      background: var(--ink);
+      padding: 62px 0 54px;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--hairline-d);
+    }
+    .trustband__label {
+      display: block;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 30px;
+    }
+    .trustband .trust__strip { margin-bottom: 0; }
+    .trustband .trust-logo { color: #fff; opacity: 0.4; }
+    .trustband .trust-logo:hover { opacity: 0.85; }
+    .trustband .trust__disclaimer { color: rgba(255,255,255,0.4); margin-top: 28px; }
+    .trustband .trust__disclaimer b { color: rgba(255,255,255,0.7); font-weight: 600; }
+
+    /* ── FAQ (sombre) ── */
+    .faq-section { background: var(--ink-2); color: #fff; }
+    .faq-section .eyebrow { color: rgba(255,255,255,0.5); }
+    .faq-section .sec-head h2 { color: #fff; }
+    .faq-section .sec-head h2 .orange { color: var(--orange); }
+    .faq-section .faq-item { border-bottom-color: rgba(255,255,255,0.1); }
+    .faq-section .faq-item:first-child { border-top-color: rgba(255,255,255,0.1); }
+    .faq-section .faq-q { color: #fff; }
+    .faq-section .faq-q:hover { color: var(--orange); }
+    .faq-section .faq-item--open .faq-q { color: var(--orange); }
+    .faq-section .faq-icon { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.14); color: var(--orange); }
+    .faq-section .faq-item--open .faq-icon { background: var(--orange); color: #fff; }
+    .faq-section .faq-a__inner { color: rgba(255,255,255,0.66); }
   </style>
 </head>
 <body>
@@ -3124,7 +3423,6 @@
   <nav class="nav" id="nav" aria-label="Navigation principale">
     <div class="nav__inner">
       <a href="#top" class="nav__brand" aria-label="Yvento Match — Accueil">
-        <img src="./assets/logo.png" alt="Yvento" />
         <span class="nav__brand-text">Yvento <b>Match</b></span>
       </a>
       <div class="nav__links">
@@ -3156,24 +3454,24 @@
 
           <span class="hero__badge fade-up">
             <span class="hero__badge-dot" aria-hidden="true"></span>
-            <span>Gratuit&nbsp;·&nbsp;Réponse sous 24h&nbsp;·&nbsp;Prestataires vérifiés</span>
+            <span>Gratuit&nbsp;·&nbsp;Réponse sous 48h&nbsp;·&nbsp;Prestataires vérifiés</span>
           </span>
 
           <h1 class="hero__title">
             <span class="line">
-              <span class="reveal-mask"><span style="--d:120ms">On vous trouve</span></span>
+              <span class="reveal-mask"><span style="--d:120ms">le bon prestataire</span></span>
             </span>
             <span class="line">
-              <span class="reveal-mask"><span style="--d:260ms">le bon prestataire</span></span>
+              <span class="reveal-mask"><span style="--d:260ms">événementiel.</span></span>
             </span>
             <span class="line">
-              <span class="reveal-mask"><span class="accent" style="--d:380ms">événementiel.</span></span>
+              <span class="reveal-mask"><span class="accent" style="--d:380ms">sous 48h.</span></span>
             </span>
           </h1>
 
           <p class="hero__sub fade-up" style="--d:660ms">
             Décrivez votre événement en 2 minutes et recevez des
-            <b>prestataires vérifiés, réellement disponibles à Lyon et Toulouse</b>.
+            <b>prestataires vérifiés et réellement disponibles</b>.
             Gratuit, sans aucune démarche de votre côté.
           </p>
 
@@ -3187,29 +3485,38 @@
                 </svg>
               </span>
             </a>
-            <span class="hero__micro">Gratuit · Prestataires vérifiés · Sous 24h</span>
+            <div class="hero__regions" aria-label="Zones couvertes">
+              <span class="hero__region"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Rhône-Alpes</span>
+              <span class="hero__region"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Occitanie</span>
+            </div>
           </div>
+          <span class="hero__micro fade-up" style="--d:980ms">Gratuit · Prestataires vérifiés · Réponse sous 48h</span>
         </div>
 
         <!-- RIGHT — match deck -->
         <div class="hero__right fade-up" style="--d:480ms">
-          <div class="deck-annot" aria-hidden="true">
-            <span class="live"></span>
-            <span>VOS&nbsp;PRESTATAIRES</span>
-          </div>
           <div class="hero__deck" id="hero-deck">
             <!-- Cards: each has data-i (DOM order), data-pos is set by JS -->
             <article class="match-card" data-i="0" data-pos="0">
-              <img src="./assets/dj.jpg" alt="" loading="eager">
+              <img src="./assets/dj2.jpg" alt="" loading="eager">
               <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
               <div class="match-card__info">
                 <span class="match-card__role">DJ</span>
                 <span class="match-card__name">Manon V.</span>
-                <span class="match-card__meta">Paris<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
+                <span class="match-card__meta">Lyon<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
               </div>
             </article>
             <article class="match-card" data-i="1" data-pos="1">
-              <img src="./assets/photographe.jpg" alt="" loading="lazy">
+              <img src="./assets/videaste3.png" alt="" loading="lazy">
+              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
+              <div class="match-card__info">
+                <span class="match-card__role">Vidéaste</span>
+                <span class="match-card__name">Théo B.</span>
+                <span class="match-card__meta">Toulouse<span class="dot"></span>4.8★<span class="dot"></span><span class="avail">Disponible</span></span>
+              </div>
+            </article>
+            <article class="match-card" data-i="2" data-pos="2">
+              <img src="./assets/photographe-pro.png" alt="" loading="lazy">
               <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
               <div class="match-card__info">
                 <span class="match-card__role">Photographe</span>
@@ -3217,22 +3524,13 @@
                 <span class="match-card__meta">Lyon<span class="dot"></span>5.0★<span class="dot"></span><span class="avail">Disponible</span></span>
               </div>
             </article>
-            <article class="match-card" data-i="2" data-pos="2">
-              <img src="./assets/barman.jpg" alt="" loading="lazy">
+            <article class="match-card" data-i="3" data-pos="3">
+              <img src="./assets/barman2.jpg" alt="" loading="lazy">
               <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
               <div class="match-card__info">
                 <span class="match-card__role">Barman</span>
                 <span class="match-card__name">Marc D.</span>
-                <span class="match-card__meta">Marseille<span class="dot"></span>4.8★<span class="dot"></span><span class="avail">Disponible</span></span>
-              </div>
-            </article>
-            <article class="match-card" data-i="3" data-pos="3">
-              <img src="./assets/musicien.jpg" alt="" loading="lazy">
-              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
-              <div class="match-card__info">
-                <span class="match-card__role">Musicien</span>
-                <span class="match-card__name">Léa V.</span>
-                <span class="match-card__meta">Bordeaux<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
+                <span class="match-card__meta">Toulouse<span class="dot"></span>4.8★<span class="dot"></span><span class="avail">Disponible</span></span>
               </div>
             </article>
             <article class="match-card" data-i="4" data-pos="4">
@@ -3241,34 +3539,7 @@
               <div class="match-card__info">
                 <span class="match-card__role">Chanteuse</span>
                 <span class="match-card__name">Léna R.</span>
-                <span class="match-card__meta">Toulouse<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
-              </div>
-            </article>
-            <article class="match-card" data-i="5" data-pos="5">
-              <img src="./assets/videaste.jpg" alt="" loading="lazy">
-              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
-              <div class="match-card__info">
-                <span class="match-card__role">Vidéaste</span>
-                <span class="match-card__name">Théo B.</span>
-                <span class="match-card__meta">Nantes<span class="dot"></span>4.8★<span class="dot"></span><span class="avail">Disponible</span></span>
-              </div>
-            </article>
-            <article class="match-card" data-i="6" data-pos="6">
-              <img src="./assets/animateur.jpg" alt="" loading="lazy">
-              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
-              <div class="match-card__info">
-                <span class="match-card__role">Animateur</span>
-                <span class="match-card__name">Hugo P.</span>
-                <span class="match-card__meta">Lille<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
-              </div>
-            </article>
-            <article class="match-card" data-i="7" data-pos="7">
-              <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=520&h=700&fit=crop&q=80&auto=format" alt="" loading="lazy">
-              <div class="match-card__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>MATCH</div>
-              <div class="match-card__info">
-                <span class="match-card__role">Décoratrice</span>
-                <span class="match-card__name">Émilie T.</span>
-                <span class="match-card__meta">Strasbourg<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
+                <span class="match-card__meta">Lyon<span class="dot"></span>4.9★<span class="dot"></span><span class="avail">Disponible</span></span>
               </div>
             </article>
           </div>
@@ -3317,7 +3588,7 @@
           Votre recherche<br>en <span class="orange">3 étapes.</span>
         </h2>
         <p class="lead fade-up" style="--d:240ms">
-          Vous décrivez, on sélectionne, vous choisissez. Un conseiller reste disponible gratuitement si vous en avez besoin.
+          Vous décrivez votre événement, on identifie les prestataires qui matchent vraiment, et ils vous recontactent sous 48h. Un conseiller reste disponible gratuitement si besoin.
         </p>
       </div>
 
@@ -3335,7 +3606,7 @@
           <div class="method-card__inner">
             <div class="method-card__face method-card__face--front">
               <div class="method-card__img">
-                <img src="./assets/dj2.jpg" alt="" loading="lazy">
+                <img src="./assets/mariage.jpg" alt="" loading="lazy">
               </div>
               <div class="method-card__body">
                 <h3 class="method-card__title">Décrivez votre événement</h3>
@@ -3358,25 +3629,44 @@
           </div>
         </article>
 
-        <article class="method-card fade-up" style="--d:160ms">
+        <article class="method-card method-card--viz fade-up" style="--d:160ms">
           <span class="method-card__num">02</span>
-          <span class="method-card__tag">&lt; 24H</span>
+          <span class="method-card__tag">MATCHING</span>
           <div class="method-card__inner">
             <div class="method-card__face method-card__face--front">
-              <div class="method-card__img">
-                <img src="./assets/photographe-pro.png" alt="" loading="lazy">
+              <div class="method-card__viz" aria-hidden="true">
+                <svg class="viz__links" viewBox="0 0 100 75" preserveAspectRatio="none">
+                  <path class="viz__link" d="M50 37.5 L20 16"/>
+                  <path class="viz__link" d="M50 37.5 L18 56"/>
+                  <path class="viz__link" d="M50 37.5 L80 55"/>
+                  <path class="viz__link viz__link--match" d="M50 37.5 L78 17"/>
+                </svg>
+
+                <span class="viz__node viz__node--1"><img src="./assets/barman2.jpg" alt=""></span>
+                <span class="viz__node viz__node--2 is-match"><img src="./assets/dj2.jpg" alt=""><i class="viz__check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></i></span>
+                <span class="viz__node viz__node--3"><img src="./assets/chanteuse.jpg" alt=""></span>
+                <span class="viz__node viz__node--4"><img src="./assets/videaste3.png" alt=""></span>
+
+                <div class="viz__core">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                </div>
+
+                <span class="viz__tag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  Sur les compétences, pas le prix
+                </span>
               </div>
               <div class="method-card__body">
-                <h3 class="method-card__title">On vérifie et on sélectionne</h3>
-                <p class="method-card__text">Sélection humaine. Nous vérifions les disponibilités, qualifions chaque profil et écartons ce qui ne correspond pas. Vous ne recevez que des prestataires réellement disponibles à votre date.</p>
+                <h3 class="method-card__title">On vous matche, vraiment</h3>
+                <p class="method-card__text">Date, style, zone, compétences : on rapproche votre brief des bons profils. Nos prestataires vous sont proposés pour leur talent et leur disponibilité&nbsp;— jamais parce qu'ils paient.</p>
               </div>
             </div>
             <div class="method-card__face method-card__face--back">
               <div class="method-card__back-info">
                 <span class="method-card__back-tag">ÉTAPE 02</span>
-                <span class="method-card__back-title">Sélection humaine, profils qualifiés.</span>
+                <span class="method-card__back-title">Le bon match, sur les compétences.</span>
                 <span class="method-card__back-cta">
-                  Disponibilités vérifiées
+                  Aucun pay-to-win
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
@@ -3388,23 +3678,23 @@
 
         <article class="method-card fade-up" style="--d:320ms">
           <span class="method-card__num">03</span>
-          <span class="method-card__tag">VALIDÉ</span>
+          <span class="method-card__tag">Sous 48h</span>
           <div class="method-card__inner">
             <div class="method-card__face method-card__face--front">
               <div class="method-card__img">
-                <img src="./assets/videaste2.jpg" alt="" loading="lazy">
+                <img src="./assets/photographe-pro.png" alt="" loading="lazy">
               </div>
               <div class="method-card__body">
-                <h3 class="method-card__title">Vous choisissez, on sécurise</h3>
-                <p class="method-card__text">Vous recevez jusqu'à 3 profils qualifiés. Vous faites votre choix. On gère la confirmation, les conditions et le paiement sécurisé. Vous n'avez plus rien à suivre.</p>
+                <h3 class="method-card__title">Vous êtes recontacté</h3>
+                <p class="method-card__text">Le ou les prestataires sélectionnés vous recontactent directement sous 48h. Vous échangez, vous choisissez, c'est réservé&nbsp;— avec un cadre clair et un paiement sécurisé.</p>
               </div>
             </div>
             <div class="method-card__face method-card__face--back">
               <div class="method-card__back-info">
                 <span class="method-card__back-tag">ÉTAPE 03</span>
-                <span class="method-card__back-title">Réservation cadrée, paiement sécurisé.</span>
+                <span class="method-card__back-title">Le prestataire vous recontacte sous 48h.</span>
                 <span class="method-card__back-cta">
-                  Aucune relance
+                  Aucune relance de votre côté
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
@@ -3433,51 +3723,53 @@
 
 
   <!-- ====================================================== POUR QUI -->
-  <section class="section section--paper" id="audience" aria-labelledby="audience-title">
+  <section class="section audience" id="audience" aria-labelledby="audience-title">
     <div class="wrap">
 
       <div class="audience__head">
         <span class="eyebrow fade-up">POUR QUI</span>
         <h2 id="audience-title" class="fade-up" style="--d:120ms">
-          Une réponse pour<br><span class="orange">chaque organisateur.</span>
+          Deux façons de<br><span class="orange">travailler avec Yvento.</span>
         </h2>
       </div>
 
-      <div class="aud-grid">
+      <div class="aud-split">
 
-        <article class="aud-card fade-up">
-          <span class="aud-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L12 14"/></svg>
+        <article class="aud-panel aud-panel--seek fade-up">
+          <span class="aud-panel__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </span>
-          <span class="aud-card__tag">Particuliers</span>
-          <h3 class="aud-card__title">Organisateurs particuliers</h3>
-          <p class="aud-card__text">Mariage, anniversaire, soirée privée : décrivez votre événement et recevez des prestataires vérifiés, disponibles à votre date. Sans démarche, sans frais.</p>
-          <a class="aud-card__link" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer">Décrire mon événement
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <span class="aud-panel__kicker">Vous organisez</span>
+          <h3 class="aud-panel__title">Vous cherchez un prestataire</h3>
+          <p class="aud-panel__text">Pour un événement privé ou pour faire vivre votre établissement : décrivez votre besoin et recevez les bons profils, vérifiés et disponibles. Gratuit, sans démarche.</p>
+          <ul class="aud-panel__list">
+            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Particuliers</b> — mariage, anniversaire, soirée privée</span></li>
+            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Bars, restaurants, clubs</b> — soirée ponctuelle ou programmation régulière</span></li>
+            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Entreprises &amp; lieux</b> — séminaires, inaugurations, soirées d'équipe</span></li>
+          </ul>
+          <a class="btn btn--primary" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" data-magnetic>
+            <span class="btn__inner">Décrire mon événement
+              <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
           </a>
         </article>
 
-        <article class="aud-card fade-up" style="--d:140ms">
-          <span class="aud-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18l-1.5-5.5A1 1 0 0 0 18.55 3H5.45a1 1 0 0 0-.95.5L3 9z"/><path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg>
-          </span>
-          <span class="aud-card__tag">Bars &amp; restaurants</span>
-          <h3 class="aud-card__title">Lieux &amp; établissements</h3>
-          <p class="aud-card__text">Bars, restaurants, clubs : trouvez le DJ, le musicien ou l'animateur qui fera vivre votre établissement, pour une soirée ponctuelle ou une programmation régulière.</p>
-          <a class="aud-card__link" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer">Trouver un prestataire
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </article>
-
-        <article class="aud-card fade-up" style="--d:280ms">
-          <span class="aud-card__icon">
+        <article class="aud-panel aud-panel--offer fade-up" style="--d:140ms">
+          <span class="aud-panel__icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
           </span>
-          <span class="aud-card__tag">Apport d'affaires</span>
-          <h3 class="aud-card__title">Lieux partenaires</h3>
-          <p class="aud-card__text">Domaines, salles de réception, traiteurs : proposez nos prestataires à vos clients et touchez une commission sur chaque mise en relation aboutie.</p>
-          <a class="aud-card__link" href="mailto:contact@yvento.fr?subject=Partenariat%20lieu%20-%20Yvento%20Match">Devenir partenaire
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <span class="aud-panel__kicker">Vous avez des clients</span>
+          <h3 class="aud-panel__title">Vous proposez Yvento à vos clients</h3>
+          <p class="aud-panel__text">Domaines, salles de réception, traiteurs : proposez nos prestataires vérifiés à vos clients, sans rien gérer. À chaque mise en relation aboutie, vous touchez une commission.</p>
+          <ul class="aud-panel__list">
+            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Un service en plus pour vos clients, sans coût ni logistique</span></li>
+            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Une commission sur chaque réservation que vous apportez</span></li>
+            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Des prestataires vérifiés qui valorisent votre lieu</span></li>
+          </ul>
+          <a class="btn btn--ghost-light" href="mailto:contact@yvento.fr?subject=Partenariat%20lieu%20-%20Yvento%20Match">
+            <span class="btn__inner">Devenir lieu partenaire
+              <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
           </a>
         </article>
 
@@ -3487,32 +3779,12 @@
 
 
 
-  <!-- ====================================================== RÉSEAU CERTIFIÉ (sombre) -->
-  <section class="netcert" id="certifie" aria-labelledby="certifie-title">
-    <div class="netcert__map" aria-hidden="true"></div>
+  <!-- ====================================================== ILS NOUS FONT CONFIANCE -->
+  <section class="trustband" aria-label="Ils nous ont fait confiance">
     <div class="wrap">
-      <div class="netcert__card fade-up">
-        <span class="netcert__badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V5l-8-3z"/><path d="m9 12 2 2 4-4"/></svg>
-          <b>+50 prestataires</b>&nbsp;vérifiés
-        </span>
-        <h2 id="certifie-title">Un réseau <span class="orange">certifié</span></h2>
-        <p class="netcert__lead">
-          Chaque prestataire est vérifié un à un. Nous contrôlons les profils et garantissons leur
-          professionnalisme : vous réservez en confiance, entre pros sérieux. Aucun prestataire ne paie
-          pour figurer dans nos propositions, et chaque disponibilité est confirmée avant tout envoi.<br><br>
-          Le réseau est aujourd'hui concentré sur <strong>Lyon</strong> et <strong>Toulouse</strong>,
-          et s'étend progressivement dans toute la France.
-        </p>
-        <div class="netcert__regions">
-          <span class="netcert__region"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Lyon</span>
-          <span class="netcert__region"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Toulouse</span>
-        </div>
-      </div>
+      <span class="trustband__label fade-up">Ils nous font confiance</span>
     </div>
-      <div class="netcert__trust wrap">
-      <span class="netcert__trust-label">Ils nous font confiance</span>
-      <div class="trust__strip">
+    <div class="trust__strip">
       <div class="trust__track" id="trust-track">
         <span class="trust-logo">Sciences Po Toulouse</span>
         <span class="trust-logo__dot" aria-hidden="true"></span>
@@ -3564,16 +3836,42 @@
         <span class="trust-logo" aria-hidden="true">istef</span>
       </div>
     </div>
-      <p class="trust__disclaimer">
+    <p class="trust__disclaimer">
       Références réalisées sous <b>Stereo Lights Events</b> et <b>Kygaa Music</b>, aujourd'hui réunies sous <b>Yvento</b>.
     </p>
+  </section>
+
+
+
+  <!-- ====================================================== RÉSEAU CERTIFIÉ (sombre) -->
+  <section class="netcert" id="certifie" aria-labelledby="certifie-title">
+    <div class="netcert__map" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="netcert__card fade-up">
+        <span class="netcert__badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V5l-8-3z"/><path d="m9 12 2 2 4-4"/></svg>
+          <b>+50 prestataires</b>&nbsp;vérifiés
+        </span>
+        <h2 id="certifie-title">Un réseau <span class="orange">certifié</span></h2>
+        <p class="netcert__lead">
+          Chaque prestataire est vérifié un à un. Nous contrôlons les profils et garantissons leur
+          professionnalisme : vous réservez en confiance, entre pros sérieux. Aucun prestataire ne paie
+          pour figurer dans nos propositions, et chaque disponibilité est confirmée avant tout envoi.<br><br>
+          Le réseau est aujourd'hui concentré sur <strong>Lyon</strong> et <strong>Toulouse</strong>,
+          et s'étend progressivement dans toute la France.
+        </p>
+        <div class="netcert__regions">
+          <span class="netcert__region"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Lyon</span>
+          <span class="netcert__region"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Toulouse</span>
+        </div>
+      </div>
     </div>
   </section>
 
 
 
   <!-- ====================================================== FAQ -->
-  <section class="section section--cream" id="faq" aria-labelledby="faq-title">
+  <section class="section faq-section" id="faq" aria-labelledby="faq-title">
     <div class="wrap">
 
       <div class="sec-head sec-head--center">
@@ -3611,7 +3909,7 @@
             <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
           </button>
           <div class="faq-a" id="faq-a-3" role="region">
-            <p class="faq-a__inner">Sous 24h après validation de votre brief, et souvent bien avant. La plupart de nos organisateurs reçoivent leurs propositions dans les quelques heures suivant l'envoi. Pas de délai d'attente, pas de relance nécessaire.</p>
+            <p class="faq-a__inner">Sous 48h après validation de votre brief, et souvent bien avant. La plupart de nos organisateurs reçoivent leurs propositions dans les quelques heures suivant l'envoi. Pas de délai d'attente, pas de relance nécessaire.</p>
           </div>
         </div>
 
@@ -3657,7 +3955,7 @@
         </a>
       </div>
       <p class="cta-final__micro fade-up" style="--d:400ms">
-        Gratuit&nbsp;·&nbsp;Sans engagement&nbsp;·&nbsp;Réponse sous 24h&nbsp;·&nbsp;Prestataires vérifiés
+        Gratuit&nbsp;·&nbsp;Sans engagement&nbsp;·&nbsp;Réponse sous 48h&nbsp;·&nbsp;Prestataires vérifiés
       </p>
     </div>
   </section>
