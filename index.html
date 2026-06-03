@@ -572,10 +572,10 @@
     .hero__title {
       color: #fff;
       font-family: 'Roboto', sans-serif;
-      font-size: clamp(48px, 7.8vw, 108px);
+      font-size: clamp(42px, 6.2vw, 88px);
       font-weight: 900;
-      line-height: 0.96;
-      letter-spacing: -0.045em;
+      line-height: 0.98;
+      letter-spacing: -0.04em;
     }
     .hero__title .line { display: block; }
     .hero__title .accent { color: var(--orange); }
@@ -3093,6 +3093,29 @@
       font-size: 12.5px;
       color: rgba(255,255,255,0.45);
     }
+
+    /* ── Confiance : logos clients fusionnés dans le bloc réseau certifié (sombre) ── */
+    .netcert__trust {
+      position: relative;
+      z-index: 1;
+      margin: 56px auto 0;
+      text-align: center;
+    }
+    .netcert__trust-label {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 24px;
+    }
+    .netcert .trust__strip { margin-bottom: 18px; }
+    .netcert .trust-logo { color: #fff; opacity: 0.42; }
+    .netcert .trust-logo:hover { opacity: 0.85; }
+    .netcert .trust__disclaimer { color: rgba(255,255,255,0.4); margin-top: 18px; }
+    .netcert .trust__disclaimer b { color: rgba(255,255,255,0.72); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -3105,10 +3128,9 @@
         <span class="nav__brand-text">Yvento <b>Match</b></span>
       </a>
       <div class="nav__links">
-        <a href="#audience">Pour qui</a>
-        <a href="#events">Événements</a>
         <a href="#method">Comment ça marche</a>
-        <a href="#partenaires">Lieux partenaires</a>
+        <a href="#audience">Pour qui</a>
+        <a href="#certifie">Le réseau</a>
         <a href="#faq">FAQ</a>
       </div>
       <div class="nav__right">
@@ -3119,6 +3141,7 @@
       </div>
     </div>
   </nav>
+
 
 
   <!-- ====================================================== HERO -->
@@ -3138,21 +3161,20 @@
 
           <h1 class="hero__title">
             <span class="line">
-              <span class="reveal-mask"><span style="--d:120ms">Le bon prestataire</span></span>
+              <span class="reveal-mask"><span style="--d:120ms">On vous met</span></span>
             </span>
             <span class="line">
-              <span class="reveal-mask"><span class="accent" style="--d:260ms">événementiel.</span></span>
+              <span class="reveal-mask"><span style="--d:260ms">en relation avec</span></span>
             </span>
             <span class="line">
-              <span class="reveal-mask"><span style="--d:380ms">Sous 24h.</span></span>
+              <span class="reveal-mask"><span class="accent" style="--d:380ms">le bon prestataire.</span></span>
             </span>
           </h1>
 
           <p class="hero__sub fade-up" style="--d:660ms">
-            Pour votre événement privé ou pour animer votre établissement,
-            décrivez votre besoin en 2 minutes et recevez des
-            <b>prestataires disponibles, vérifiés et adaptés à Lyon et Toulouse</b>,
-            sans aucune démarche de votre côté.
+            Décrivez votre événement en 2 minutes et recevez des
+            <b>prestataires vérifiés, réellement disponibles à Lyon et Toulouse</b>.
+            Gratuit, sans aucune démarche de votre côté.
           </p>
 
           <div class="hero__cta-row fade-up" style="--d:860ms">
@@ -3254,48 +3276,6 @@
 
       </div>
 
-      <div class="hero__foot fade-up" style="--d:1000ms">
-        <div class="hero__stats">
-
-          <div class="stat-card" data-count="2" data-w="22">
-            <div class="stat-card__top">
-              <span class="stat-card__index">01 / RAPIDITÉ</span>
-              <svg class="stat-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div class="stat-card__num">
-              <span class="n">0</span><span class="unit">min</span>
-            </div>
-            <div class="stat-card__label">POUR DÉCRIRE VOTRE ÉVÉNEMENT</div>
-            <div class="stat-card__bar"></div>
-          </div>
-
-          <div class="stat-card" data-count="24" data-w="58">
-            <div class="stat-card__top">
-              <span class="stat-card__index">02 / RÉPONSE</span>
-              <svg class="stat-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12A10 10 0 1 1 12 2"/><polyline points="22 4 12 14 9 11"/></svg>
-            </div>
-            <div class="stat-card__num">
-              <span class="n">0</span><span class="unit">h</span>
-            </div>
-            <div class="stat-card__label">POUR RECEVOIR VOS PRESTATAIRES</div>
-            <div class="stat-card__bar"></div>
-          </div>
-
-          <div class="stat-card" data-count="0" data-w="100" data-keep="0">
-            <div class="stat-card__top">
-              <span class="stat-card__index">03 / TARIF</span>
-              <svg class="stat-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-            </div>
-            <div class="stat-card__num">
-              <span class="n">0</span><span class="unit">€</span>
-            </div>
-            <div class="stat-card__label">DE FRAIS, QUELLE QUE SOIT LA PRESTATION</div>
-            <div class="stat-card__bar"></div>
-          </div>
-
-        </div>
-      </div>
-
     </div>
 
     <div class="hero__marquee" aria-hidden="true">
@@ -3325,767 +3305,6 @@
 
   </section>
 
-
-  <!-- ====================================================== TRUST -->
-  <section class="trust" aria-label="Ils nous ont fait confiance">
-    <div class="wrap">
-      <div class="trust__head">
-        <span class="trust__eyebrow">Ils nous ont fait confiance</span>
-      </div>
-    </div>
-    <div class="trust__strip">
-      <div class="trust__track" id="trust-track">
-        <span class="trust-logo">Sciences Po Toulouse</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">L'Appart Fitness</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">Corpo Médecine Toulouse</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">BUT Montauban</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">Richardson</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">Université Toulouse 1 Capitole</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">1862 Arty Bar Club</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">Studio 3S</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">IAE Toulouse</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">Le Bar Basque</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">Sapeurs-Pompiers</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo">istef</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <!-- Duplicate for seamless loop -->
-        <span class="trust-logo" aria-hidden="true">Sciences Po Toulouse</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">L'Appart Fitness</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">Corpo Médecine Toulouse</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">BUT Montauban</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">Richardson</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">Université Toulouse 1 Capitole</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">1862 Arty Bar Club</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">Studio 3S</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">IAE Toulouse</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">Le Bar Basque</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">Sapeurs-Pompiers</span>
-        <span class="trust-logo__dot" aria-hidden="true"></span>
-        <span class="trust-logo" aria-hidden="true">istef</span>
-      </div>
-    </div>
-    <p class="trust__disclaimer">
-      Références réalisées sous <b>Stereo Lights Events</b> et <b>Kygaa Music</b>, aujourd'hui réunies sous <b>Yvento</b>.
-    </p>
-  </section>
-
-
-  <!-- ====================================================== SHOWCASE — EVENT TYPES -->
-  <section class="showcase" id="events" aria-label="Types d'événements">
-
-    <div class="showcase__head">
-      <h2 class="fade-up">
-        Le bon profil pour<br><span class="orange">chaque événement.</span>
-      </h2>
-      <p class="fade-up" style="--d:120ms">
-        Mariage à Lyon, soirée d'entreprise à Toulouse, anniversaire, concert : Yvento Match sélectionne
-        les prestataires disponibles, vérifiés et adaptés à votre événement.
-      </p>
-    </div>
-
-    <div class="showcase__strip">
-      <div class="showcase__track">
-        <article class="show-card"><img src="./assets/mariage.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Mariage</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Anniversaire</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Afterwork</span></div></article>
-        <article class="show-card"><img src="./assets/poolparty.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Pool party</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Cocktail</span></div></article>
-        <article class="show-card"><img src="./assets/apero.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Apéro</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Concert</span></div></article>
-        <article class="show-card"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Festival</span></div></article>
-        <article class="show-card"><img src="./assets/soiree-a-theme.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Soirée à thème</span></div></article>
-        <!-- duplicate for seamless loop -->
-        <article class="show-card" aria-hidden="true"><img src="./assets/mariage.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Mariage</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Anniversaire</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Afterwork</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="./assets/poolparty.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Pool party</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Cocktail</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="./assets/apero.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Apéro</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Concert</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop&q=80&auto=format" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Festival</span></div></article>
-        <article class="show-card" aria-hidden="true"><img src="./assets/soiree-a-theme.jpg" alt="" loading="lazy"><div class="show-card__meta"><span class="show-card__line"></span><span class="show-card__label">Soirée à thème</span></div></article>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ====================================================== POUR QUI -->
-  <section class="section section--paper" id="audience" aria-labelledby="audience-title">
-    <div class="wrap">
-
-      <div class="audience__head">
-        <span class="eyebrow fade-up">POUR QUI</span>
-        <h2 id="audience-title" class="fade-up" style="--d:120ms">
-          Une réponse pour<br><span class="orange">chaque organisateur.</span>
-        </h2>
-      </div>
-
-      <div class="aud-grid">
-
-        <article class="aud-card fade-up">
-          <span class="aud-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L12 14"/></svg>
-          </span>
-          <span class="aud-card__tag">Particuliers</span>
-          <h3 class="aud-card__title">Organisateurs particuliers</h3>
-          <p class="aud-card__text">Mariage, anniversaire, soirée privée : décrivez votre événement et recevez des prestataires vérifiés, disponibles à votre date. Sans démarche, sans frais.</p>
-          <a class="aud-card__link" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer">Décrire mon événement
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </article>
-
-        <article class="aud-card fade-up" style="--d:140ms">
-          <span class="aud-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18l-1.5-5.5A1 1 0 0 0 18.55 3H5.45a1 1 0 0 0-.95.5L3 9z"/><path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg>
-          </span>
-          <span class="aud-card__tag">Bars &amp; restaurants</span>
-          <h3 class="aud-card__title">Lieux &amp; établissements</h3>
-          <p class="aud-card__text">Bars, restaurants, clubs : trouvez le DJ, le musicien ou l'animateur qui fera vivre votre établissement, pour une soirée ponctuelle ou une programmation régulière.</p>
-          <a class="aud-card__link" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer">Trouver un prestataire
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </article>
-
-        <article class="aud-card fade-up" style="--d:280ms">
-          <span class="aud-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
-          </span>
-          <span class="aud-card__tag">Apport d'affaires</span>
-          <h3 class="aud-card__title">Lieux partenaires</h3>
-          <p class="aud-card__text">Domaines, salles de réception, traiteurs : proposez nos prestataires à vos clients et touchez une commission sur chaque mise en relation aboutie.</p>
-          <a class="aud-card__link" href="#partenaires">Devenir partenaire
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ====================================================== PAIN -->
-  <section class="section section--cream" id="why" aria-labelledby="pain-title">
-    <div class="wrap">
-
-      <div class="sec-head">
-        <span class="eyebrow fade-up">LE PROBLÈME</span>
-        <h2 id="pain-title" class="fade-up" style="--d:120ms">
-          Le problème<br>de <span class="orange pain-strike"><span class="pain-strike__text">chercher seul</span></span>.
-        </h2>
-        <p class="lead fade-up" style="--d:240ms">
-          Trouver un prestataire seul, c'est des heures perdues, des devis incomparables
-          et des profils impossibles à qualifier. La plupart des organisateurs finissent
-          par choisir au hasard et le regrettent. Yvento existe pour que ce ne soit plus une option.
-        </p>
-      </div>
-
-      <div class="pain-board">
-
-        <article class="pain-row fade-up">
-          <div class="pain-row__head">
-            <span class="pain-row__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
-            </span>
-            <span class="pain-row__num">01</span>
-          </div>
-          <div class="pain-row__body">
-            <span class="pain-row__tag">Trop lent</span>
-            <h3 class="pain-row__title">Des heures à relancer</h3>
-            <p class="pain-row__text">Messages sans réponse, disponibilités impossibles à confirmer. Chaque heure passée à chercher est une heure que vous ne consacrez pas à votre événement.</p>
-          </div>
-        </article>
-
-        <article class="pain-row fade-up" style="--d:140ms">
-          <div class="pain-row__head">
-            <span class="pain-row__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
-            </span>
-            <span class="pain-row__num">02</span>
-          </div>
-          <div class="pain-row__body">
-            <span class="pain-row__tag">Trop opaque</span>
-            <h3 class="pain-row__title">Des choix à l'aveugle</h3>
-            <p class="pain-row__text">Des devis que vous ne pouvez pas comparer, des profils que personne n'a vérifiés. Vous signez en espérant que ça se passe bien.</p>
-          </div>
-        </article>
-
-        <article class="pain-row fade-up" style="--d:280ms">
-          <div class="pain-row__head">
-            <span class="pain-row__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12.01" y2="16.5"/></svg>
-            </span>
-            <span class="pain-row__num">03</span>
-          </div>
-          <div class="pain-row__body">
-            <span class="pain-row__tag">Trop risqué</span>
-            <h3 class="pain-row__title">Un cadre flou</h3>
-            <p class="pain-row__text">Pas de contrat clair, pas de paiement sécurisé, pas de recours. En cas de problème le jour J, vous êtes seul.</p>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-
-
-
-  <!-- ====================================================== MANIFESTO -->
-  <section class="manifesto" aria-label="Manifesto">
-    <div class="manifesto__inner">
-      <p class="manifesto__text fade-up">
-        <span class="manifesto__quote-open">"</span>Derrière chaque bel événement, il y a le <span class="underlined">bon prestataire</span>.<span class="manifesto__quote-close">"</span>
-      </p>
-      <div class="manifesto__sign fade-up" style="--d:240ms">
-        Kylian &amp; Florian — Co-fondateurs
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ====================================================== COMPARE — CENTERPIECE -->
-  <section class="compare" id="compare" aria-labelledby="compare-title">
-
-    <div class="compare__head">
-      <span class="eyebrow fade-up">POURQUOI YVENTO</span>
-      <h2 id="compare-title" class="fade-up" style="--d:120ms">
-        Notre <span class="orange">approche.</span>
-      </h2>
-      <p class="fade-up" style="--d:240ms">
-        Trouver un prestataire événementiel à Lyon ou Toulouse : voici pourquoi Yvento Match change la règle du jeu.
-      </p>
-    </div>
-
-    <div class="compare__cols">
-
-      <!-- Card 1: Agence -->
-      <article class="cmp-card fade-up">
-        <div class="cmp-card__head">
-          <span class="cmp-card__tag">OPTION A</span>
-          <span class="cmp-card__name">Agence traditionnelle</span>
-        </div>
-        <ul class="cmp-list">
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>Le tarif que vous voyez n'est jamais le prix réel</span>
-          </li>
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>Vous payez leur marge, pas la prestation</span>
-          </li>
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>Ils proposent leur carnet, pas votre prestataire idéal</span>
-          </li>
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>Aucun accès direct au prestataire avant signature</span>
-          </li>
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>Engagement contractuel imposé dès le départ</span>
-          </li>
-        </ul>
-      </article>
-
-      <!-- Card 2: Marketplace -->
-      <article class="cmp-card fade-up" style="--d:120ms">
-        <div class="cmp-card__head">
-          <span class="cmp-card__tag">OPTION B</span>
-          <span class="cmp-card__name">Marketplace</span>
-        </div>
-        <ul class="cmp-list">
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>C'est le prestataire qui paie pour être visible, pas pour être bon</span>
-          </li>
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>Disponibilités non vérifiées, vous prenez le risque</span>
-          </li>
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>Relances, comparaisons, suivi : tout repose sur vous</span>
-          </li>
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>Aucune garantie si le prestataire se désiste</span>
-          </li>
-          <li>
-            <span class="ic bad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-            <span>N'importe qui peut s'inscrire, aucune qualification</span>
-          </li>
-        </ul>
-      </article>
-
-      <!-- Card 3: YVENTO (WIN) -->
-      <article class="cmp-card cmp-card--win fade-up" style="--d:240ms">
-        <span class="cmp-grain" aria-hidden="true"></span>
-        <span class="cmp-badge">Recommandé</span>
-        <div class="cmp-card__head">
-          <span class="cmp-card__tag">NOTRE APPROCHE</span>
-          <span class="cmp-card__name">Yvento Match</span>
-        </div>
-        <ul class="cmp-list">
-          <li>
-            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-            <span><b>Réponse sous 24h</b>, sans aucune relance</span>
-          </li>
-          <li>
-            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-            <span><b>Sélection humaine</b>, chaque profil est qualifié</span>
-          </li>
-          <li>
-            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-            <span>Disponibilités <b>confirmées</b> avant tout envoi</span>
-          </li>
-          <li>
-            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-            <span><b>Aucun frais</b>, aucune surprise sur votre budget</span>
-          </li>
-          <li>
-            <span class="ic win"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-            <span><b>Réservation encadrée</b> de A à Z</span>
-          </li>
-        </ul>
-      </article>
-
-    </div>
-
-    <div class="compare__cta fade-up" style="--d:360ms; text-align:center; margin-top: 72px; padding: 0 24px;">
-      <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--primary" data-magnetic>
-        <span class="btn__inner">
-          Trouver mon prestataire
-          <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-            <polyline points="12 5 19 12 12 19"/>
-          </svg>
-        </span>
-      </a>
-    </div>
-
-    <div class="compare__rows" style="display:none">
-
-      <!-- Battle row 1: Délai -->
-      <div class="battle-row fade-up">
-        <div class="battle-row__crit">
-          <span class="battle-row__num">01 / 06</span>
-          <span class="battle-row__title">Délai de réponse</span>
-          <span class="battle-row__sub">Entre brief et propositions</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">AGENCE</span>
-          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>2 à 4 semaines</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">MARKETPLACE</span>
-          <span class="battle-opt__val"><span class="neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Variable, à vous</span>
-        </div>
-        <div class="battle-row__yvento">
-          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-          <div class="battle-row__yvento-text">
-            <span class="battle-row__yvento-tag">YVENTO</span>
-            <span class="battle-row__yvento-val">Sous 24 heures.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Battle row 2: Réseau -->
-      <div class="battle-row fade-up" style="--d:80ms">
-        <div class="battle-row__crit">
-          <span class="battle-row__num">02 / 06</span>
-          <span class="battle-row__title">Réseau de prestataires</span>
-          <span class="battle-row__sub">Diversité, qualité, disponibilité</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">AGENCE</span>
-          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Carnet d'adresses fermé</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">MARKETPLACE</span>
-          <span class="battle-opt__val"><span class="neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Très large, peu trié</span>
-        </div>
-        <div class="battle-row__yvento">
-          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-          <div class="battle-row__yvento-text">
-            <span class="battle-row__yvento-tag">YVENTO</span>
-            <span class="battle-row__yvento-val">Large, vérifié, curé.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Battle row 3: Disponibilité -->
-      <div class="battle-row fade-up" style="--d:160ms">
-        <div class="battle-row__crit">
-          <span class="battle-row__num">03 / 06</span>
-          <span class="battle-row__title">Disponibilité confirmée</span>
-          <span class="battle-row__sub">Vérifiée avant proposition</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">AGENCE</span>
-          <span class="battle-opt__val"><span class="ok"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Vérifiée</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">MARKETPLACE</span>
-          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Non vérifiée</span>
-        </div>
-        <div class="battle-row__yvento">
-          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-          <div class="battle-row__yvento-text">
-            <span class="battle-row__yvento-tag">YVENTO</span>
-            <span class="battle-row__yvento-val">Confirmée avant envoi.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Battle row 4: Frais -->
-      <div class="battle-row fade-up" style="--d:240ms">
-        <div class="battle-row__crit">
-          <span class="battle-row__num">04 / 06</span>
-          <span class="battle-row__title">Frais organisateur</span>
-          <span class="battle-row__sub">Coût du service de mise en relation</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">AGENCE</span>
-          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Élevés, répercutés</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">MARKETPLACE</span>
-          <span class="battle-opt__val"><span class="neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Variables, selon plateforme</span>
-        </div>
-        <div class="battle-row__yvento">
-          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-          <div class="battle-row__yvento-text">
-            <span class="battle-row__yvento-tag">YVENTO</span>
-            <span class="battle-row__yvento-val">0 € — toujours.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Battle row 5: Sélection -->
-      <div class="battle-row fade-up" style="--d:320ms">
-        <div class="battle-row__crit">
-          <span class="battle-row__num">05 / 06</span>
-          <span class="battle-row__title">Qualité de sélection</span>
-          <span class="battle-row__sub">Curation humaine ou DIY</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">AGENCE</span>
-          <span class="battle-opt__val"><span class="neu"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Humaine, fermée</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">MARKETPLACE</span>
-          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>À vous de tout filtrer</span>
-        </div>
-        <div class="battle-row__yvento">
-          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-          <div class="battle-row__yvento-text">
-            <span class="battle-row__yvento-tag">YVENTO</span>
-            <span class="battle-row__yvento-val">Humaine + matching digital.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Battle row 6: Engagement -->
-      <div class="battle-row fade-up" style="--d:400ms">
-        <div class="battle-row__crit">
-          <span class="battle-row__num">06 / 06</span>
-          <span class="battle-row__title">Engagement requis</span>
-          <span class="battle-row__sub">Contrat, exclusivité, minimum</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">AGENCE</span>
-          <span class="battle-opt__val"><span class="x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Contrat + minimum</span>
-        </div>
-        <div class="battle-opt">
-          <span class="battle-opt__tag">MARKETPLACE</span>
-          <span class="battle-opt__val"><span class="ok"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Aucun</span>
-        </div>
-        <div class="battle-row__yvento">
-          <span class="battle-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
-          <div class="battle-row__yvento-text">
-            <span class="battle-row__yvento-tag">YVENTO</span>
-            <span class="battle-row__yvento-val">Aucun. Liberté totale.</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Final score -->
-    <div class="battle-final fade-up" style="--d:240ms">
-      <div class="battle-score">
-        <div class="battle-score__left">
-          <div class="battle-score__eyebrow">VERDICT</div>
-          <h3 class="battle-score__title">Yvento Match <em>gagne</em> sur les six.</h3>
-        </div>
-        <div class="battle-score__num">
-          <span class="big">6</span><span class="slash">/</span><span class="small">6</span>
-        </div>
-      </div>
-      <div class="battle-foot">
-        <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="btn btn--primary" data-magnetic>
-          <span class="btn__inner">
-            Commencer maintenant
-            <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </span>
-        </a>
-      </div>
-    </div>
-
-    <div class="compare__table-OLD" style="display:none">
-      <div class="compare__wrap fade-up" style="--d:320ms">
-        <div class="compare__grid">
-
-          <!-- Column headers -->
-          <div class="compare__col-head compare__col-head--criterion">
-            <span class="compare__col-tag">CRITÈRE</span>
-            <span class="compare__col-name">Sur 6 dimensions</span>
-          </div>
-          <div class="compare__col-head">
-            <span class="compare__col-tag">OPTION A</span>
-            <span class="compare__col-name">Agence traditionnelle</span>
-          </div>
-          <div class="compare__col-head">
-            <span class="compare__col-tag">OPTION B</span>
-            <span class="compare__col-name">Marketplace ouverte</span>
-          </div>
-          <div class="compare__col-head compare__col-head--yvento">
-            <span class="compare__col-tag">NOTRE APPROCHE</span>
-            <span class="compare__col-name">Yvento Match <span class="badge">RECOMMANDÉ</span></span>
-          </div>
-
-          <!-- Row 1: Délai -->
-          <div class="compare__cell compare__cell--criterion">
-            <span class="lbl">Délai de réponse</span>
-            <span class="sub">Entre brief et propositions</span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-bad">
-              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-              2 à 4 semaines
-            </span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-neutral">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-              Variable, à vous de relancer
-            </span>
-          </div>
-          <div class="compare__cell compare__cell--yvento">
-            <span class="compare__verdict is-best">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Sous 24 heures
-            </span>
-          </div>
-
-          <!-- Row 2: Réseau -->
-          <div class="compare__cell compare__cell--criterion">
-            <span class="lbl">Réseau de prestataires</span>
-            <span class="sub">Diversité des profils disponibles</span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-bad">
-              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-              Limité au carnet d'adresses
-            </span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-good">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Très large, peu trié
-            </span>
-          </div>
-          <div class="compare__cell compare__cell--yvento">
-            <span class="compare__verdict is-best">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Large, vérifié, curé
-            </span>
-          </div>
-
-          <!-- Row 3: Dispo -->
-          <div class="compare__cell compare__cell--criterion">
-            <span class="lbl">Disponibilité à votre date</span>
-            <span class="sub">Vérifiée avant proposition</span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-good">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Confirmée par l'agence
-            </span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-bad">
-              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-              Non vérifiée
-            </span>
-          </div>
-          <div class="compare__cell compare__cell--yvento">
-            <span class="compare__verdict is-best">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Confirmée avant envoi
-            </span>
-          </div>
-
-          <!-- Row 4: Tarif -->
-          <div class="compare__cell compare__cell--criterion">
-            <span class="lbl">Frais pour l'organisateur</span>
-            <span class="sub">Côut du service de mise en relation</span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-bad">
-              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-              Élevés, répercutés
-            </span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-neutral">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-              Variable selon plateforme
-            </span>
-          </div>
-          <div class="compare__cell compare__cell--yvento">
-            <span class="compare__verdict is-best">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              0 € — toujours
-            </span>
-          </div>
-
-          <!-- Row 5: Sélection -->
-          <div class="compare__cell compare__cell--criterion">
-            <span class="lbl">Qualité de la sélection</span>
-            <span class="sub">Curation humaine ou DIY</span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-good">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Humaine, mais fermée
-            </span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-bad">
-              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-              À vous de tout filtrer
-            </span>
-          </div>
-          <div class="compare__cell compare__cell--yvento">
-            <span class="compare__verdict is-best">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Humaine + matching digital
-            </span>
-          </div>
-
-          <!-- Row 6: Engagement -->
-          <div class="compare__cell compare__cell--criterion">
-            <span class="lbl">Engagement requis</span>
-            <span class="sub">Contrat, exclusivité, minimum</span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-bad">
-              <span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-              Contrat & minimum
-            </span>
-          </div>
-          <div class="compare__cell">
-            <span class="compare__verdict is-good">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Aucun
-            </span>
-          </div>
-          <div class="compare__cell compare__cell--yvento">
-            <span class="compare__verdict is-best">
-              <span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              Aucun
-            </span>
-          </div>
-
-          <!-- TOTAL -->
-          <div class="compare__total">
-            <div class="cell">SCORE</div>
-            <div class="cell"><span class="num">2/6</span></div>
-            <div class="cell"><span class="num">2/6</span></div>
-            <div class="cell yvento"><span class="num">6/6</span></div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- MOBILE cards -->
-      <div class="compare__cards">
-
-        <article class="ccard fade-up">
-          <div class="ccard__head">
-            <span class="ccard__name">Agence traditionnelle</span>
-            <span class="ccard__tag">2 / 6</span>
-          </div>
-          <div class="ccard__rows">
-            <div class="ccard__row"><span class="ccard__row-lbl">Délai</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>2-4 sem.</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Réseau</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Fermé</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Dispo</span><span class="compare__verdict is-good"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Confirmée</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Frais</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Élevés</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Sélection</span><span class="compare__verdict is-good"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Humaine</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Engagement</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Contrat</span></div>
-          </div>
-        </article>
-
-        <article class="ccard fade-up" style="--d:140ms">
-          <div class="ccard__head">
-            <span class="ccard__name">Marketplace ouverte</span>
-            <span class="ccard__tag">2 / 6</span>
-          </div>
-          <div class="ccard__rows">
-            <div class="ccard__row"><span class="ccard__row-lbl">Délai</span><span class="compare__verdict is-neutral"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Variable</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Réseau</span><span class="compare__verdict is-good"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Large</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Dispo</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Non vérifiée</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Frais</span><span class="compare__verdict is-neutral"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>Variables</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Sélection</span><span class="compare__verdict is-bad"><span class="dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>À vous</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Engagement</span><span class="compare__verdict is-good"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Aucun</span></div>
-          </div>
-        </article>
-
-        <article class="ccard ccard--yvento fade-up" style="--d:280ms">
-          <div class="ccard__head">
-            <span class="ccard__name">Yvento Match</span>
-            <span class="ccard__tag">6 / 6 — Recommandé</span>
-          </div>
-          <div class="ccard__rows">
-            <div class="ccard__row"><span class="ccard__row-lbl">Délai</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>&lt; 24h</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Réseau</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Large + curé</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Dispo</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Confirmée</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Frais</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>0 €</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Sélection</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Humaine + digitale</span></div>
-            <div class="ccard__row"><span class="ccard__row-lbl">Engagement</span><span class="compare__verdict is-best"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Aucun</span></div>
-          </div>
-        </article>
-
-      </div>
-
-    </div>
-  </section>
 
 
   <!-- ====================================================== METHOD -->
@@ -4212,6 +3431,62 @@
   </section>
 
 
+
+  <!-- ====================================================== POUR QUI -->
+  <section class="section section--paper" id="audience" aria-labelledby="audience-title">
+    <div class="wrap">
+
+      <div class="audience__head">
+        <span class="eyebrow fade-up">POUR QUI</span>
+        <h2 id="audience-title" class="fade-up" style="--d:120ms">
+          Une réponse pour<br><span class="orange">chaque organisateur.</span>
+        </h2>
+      </div>
+
+      <div class="aud-grid">
+
+        <article class="aud-card fade-up">
+          <span class="aud-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L12 14"/></svg>
+          </span>
+          <span class="aud-card__tag">Particuliers</span>
+          <h3 class="aud-card__title">Organisateurs particuliers</h3>
+          <p class="aud-card__text">Mariage, anniversaire, soirée privée : décrivez votre événement et recevez des prestataires vérifiés, disponibles à votre date. Sans démarche, sans frais.</p>
+          <a class="aud-card__link" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer">Décrire mon événement
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </article>
+
+        <article class="aud-card fade-up" style="--d:140ms">
+          <span class="aud-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18l-1.5-5.5A1 1 0 0 0 18.55 3H5.45a1 1 0 0 0-.95.5L3 9z"/><path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg>
+          </span>
+          <span class="aud-card__tag">Bars &amp; restaurants</span>
+          <h3 class="aud-card__title">Lieux &amp; établissements</h3>
+          <p class="aud-card__text">Bars, restaurants, clubs : trouvez le DJ, le musicien ou l'animateur qui fera vivre votre établissement, pour une soirée ponctuelle ou une programmation régulière.</p>
+          <a class="aud-card__link" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer">Trouver un prestataire
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </article>
+
+        <article class="aud-card fade-up" style="--d:280ms">
+          <span class="aud-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
+          </span>
+          <span class="aud-card__tag">Apport d'affaires</span>
+          <h3 class="aud-card__title">Lieux partenaires</h3>
+          <p class="aud-card__text">Domaines, salles de réception, traiteurs : proposez nos prestataires à vos clients et touchez une commission sur chaque mise en relation aboutie.</p>
+          <a class="aud-card__link" href="mailto:contact@yvento.fr?subject=Partenariat%20lieu%20-%20Yvento%20Match">Devenir partenaire
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+
   <!-- ====================================================== RÉSEAU CERTIFIÉ (sombre) -->
   <section class="netcert" id="certifie" aria-labelledby="certifie-title">
     <div class="netcert__map" aria-hidden="true"></div>
@@ -4235,119 +3510,66 @@
         </div>
       </div>
     </div>
-  </section>
-
-
-  <!-- ====================================================== PARTENAIRES -->
-  <section class="section partners" id="partenaires" aria-labelledby="partners-title">
-    <div class="wrap">
-      <div class="partners__inner">
-
-        <div class="partners__copy fade-up">
-          <span class="eyebrow partners__eyebrow">Partenariat · Apport d'affaires</span>
-          <h2 id="partners-title">Devenez <span class="orange">lieu partenaire.</span></h2>
-          <p class="partners__text">
-            Vous gérez un domaine, une salle de réception ou un service traiteur ? Proposez nos
-            prestataires vérifiés à vos clients, sans rien gérer. À chaque mise en relation aboutie,
-            vous touchez une commission.
-          </p>
-          <ul class="partners__list">
-            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> Un service en plus pour vos clients, sans coût ni logistique</li>
-            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> Une commission sur chaque réservation que vous apportez</li>
-            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> Des prestataires vérifiés qui valorisent votre lieu</li>
-          </ul>
-        </div>
-
-        <div class="partners__cta fade-up" style="--d:160ms">
-          <h3>Proposez Yvento à vos clients</h3>
-          <p>Parlons de votre lieu et mettons en place un partenariat d'apport d'affaires.</p>
-          <a href="mailto:contact@yvento.fr?subject=Partenariat%20lieu%20-%20Yvento%20Match" class="btn btn--primary" data-magnetic>
-            <span class="btn__inner">
-              Devenir lieu partenaire
-              <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-            </span>
-          </a>
-          <p class="fine">Réponse sous 48h · Sans engagement</p>
-        </div>
-
+      <div class="netcert__trust wrap">
+      <span class="netcert__trust-label">Ils nous font confiance</span>
+      <div class="trust__strip">
+      <div class="trust__track" id="trust-track">
+        <span class="trust-logo">Sciences Po Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">L'Appart Fitness</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Corpo Médecine Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">BUT Montauban</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Richardson</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Université Toulouse 1 Capitole</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">1862 Arty Bar Club</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Studio 3S</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">IAE Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Le Bar Basque</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">Sapeurs-Pompiers</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo">istef</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <!-- Duplicate for seamless loop -->
+        <span class="trust-logo" aria-hidden="true">Sciences Po Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">L'Appart Fitness</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Corpo Médecine Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">BUT Montauban</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Richardson</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Université Toulouse 1 Capitole</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">1862 Arty Bar Club</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Studio 3S</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">IAE Toulouse</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Le Bar Basque</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">Sapeurs-Pompiers</span>
+        <span class="trust-logo__dot" aria-hidden="true"></span>
+        <span class="trust-logo" aria-hidden="true">istef</span>
       </div>
+    </div>
+      <p class="trust__disclaimer">
+      Références réalisées sous <b>Stereo Lights Events</b> et <b>Kygaa Music</b>, aujourd'hui réunies sous <b>Yvento</b>.
+    </p>
     </div>
   </section>
 
-
-  <!-- ====================================================== TEAM -->
-  <section class="section section--paper" aria-labelledby="team-title">
-    <div class="wrap">
-
-      <div class="team-layout">
-      <div class="team-intro">
-        <span class="eyebrow fade-up">QUI NOUS SOMMES</span>
-        <h2 id="team-title" class="fade-up" style="--d:120ms">
-          Une équipe du terrain,<br><span class="orange">à Lyon et Toulouse.</span>
-        </h2>
-        <p class="fade-up" style="--d:160ms">
-          Deux DJs professionnels, un architecte logiciel. Nous avons exercé pendant plus de dix ans
-          dans l'événementiel à Lyon et en Occitanie. Nous avons vu des centaines d'organisateurs
-          chercher mal et choisir par défaut. Alors nous avons construit la plateforme qui règle ce problème.
-        </p>
-      </div>
-
-      <div class="team-grid">
-
-        <article class="founder fade-up">
-          <div class="founder__photo-wrap">
-            <span class="founder__tag">CO-FONDATEUR</span>
-            <img class="founder__photo" src="./assets/kylian.png" alt="Portrait de Kylian, co-fondateur" loading="lazy"
-                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=720&h=720&fit=crop&q=80&auto=format';">
-          </div>
-          <div class="founder__body">
-            <div class="founder__name">Kylian</div>
-            <div class="founder__role">Produit &amp; Vision</div>
-            <span class="founder__line"></span>
-            <p class="founder__exp">
-              <b>10 ans de terrain en tant que DJ</b>, des mariages aux soirées privées. Pilote la vision produit pour que Yvento reste simple, fiable et concret.
-            </p>
-          </div>
-        </article>
-
-        <article class="founder fade-up" style="--d:160ms">
-          <div class="founder__photo-wrap">
-            <span class="founder__tag">CO-FONDATEUR</span>
-            <img class="founder__photo" src="./assets/florian.png" alt="Portrait de Florian, co-fondateur" loading="lazy"
-                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=720&h=720&fit=crop&q=80&auto=format';">
-          </div>
-          <div class="founder__body">
-            <div class="founder__name">Florian</div>
-            <div class="founder__role">Opérations &amp; Réseau</div>
-            <span class="founder__line"></span>
-            <p class="founder__exp">
-              <b>DJ depuis 10 ans et ex-fondateur d'une agence événementielle</b>. Construit le réseau prestataires et garantit la qualité de chaque mise en relation.
-            </p>
-          </div>
-        </article>
-
-        <article class="founder fade-up" style="--d:320ms">
-          <div class="founder__photo-wrap">
-            <img class="founder__photo" src="./assets/clement.png" alt="Portrait de Clément" loading="lazy"
-                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=720&h=720&fit=crop&q=80&auto=format';">
-          </div>
-          <div class="founder__body">
-            <div class="founder__name">Clément</div>
-            <div class="founder__role">Architecture technique</div>
-            <span class="founder__line"></span>
-            <p class="founder__exp">
-              <b>Ingénieur produit et infrastructure</b>. Construit la plateforme pour que chaque étape — du brief à la réservation — disparaisse devant l'usage.
-            </p>
-          </div>
-        </article>
-
-      </div>
-      </div>
-    </div>
-  </section>
 
 
   <!-- ====================================================== FAQ -->
@@ -4403,29 +3625,10 @@
           </div>
         </div>
 
-        <div class="faq-item fade-up" role="listitem" style="--d:240ms">
-          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5">
-            <span>Et si aucun prestataire ne correspond à mon événement&nbsp;?</span>
-            <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-          </button>
-          <div class="faq-a" id="faq-a-5" role="region">
-            <p class="faq-a__inner">On vous le dit immédiatement et on explore des alternatives avec vous : délai ajusté, périmètre élargi, profil similaire. Nous ne vous enverrons jamais une proposition qui ne correspond pas à votre besoin juste pour cocher une case.</p>
-          </div>
-        </div>
-
-        <div class="faq-item fade-up" role="listitem" style="--d:300ms">
-          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6">
-            <span>En quoi Yvento Match est différent d'une agence événementielle&nbsp;?</span>
-            <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-          </button>
-          <div class="faq-a" id="faq-a-6" role="region">
-            <p class="faq-a__inner">Une agence traditionnelle travaille avec un réseau fermé, des délais de 2 à 4 semaines et des frais répercutés sur vous. Yvento Match vous donne accès à un réseau large de prestataires indépendants vérifiés, avec une réponse sous 24h, une sélection humaine et digitale, et zéro frais pour l'organisateur. Même niveau d'exigence, sans les contraintes.</p>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
+
 
 
   <!-- ====================================================== CTA FINAL -->
@@ -4464,6 +3667,7 @@
   <div id="brief-form"></div>
 
 
+
   <!-- ====================================================== FOOTER -->
   <footer class="footer" role="contentinfo">
     <div class="wrap">
@@ -4478,9 +3682,9 @@
         <div>
           <p class="footer__head">NAVIGATION</p>
           <nav class="footer__links" aria-label="Liens du pied de page">
-            <a href="#events">Événements</a>
-            <a href="#compare">Notre approche</a>
             <a href="#method">Comment ça marche</a>
+            <a href="#audience">Pour qui</a>
+            <a href="#certifie">Le réseau</a>
             <a href="#faq">FAQ</a>
             <a href="https://yvento.fr/pro/" target="_blank" rel="noopener noreferrer">Je suis prestataire</a>
           </nav>
@@ -4727,3 +3931,4 @@
 
 </body>
 </html>
+
