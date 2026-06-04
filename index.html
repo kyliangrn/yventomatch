@@ -247,28 +247,7 @@
     .is-revealed .reveal-mask > span,
     .reveal-mask.is-revealed > span { transform: translateY(0); }
 
-    /* =================================================================
-       ORANGE GLOW — Subtle pulse on orange title words
-    ================================================================= */
-    @keyframes orangePulse {
-      0%, 100% {
-        filter: drop-shadow(0 0 0 rgba(244,97,26,0));
-        text-shadow: 0 0 0 transparent;
-      }
-      50% {
-        filter: drop-shadow(0 0 14px rgba(244,97,26,0.42));
-        text-shadow: 0 0 22px rgba(244,97,26,0.18);
-      }
-    }
-    .sec-head h2 .orange,
-    .showcase__head h2 .orange,
-    .compare__head h2 .orange,
-    .team-intro h2 .orange,
-    .cta-final h2 .orange,
-    .hero__title .accent,
-    .compare__head h2 .orange {
-      animation: orangePulse 4.5s ease-in-out infinite;
-    }
+    /* Glow pulsant retiré des titres (rendu plus sobre) */
 
     /* =================================================================
        NEW UTILITY ANIMATIONS
@@ -2055,7 +2034,7 @@
       gap: 28px;
     }
     @media (min-width: 1024px) {
-      .method-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: center; }
+      .method-grid { grid-template-columns: 1fr clamp(140px, 15vw, 210px) 1fr; gap: 18px; align-items: center; }
     }
 
     /* Curved animated line — desktop only */
@@ -3371,6 +3350,33 @@
     .aud-panel--seek .chk { background: rgba(244,97,26,0.2); color: var(--ember); }
     .aud-panel--offer .chk { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
     .aud-panel .btn { margin-top: auto; align-self: flex-start; }
+    .aud-panel .aud-panel__index {
+      position: absolute;
+      top: 18px; right: 28px;
+      z-index: 0;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      font-size: clamp(64px, 7vw, 104px);
+      line-height: 0.8;
+      letter-spacing: -0.05em;
+      color: rgba(255,255,255,0.06);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .aud-panel--seek .aud-panel__index { color: rgba(244,97,26,0.16); }
+    .aud-panel > * { position: relative; z-index: 1; }
+    .aud-panel__tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 6px; }
+    .aud-tag {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.14);
+      white-space: nowrap;
+    }
+    .aud-panel--seek .aud-tag { background: rgba(244,97,26,0.1); border-color: rgba(244,97,26,0.28); color: var(--ember); }
 
     .btn--ghost-light {
       background: transparent;
@@ -3382,7 +3388,7 @@
     /* ── BANDEAU « Ils nous font confiance » (sombre) ── */
     .trustband {
       background: var(--ink);
-      padding: 62px 0 54px;
+      padding: 70px 0 60px;
       position: relative;
       overflow: hidden;
       border-top: 1px solid var(--hairline-d);
@@ -3391,18 +3397,165 @@
       display: block;
       text-align: center;
       font-family: var(--mono);
-      font-size: 11px; font-weight: 500;
+      font-size: 12px; font-weight: 500;
       letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 30px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 34px;
     }
     .trustband .trust__strip { margin-bottom: 0; }
-    .trustband .trust-logo { color: #fff; opacity: 0.4; }
-    .trustband .trust-logo:hover { opacity: 0.85; }
-    .trustband .trust__disclaimer { color: rgba(255,255,255,0.4); margin-top: 28px; }
-    .trustband .trust__disclaimer b { color: rgba(255,255,255,0.7); font-weight: 600; }
+    .trustband .trust__track { gap: 66px; }
+    .trustband .trust-logo { color: #fff; opacity: 0.85; font-size: clamp(21px, 2vw, 30px); }
+    .trustband .trust-logo:hover { opacity: 1; transform: translateY(-2px); }
+    .trustband .trust-logo__dot { opacity: 0.9; width: 7px; height: 7px; }
+    .trustband .trust__disclaimer { color: rgba(255,255,255,0.45); margin-top: 32px; }
+    .trustband .trust__disclaimer b { color: rgba(255,255,255,0.8); font-weight: 600; }
 
-    /* ── FAQ (sombre) ── */
+    /* ── Illustration de match (connecteur entre les 2 cartes) ── */
+    .match-connector {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      padding: 16px 4px;
+    }
+    @media (min-width: 1024px) { .match-connector { padding: 8px 2px; } }
+    .mc__emblem {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 84px;
+      width: 100%;
+    }
+    .mc__wire {
+      position: absolute;
+      top: 50%; left: -10%; right: -10%;
+      height: 2px;
+      transform: translateY(-50%) scaleX(0);
+      transform-origin: center;
+      background: repeating-linear-gradient(90deg, rgba(244,97,26,0.55) 0 6px, transparent 6px 13px);
+      transition: transform 0.9s var(--ease-out-expo);
+    }
+    .match-connector.is-on .mc__wire { transform: translateY(-50%) scaleX(1); }
+    .mc__av {
+      position: relative;
+      z-index: 2;
+      width: clamp(54px, 5.4vw, 66px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--cream);
+      box-shadow: 0 12px 26px -10px rgba(15,31,61,0.45);
+      opacity: 0;
+      transition: transform 0.75s var(--ease-out-expo) 0.1s, opacity 0.6s ease 0.1s;
+    }
+    .mc__av img { width: 100%; height: 100%; object-fit: cover; }
+    .mc__av--a { transform: translateX(26px) scale(0.85); }
+    .mc__av--b { margin-left: -16px; transform: translateX(-26px) scale(0.85); }
+    .match-connector.is-on .mc__av--a,
+    .match-connector.is-on .mc__av--b { transform: translateX(0) scale(1); opacity: 1; }
+    .mc__badge {
+      position: absolute;
+      bottom: -8px; left: 50%;
+      transform: translateX(-50%) scale(0);
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 3;
+      border: 2px solid var(--cream);
+      box-shadow: 0 8px 18px -4px rgba(244,97,26,0.6);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s;
+    }
+    .match-connector.is-on .mc__badge { transform: translateX(-50%) scale(1); }
+    .mc__badge svg { width: 14px; height: 14px; }
+    .mc__label {
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--orange);
+      margin-top: 6px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.5s ease 0.7s, transform 0.5s ease 0.7s;
+    }
+    .mc__caption {
+      font-size: 12.5px;
+      color: var(--sub-text);
+      line-height: 1.45;
+      max-width: 22ch;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.5s ease 0.82s, transform 0.5s ease 0.82s;
+    }
+    .match-connector.is-on .mc__label,
+    .match-connector.is-on .mc__caption { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .mc__wire, .mc__av, .mc__badge, .mc__label, .mc__caption { transition: none; opacity: 1; transform: none; }
+      .mc__av--a, .mc__av--b { transform: none; }
+      .mc__wire { transform: translateY(-50%) scaleX(1); }
+      .mc__badge { transform: translateX(-50%) scale(1); }
+    }
+
+    /* ── COMPARATIF (sombre) ── */
+    .compare2 { background: var(--ink-2); color: #fff; position: relative; overflow: hidden; }
+    .compare2::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 55% at 75% 18%, rgba(244,97,26,0.12), transparent 64%);
+      pointer-events: none;
+    }
+    .compare2 > * { position: relative; z-index: 1; }
+    .compare2 .eyebrow { color: rgba(255,255,255,0.5); }
+    .compare2 .sec-head h2 { color: #fff; }
+    .compare2 .sec-head h2 .orange { color: var(--orange); }
+    .cmp2__lead { color: rgba(255,255,255,0.62); text-align: center; max-width: 52ch; margin: 16px auto 0; font-size: 15px; line-height: 1.6; }
+    .cmp2-grid { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 50px; align-items: stretch; }
+    @media (min-width: 880px) { .cmp2-grid { grid-template-columns: 1fr 1fr 1.12fr; gap: 20px; align-items: center; } }
+    .cmp2-card {
+      position: relative;
+      padding: 30px 28px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .cmp2-card--win {
+      background: linear-gradient(165deg, rgba(244,97,26,0.18), rgba(244,97,26,0.05));
+      border-color: rgba(244,97,26,0.45);
+      box-shadow: 0 30px 70px -50px rgba(244,97,26,0.6);
+      padding: 34px 30px;
+    }
+    @media (min-width: 880px) { .cmp2-card--win { transform: scale(1.04); } }
+    .cmp2-badge {
+      position: absolute; top: -11px; left: 28px;
+      background: var(--orange); color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+      padding: 5px 12px; border-radius: 999px;
+      box-shadow: 0 8px 20px -6px rgba(244,97,26,0.7);
+    }
+    .cmp2-card__label {
+      font-family: var(--mono);
+      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .cmp2-card--win .cmp2-card__label { color: #fff; font-weight: 600; }
+    .cmp2-list { display: flex; flex-direction: column; gap: 13px; }
+    .cmp2-list li { display: flex; align-items: flex-start; gap: 11px; font-size: 14.5px; line-height: 1.5; color: rgba(255,255,255,0.7); }
+    .cmp2-list .ic {
+      flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .cmp2-list .ic svg { width: 11px; height: 11px; }
+    .cmp2-list--bad .ic { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+    .cmp2-list--good li { color: #fff; }
+    .cmp2-list--good .ic { background: rgba(244,97,26,0.22); color: var(--ember); }
+
+    /* ── FAQ (overrides sombres conservés mais inutilisés ; FAQ repassée en clair) ── */
     .faq-section { background: var(--ink-2); color: #fff; }
     .faq-section .eyebrow { color: rgba(255,255,255,0.5); }
     .faq-section .sec-head h2 { color: #fff; }
@@ -3459,13 +3612,13 @@
 
           <h1 class="hero__title">
             <span class="line">
-              <span class="reveal-mask"><span style="--d:120ms">le bon prestataire</span></span>
+              <span class="reveal-mask"><span style="--d:120ms">Le bon prestataire</span></span>
             </span>
             <span class="line">
               <span class="reveal-mask"><span style="--d:260ms">événementiel.</span></span>
             </span>
             <span class="line">
-              <span class="reveal-mask"><span class="accent" style="--d:380ms">sous 48h.</span></span>
+              <span class="reveal-mask"><span class="accent" style="--d:380ms">Sous 48h.</span></span>
             </span>
           </h1>
 
@@ -3585,7 +3738,7 @@
       <div class="sec-head">
         <span class="eyebrow fade-up">COMMENT ÇA MARCHE</span>
         <h2 id="method-title" class="fade-up" style="--d:120ms">
-          Votre recherche<br>en <span class="orange">3 étapes.</span>
+          Votre recherche,<br><span class="orange">sans effort.</span>
         </h2>
         <p class="lead fade-up" style="--d:240ms">
           Vous décrivez votre événement, on identifie les prestataires qui matchent vraiment, et ils vous recontactent sous 48h. Un conseiller reste disponible gratuitement si besoin.
@@ -3593,12 +3746,6 @@
       </div>
 
       <div class="method-grid">
-
-        <svg class="method-line" viewBox="-260 0 1920 160" preserveAspectRatio="none" aria-hidden="true">
-          <!-- Curved connector that extends well before the first card and well after the last -->
-          <path class="method-line__path" d="M -260 130 C -120 80, -20 70, 60 80 C 240 10, 360 150, 600 80 C 840 10, 960 150, 1140 80 C 1240 50, 1380 110, 1520 80 C 1600 60, 1660 90, 1660 90"/>
-          <path class="method-line__glow" d="M -260 130 C -120 80, -20 70, 60 80 C 240 10, 360 150, 600 80 C 840 10, 960 150, 1140 80 C 1240 50, 1380 110, 1520 80 C 1600 60, 1660 90, 1660 90"/>
-        </svg>
 
         <article class="method-card fade-up">
           <span class="method-card__num">01</span>
@@ -3613,71 +3760,23 @@
                 <p class="method-card__text">Date, lieu, budget, style : tout se complète en 2 minutes depuis n'importe quel appareil. Aucun appel, aucun compte à créer.</p>
               </div>
             </div>
-            <div class="method-card__face method-card__face--back">
-              <div class="method-card__back-info">
-                <span class="method-card__back-tag">ÉTAPE 01</span>
-                <span class="method-card__back-title">Brief en 2 minutes, depuis votre téléphone.</span>
-                <a href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" class="method-card__back-cta">
-                  Commencer
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
           </div>
         </article>
 
-        <article class="method-card method-card--viz fade-up" style="--d:160ms">
+        <!-- Illustration de match (entre les 2 cartes) -->
+        <div class="match-connector" aria-hidden="true">
+          <div class="mc__emblem">
+            <span class="mc__wire"></span>
+            <span class="mc__av mc__av--a"><img src="./assets/mariage.jpg" alt=""></span>
+            <span class="mc__av mc__av--b"><img src="./assets/dj2.jpg" alt=""></span>
+            <span class="mc__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <span class="mc__label">Le match</span>
+          <span class="mc__caption">Le bon prestataire, choisi sur ses compétences&nbsp;— pas sur son prix.</span>
+        </div>
+
+        <article class="method-card fade-up" style="--d:200ms">
           <span class="method-card__num">02</span>
-          <span class="method-card__tag">MATCHING</span>
-          <div class="method-card__inner">
-            <div class="method-card__face method-card__face--front">
-              <div class="method-card__viz" aria-hidden="true">
-                <svg class="viz__links" viewBox="0 0 100 75" preserveAspectRatio="none">
-                  <path class="viz__link" d="M50 37.5 L20 16"/>
-                  <path class="viz__link" d="M50 37.5 L18 56"/>
-                  <path class="viz__link" d="M50 37.5 L80 55"/>
-                  <path class="viz__link viz__link--match" d="M50 37.5 L78 17"/>
-                </svg>
-
-                <span class="viz__node viz__node--1"><img src="./assets/barman2.jpg" alt=""></span>
-                <span class="viz__node viz__node--2 is-match"><img src="./assets/dj2.jpg" alt=""><i class="viz__check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></i></span>
-                <span class="viz__node viz__node--3"><img src="./assets/chanteuse.jpg" alt=""></span>
-                <span class="viz__node viz__node--4"><img src="./assets/videaste3.png" alt=""></span>
-
-                <div class="viz__core">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                </div>
-
-                <span class="viz__tag">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  Sur les compétences, pas le prix
-                </span>
-              </div>
-              <div class="method-card__body">
-                <h3 class="method-card__title">On vous matche, vraiment</h3>
-                <p class="method-card__text">Date, style, zone, compétences : on rapproche votre brief des bons profils. Nos prestataires vous sont proposés pour leur talent et leur disponibilité&nbsp;— jamais parce qu'ils paient.</p>
-              </div>
-            </div>
-            <div class="method-card__face method-card__face--back">
-              <div class="method-card__back-info">
-                <span class="method-card__back-tag">ÉTAPE 02</span>
-                <span class="method-card__back-title">Le bon match, sur les compétences.</span>
-                <span class="method-card__back-cta">
-                  Aucun pay-to-win
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                </span>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="method-card fade-up" style="--d:320ms">
-          <span class="method-card__num">03</span>
           <span class="method-card__tag">Sous 48h</span>
           <div class="method-card__inner">
             <div class="method-card__face method-card__face--front">
@@ -3687,18 +3786,6 @@
               <div class="method-card__body">
                 <h3 class="method-card__title">Vous êtes recontacté</h3>
                 <p class="method-card__text">Le ou les prestataires sélectionnés vous recontactent directement sous 48h. Vous échangez, vous choisissez, c'est réservé&nbsp;— avec un cadre clair et un paiement sécurisé.</p>
-              </div>
-            </div>
-            <div class="method-card__face method-card__face--back">
-              <div class="method-card__back-info">
-                <span class="method-card__back-tag">ÉTAPE 03</span>
-                <span class="method-card__back-title">Le prestataire vous recontacte sous 48h.</span>
-                <span class="method-card__back-cta">
-                  Aucune relance de votre côté
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                </span>
               </div>
             </div>
           </div>
@@ -3716,63 +3803,6 @@
             </svg>
           </span>
         </a>
-      </div>
-    </div>
-  </section>
-
-
-
-  <!-- ====================================================== POUR QUI -->
-  <section class="section audience" id="audience" aria-labelledby="audience-title">
-    <div class="wrap">
-
-      <div class="audience__head">
-        <span class="eyebrow fade-up">POUR QUI</span>
-        <h2 id="audience-title" class="fade-up" style="--d:120ms">
-          Deux façons de<br><span class="orange">travailler avec Yvento.</span>
-        </h2>
-      </div>
-
-      <div class="aud-split">
-
-        <article class="aud-panel aud-panel--seek fade-up">
-          <span class="aud-panel__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </span>
-          <span class="aud-panel__kicker">Vous organisez</span>
-          <h3 class="aud-panel__title">Vous cherchez un prestataire</h3>
-          <p class="aud-panel__text">Pour un événement privé ou pour faire vivre votre établissement : décrivez votre besoin et recevez les bons profils, vérifiés et disponibles. Gratuit, sans démarche.</p>
-          <ul class="aud-panel__list">
-            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Particuliers</b> — mariage, anniversaire, soirée privée</span></li>
-            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Bars, restaurants, clubs</b> — soirée ponctuelle ou programmation régulière</span></li>
-            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Entreprises &amp; lieux</b> — séminaires, inaugurations, soirées d'équipe</span></li>
-          </ul>
-          <a class="btn btn--primary" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" data-magnetic>
-            <span class="btn__inner">Décrire mon événement
-              <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </span>
-          </a>
-        </article>
-
-        <article class="aud-panel aud-panel--offer fade-up" style="--d:140ms">
-          <span class="aud-panel__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
-          </span>
-          <span class="aud-panel__kicker">Vous avez des clients</span>
-          <h3 class="aud-panel__title">Vous proposez Yvento à vos clients</h3>
-          <p class="aud-panel__text">Domaines, salles de réception, traiteurs : proposez nos prestataires vérifiés à vos clients, sans rien gérer. À chaque mise en relation aboutie, vous touchez une commission.</p>
-          <ul class="aud-panel__list">
-            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Un service en plus pour vos clients, sans coût ni logistique</span></li>
-            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Une commission sur chaque réservation que vous apportez</span></li>
-            <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Des prestataires vérifiés qui valorisent votre lieu</span></li>
-          </ul>
-          <a class="btn btn--ghost-light" href="mailto:contact@yvento.fr?subject=Partenariat%20lieu%20-%20Yvento%20Match">
-            <span class="btn__inner">Devenir lieu partenaire
-              <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </span>
-          </a>
-        </article>
-
       </div>
     </div>
   </section>
@@ -3843,6 +3873,68 @@
 
 
 
+  <!-- ====================================================== POUR QUI -->
+  <section class="section audience" id="audience" aria-labelledby="audience-title">
+    <div class="wrap">
+
+      <div class="audience__head">
+        <span class="eyebrow fade-up">POUR QUI</span>
+        <h2 id="audience-title" class="fade-up" style="--d:120ms">
+          Deux façons<br><span class="orange">d'utiliser Yvento.</span>
+        </h2>
+      </div>
+
+      <div class="aud-split">
+
+        <article class="aud-panel aud-panel--seek fade-up">
+          <span class="aud-panel__index">01</span>
+          <span class="aud-panel__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <span class="aud-panel__kicker">Vous organisez</span>
+          <h3 class="aud-panel__title">Vous cherchez<br>un prestataire</h3>
+          <p class="aud-panel__text">Décrivez votre besoin, recevez les bons profils&nbsp;— vérifiés et disponibles. Gratuit, sans démarche.</p>
+          <div class="aud-panel__tags">
+            <span class="aud-tag">Particuliers</span>
+            <span class="aud-tag">Bars &amp; restaurants</span>
+            <span class="aud-tag">Entreprises</span>
+          </div>
+          <a class="btn btn--primary" href="https://brief.yvento.fr/" target="_blank" rel="noopener noreferrer" data-magnetic>
+            <span class="btn__inner">Décrire mon événement
+              <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </a>
+        </article>
+
+        <article class="aud-panel aud-panel--offer fade-up" style="--d:140ms">
+          <span class="aud-panel__index">02</span>
+          <span class="aud-panel__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
+          </span>
+          <span class="aud-panel__kicker">Vous avez des clients</span>
+          <h3 class="aud-panel__title">Vous proposez<br>Yvento à vos clients</h3>
+          <p class="aud-panel__text">Offrez nos prestataires vérifiés à vos clients, sans rien gérer, et touchez une commission sur chaque réservation.</p>
+          <div class="aud-panel__tags">
+            <span class="aud-tag">Domaines</span>
+            <span class="aud-tag">Salles de réception</span>
+            <span class="aud-tag">Traiteurs</span>
+          </div>
+          <a class="btn btn--ghost-light" href="mailto:contact@yvento.fr?subject=Partenariat%20lieu%20-%20Yvento%20Match">
+            <span class="btn__inner">Devenir lieu partenaire
+              <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
   <!-- ====================================================== RÉSEAU CERTIFIÉ (sombre) -->
   <section class="netcert" id="certifie" aria-labelledby="certifie-title">
     <div class="netcert__map" aria-hidden="true"></div>
@@ -3870,8 +3962,58 @@
 
 
 
+  <!-- ====================================================== COMPARATIF -->
+  <section class="section compare2" id="comparatif" aria-labelledby="cmp2-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--center">
+        <span class="eyebrow fade-up">LE COMPARATIF</span>
+        <h2 id="cmp2-title" class="fade-up" style="--d:120ms">
+          Pourquoi <span class="orange">Yvento Match</span> ?
+        </h2>
+        <p class="cmp2__lead fade-up" style="--d:240ms">
+          La simplicité d'une marketplace, l'exigence d'une agence&nbsp;— sans leurs défauts.
+        </p>
+      </div>
+
+      <div class="cmp2-grid">
+
+        <article class="cmp2-card fade-up">
+          <span class="cmp2-card__label">Agence traditionnelle</span>
+          <ul class="cmp2-list cmp2-list--bad">
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>2 à 4 semaines de délai</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Une marge répercutée sur votre budget</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Un carnet fermé, pas votre profil idéal</li>
+          </ul>
+        </article>
+
+        <article class="cmp2-card fade-up" style="--d:140ms">
+          <span class="cmp2-card__label">Marketplace</span>
+          <ul class="cmp2-list cmp2-list--bad">
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Tout repose sur vous : tri, relances, comparaisons</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Profils et disponibilités non vérifiés</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Le mieux placé est celui qui paie</li>
+          </ul>
+        </article>
+
+        <article class="cmp2-card cmp2-card--win fade-up" style="--d:280ms">
+          <span class="cmp2-badge">Recommandé</span>
+          <span class="cmp2-card__label">Yvento Match</span>
+          <ul class="cmp2-list cmp2-list--good">
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Réponse sous 48h, sans aucune relance</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Prestataires vérifiés, disponibilité confirmée</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Choisis sur leurs compétences, pas le prix</li>
+            <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>0&nbsp;€ pour l'organisateur</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+
   <!-- ====================================================== FAQ -->
-  <section class="section faq-section" id="faq" aria-labelledby="faq-title">
+  <section class="section section--cream" id="faq" aria-labelledby="faq-title">
     <div class="wrap">
 
       <div class="sec-head sec-head--center">
@@ -4052,6 +4194,16 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-up, .reveal-mask').forEach(function (el) {
       revealObs.observe(el);
+    });
+
+    /* 3a. Match connector — play once on scroll */
+    document.querySelectorAll('.match-connector').forEach(function (mc) {
+      const o = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-on'); o.unobserve(e.target); }
+        });
+      }, { threshold: 0.45 });
+      o.observe(mc);
     });
 
     /* 3b. Comparison cards — sequential check animations */
